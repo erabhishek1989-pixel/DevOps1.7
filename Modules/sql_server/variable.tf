@@ -44,11 +44,6 @@ variable "sql_version" {
   default = "12.0"
 }
 
-variable "sql_version" {
-  type    = string
-  default = "12.0"
-}
-
 variable "minimum_tls_version" {
   type    = string
   default = "1.2"
