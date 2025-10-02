@@ -124,7 +124,7 @@ module "Key_Vaults" {
   location                        = each.value.location
   infra_client_ent_app__object_id = var.infra_client_ent_app__object_id
   tenant_id                       = var.tenant_id
-  allowed_subnet_ids              = [
+  allowed_subnet_ids = [
     module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-keyvault"],
     module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
   ]
@@ -154,26 +154,26 @@ module "EntraID_groups" {
 module "storage_accounts" {
   source   = "./modules/storage_accounts"
   for_each = var.storage_accounts
-
   # Basic required attributes
-  name                     = "${var.environment_identifier}${each.value.name}"
-  resource_group_name      = "${var.environment_identifier}-${each.value.resource_group_name}"
-  location                 = each.value.location
-  account_replication_type = each.value.account_replication_type
-  account_tier             = each.value.account_tier
-  account_kind             = each.value.account_kind
-  is_hns_enabled           = each.value.is_hns_enabled
-  sftp_enabled             = each.value.sftp_enabled
-  sftp_local_users         = each.value.sftp_local_users
-  private_endpoint_enabled = each.value.private_endpoint_enabled
+  name                          = "${var.environment_identifier}${each.value.name}"
+  resource_group_name           = "${var.environment_identifier}-${each.value.resource_group_name}"
+  location                      = each.value.location
+  account_replication_type      = each.value.account_replication_type
+  account_tier                  = each.value.account_tier
+  account_kind                  = each.value.account_kind
+  is_hns_enabled                = each.value.is_hns_enabled
+  sftp_enabled                  = each.value.sftp_enabled
+  sftp_local_users              = each.value.sftp_local_users
+  private_endpoint_enabled      = each.value.private_endpoint_enabled
+  #private_endpoint_name         = each.value.private_endpoint_name
   public_network_access_enabled = try(each.value.public_network_access_enabled, false)
-  
+
   # Explicitly set all required attributes
-  subnet_id                = local.storage_subnet_mapping[each.key]
-  private_dns_zone_id      = local.private_dns_zone_id
-  keyvault_id              = local.storage_keyvault_mapping[each.key]
-  environment_identifier   = var.environment_identifier
-  
+  subnet_id              = local.storage_subnet_mapping[each.key]
+  private_dns_zone_id    = local.private_dns_zone_id
+  keyvault_id            = local.storage_keyvault_mapping[each.key]
+  environment_identifier = var.environment_identifier
+
   depends_on = [
     module.Key_Vaults,
     module.virtual_networks,
@@ -197,23 +197,24 @@ resource "random_password" "app_service_secret_amexpagero" {
 # SQL Server Module
 # SQL Server Module with Failover Group
 module "sql_server_amexpagero" {
-  source = "./modules/sql_server"
+  source = "./Modules/sql_server"  
 
-  sql_server_name                  = "${var.environment_identifier}-${var.amexpagero_resources.sql_server_name}"
-  sql_databases                    = var.sql_databases_config
-  resource_group_name              = "${var.environment_identifier}-rg-tax-uksouth-amexpagero"
-  location                         = "UK South"
-  sql_admin_username               = var.amexpagero_resources.sql_admin_username
-  sql_admin_password               = random_password.sql_admin_password_amexpagero.result
-  sql_version                      = var.sql_server_config.version
-  minimum_tls_version              = var.sql_server_config.minimum_tls_version
-  public_network_access_enabled    = var.sql_server_config.public_network_access_enabled
+  sql_server_name               = "${var.environment_identifier}-${var.amexpagero_resources.sql_server_name}"
+  sql_databases                 = var.sql_databases_config
+  resource_group_name           = "${var.environment_identifier}-rg-tax-uksouth-amexpagero"
+  location                      = "UK South"
+  sql_admin_username            = var.amexpagero_resources.sql_admin_username
+  sql_admin_password            = random_password.sql_admin_password_amexpagero.result
+  sql_version                   = var.sql_server_config.version
+  minimum_tls_version           = var.sql_server_config.minimum_tls_version
+  public_network_access_enabled = var.sql_server_config.public_network_access_enabled
+  
   azuread_administrator = {
-  login_username              = "G_NL_SQL_ADMIN"
-  object_id                   = data.azuread_group.sql_admin_group.object_id
-  azuread_authentication_only = false
+    login_username              = "G_NL_SQL_ADMIN"
+    object_id                   = data.azuread_group.sql_admin_group.object_id
+    azuread_authentication_only = false
   }
-
+  
   enable_private_endpoint          = true
   private_endpoint_name            = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_endpoint_name}"
   private_service_connection_name  = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_service_connection_name}"
@@ -242,29 +243,29 @@ module "sql_server_amexpagero" {
 module "service_bus_amexpagero" {
   source = "./Modules/service_bus"
 
-  service_bus_name            = "${var.environment_identifier}-sb-amexpagero-uksouth"
-  resource_group_name         = "${var.environment_identifier}-rg-tax-uksouth-amexpagero"
-  location                    = "UK South"
-  sku                         = var.service_bus_config.sku
+  service_bus_name              = "${var.environment_identifier}-sb-amexpagero-uksouth"
+  resource_group_name           = "${var.environment_identifier}-rg-tax-uksouth-amexpagero"
+  location                      = "UK South"
+  sku                           = var.service_bus_config.sku
   public_network_access_enabled = var.service_bus_config.public_network_access_enabled
-  minimum_tls_version         = var.service_bus_config.minimum_tls_version
-  
-  # Queues (optional - add if needed)
+  minimum_tls_version           = var.service_bus_config.minimum_tls_version
+
+  # Queues (optional)
   queues = var.service_bus_config.queues
-  
-  # Topics (optional - add if needed)
+
+  # Topics (optional)
   topics = var.service_bus_config.topics
-  
-  # Subscriptions (optional - add if needed)
+
+  # Subscriptions (optional)
   subscriptions = var.service_bus_config.subscriptions
-  
+
   # Private endpoint
-  enable_private_endpoint          = true
-  private_endpoint_name            = "${var.environment_identifier}-pe-sb-amexpagero-uksouth"
-  private_service_connection_name  = "${var.environment_identifier}-psc-sb-amexpagero-uksouth"
-  subnet_id                        = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
-  private_dns_zone_ids             = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"]
-  
+  enable_private_endpoint         = true
+  private_endpoint_name           = "${var.environment_identifier}-pe-sb-amexpagero-uksouth"
+  private_service_connection_name = "${var.environment_identifier}-psc-sb-amexpagero-uksouth"
+  subnet_id                       = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
+  private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"]
+
   tags = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.virtual_networks]
@@ -290,20 +291,20 @@ module "app_service_amexpagero" {
   sku_name              = var.app_service_config.sku_name
   python_version        = var.app_service_config.python_version
   always_on             = false
-  
+
   # VNet Integration 
   enable_vnet_integration    = true
   vnet_integration_subnet_id = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
-  
+
   app_settings = {
-    "DATABASE_URL"       = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/sql-connection-string)"
-    "APP_SECRET"         = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/app-service-secret)"
-    "STORAGE_CONNECTION" = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/storage-connection-string)"
-    "STORAGE_ACCOUNT"    = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/storage-account-name)"
+    "DATABASE_URL"           = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/sql-connection-string)"
+    "APP_SECRET"             = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/app-service-secret)"
+    "STORAGE_CONNECTION"     = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/storage-connection-string)"
+    "STORAGE_ACCOUNT"        = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/storage-account-name)"
     "SERVICE_BUS_CONNECTION" = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/service-bus-connection-string)"
   }
 
-  
+
   tags = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.sql_server_amexpagero, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
@@ -315,7 +316,7 @@ resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
   scope                = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = module.app_service_amexpagero.app_service_identity_principal_id
-  depends_on = [module.app_service_amexpagero, module.Key_Vaults]
+  depends_on           = [module.app_service_amexpagero, module.Key_Vaults]
 }
 
 #resource "azurerm_role_assignment" "amexpagero_kv_secrets_officer" {
@@ -336,9 +337,9 @@ resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
 
 resource "azurerm_key_vault_secret" "storage_connection_string_amexpagero" {
   name         = "storage-connection-string"
-  value        = module.storage_accounts["sttaxuksamexpagero"].primary_connection_string  #Updated Abhsihek
+  value        = module.storage_accounts["sttaxuksamexpagero"].primary_connection_string #Updated Abhsihek
   key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  depends_on = [module.Key_Vaults, module.storage_accounts]
+  depends_on   = [module.Key_Vaults, module.storage_accounts]
 }
 
 # Store SQL connection strings in Key Vault (for each database)
@@ -365,13 +366,13 @@ resource "azurerm_key_vault_secret" "app_service_secret_amexpagero" {
   name         = "app-service-secret"
   value        = random_password.app_service_secret_amexpagero.result
   key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  depends_on = [module.Key_Vaults]
+  depends_on   = [module.Key_Vaults]
 }
 resource "azurerm_key_vault_secret" "storage_account_name_amexpagero" {
   name         = "storage-account-name"
   value        = module.storage_accounts["sttaxuksamexpagero"].name
   key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  depends_on = [module.Key_Vaults, module.storage_accounts]
+  depends_on   = [module.Key_Vaults, module.storage_accounts]
 }
 
 #--------------- OUTPUTS ---------------#

@@ -8,8 +8,7 @@ resource "azurerm_mssql_server" "sql_server" {
   administrator_login_password  = var.sql_admin_password
   minimum_tls_version           = var.minimum_tls_version
   public_network_access_enabled = var.public_network_access_enabled
-
-    dynamic "azuread_administrator" {
+  dynamic "azuread_administrator" {
     for_each = var.azuread_administrator != null ? [1] : []
     content {
       login_username              = var.azuread_administrator.login_username

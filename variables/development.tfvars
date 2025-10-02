@@ -96,15 +96,14 @@ subnets = {
 
 # ========== AMEX PAGERO CONFIGURATION ========== #
 amexpagero_resources = {
-  sql_server_name       = "sqlsrvr-amexpagero-uksouth-0001"
-  sql_database_name     = "sqldb-amexpagero-uksouth-0001"
-  sql_admin_username    = "sqladmin"
-  app_service_plan_name = "asp-amexpagero-uksouth-0001"
-  app_service_name      = "app-uksouth-amexpagero"
-  sql_private_endpoint_name = "pe-sql-amexpagero-uksouth-0001"
-  sql_private_service_connection_name = "psc-sql-amexpagero-uksouth-0001"
+  sql_server_name                         = "sql-amexpagero-uksouth-0001"      # Updated as per Max's suggestion
+  sql_database_name                       = "sqldb-amexpagero-uksouth-0001"    # Updated as per Max's suggestion
+  sql_admin_username                      = "sqladmin"
+  app_service_plan_name                   = "asp-amexpagero-uksouth-0001"
+  app_service_name                        = "app-amexpagero-uksouth-0001"
+  sql_private_endpoint_name               = "dev-priv-nic-amexpagero-uksouth-0001"
+  sql_private_service_connection_name     = "dev-priv-nic-amexpagero-uksouth-0001-svc"
 }
-
 sql_server_config = {
   version                      = "12.0"
   minimum_tls_version          = "1.2"
@@ -129,13 +128,13 @@ sql_databases_config = {
 sql_failover_config = {
   enabled                                   = true
   secondary_location                        = "UK West"
-  secondary_resource_group                  = "rg-tax-ukwest-amexpagero"
-  secondary_server_name                     = "sqlsrvr-amexpagero-ukwest-0001"
+  secondary_resource_group                  = "rg-amexpagero-ukwest-0001"
+  secondary_server_name                     = "sql-amexpagero-ukwest-0001"      # Updated as per Max's suggestion
   secondary_subnet_name                     = "snet-tax-ukwest-amexpagero"
-  failover_group_name                       = "fog-amexpagero"
+  failover_group_name                       = "fog-amexpagero-ukwest-0001"      # Updated as per Max's suggestion
   grace_minutes                             = 60
-  secondary_private_endpoint_name           = "pe-sql-amexpagero-ukwest-0001"
-  secondary_private_service_connection_name = "psc-sql-amexpagero-ukwest-0001"
+  secondary_private_endpoint_name           = "dev-priv-nic-amexpagero-ukwest-0001"
+  secondary_private_service_connection_name = "dev-priv-nic-amexpagero-ukwest-0001-svc"
 }
 
 app_service_config = {

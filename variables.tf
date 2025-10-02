@@ -57,24 +57,24 @@ variable "keyvault_map" {
 
 variable "storage_accounts" {
   type = map(object({
-    name                     = optional(string)
-    resource_group_name      = optional(string)
-    location                 = string
-    private_endpoint_enabled = bool
+    name                          = optional(string)
+    resource_group_name           = optional(string)
+    location                      = string
+    private_endpoint_enabled      = bool
     public_network_access_enabled = optional(bool)
-    account_kind             = optional(string)
-    account_replication_type = optional(string)
-    account_tier             = optional(string)
-    is_hns_enabled           = optional(bool)
-    sftp_enabled             = optional(bool)
+    account_kind                  = optional(string)
+    account_replication_type      = optional(string)
+    account_tier                  = optional(string)
+    is_hns_enabled                = optional(bool)
+    sftp_enabled                  = optional(bool)
     sftp_local_users = map(object({
-      name               = optional(string)
-      keyvault           = optional(string)
-      permission_create  = optional(bool)
-      permission_delete  = optional(bool)
-      permission_list    = optional(bool)
-      permission_read    = optional(bool)
-      permission_write   = optional(bool)
+      name              = optional(string)
+      keyvault          = optional(string)
+      permission_create = optional(bool)
+      permission_delete = optional(bool)
+      permission_list   = optional(bool)
+      permission_read   = optional(bool)
+      permission_write  = optional(bool)
     }))
   }))
   description = "Map of storage accounts to create"
@@ -122,12 +122,12 @@ variable "virtual_networks_dns_servers" {
 
 variable "amexpagero_resources" {
   type = object({
-    sql_server_name       = string
-    sql_database_name     = string
-    sql_admin_username    = string
-    app_service_plan_name = string
-    app_service_name      = string
-    sql_private_endpoint_name = string
+    sql_server_name                     = string
+    sql_database_name                   = string
+    sql_admin_username                  = string
+    app_service_plan_name               = string
+    app_service_name                    = string
+    sql_private_endpoint_name           = string
     sql_private_service_connection_name = string
   })
   description = "Configuration for AMEX Pagero resources"
@@ -136,8 +136,8 @@ variable "amexpagero_resources" {
 
 variable "sql_server_config" {
   type = object({
-    version                      = string
-    minimum_tls_version          = string
+    version                       = string
+    minimum_tls_version           = string
     public_network_access_enabled = bool
   })
   description = "Configuration for SQL Server"
@@ -183,11 +183,11 @@ variable "service_bus_config" {
   type = object({
     sku                           = string
     public_network_access_enabled = bool
-    minimum_tls_version          = string
+    minimum_tls_version           = string
     queues = map(object({
       name                                 = string
       enable_partitioning                  = optional(bool)
-      max_size_in_megabytes               = optional(number)
+      max_size_in_megabytes                = optional(number)
       requires_duplicate_detection         = optional(bool)
       requires_session                     = optional(bool)
       dead_lettering_on_message_expiration = optional(bool)
