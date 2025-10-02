@@ -2,8 +2,14 @@ variable "sql_server_name" {
   type = string
 }
 
-variable "sql_database_name" {
-  type = string
+variable "sql_databases" {
+  type = map(object({
+    name           = string
+    max_size_gb    = number
+    sku_name       = string
+    zone_redundant = bool
+  }))
+  description = "Map of SQL databases to create"
 }
 
 variable "resource_group_name" {
@@ -23,6 +29,21 @@ variable "sql_admin_password" {
   sensitive = true
 }
 
+variable "azuread_administrator" {
+  type = object({
+    login_username              = string
+    object_id                   = string
+    azuread_authentication_only = optional(bool, false)
+  })
+  description = "Azure AD administrator configuration for SQL Server"
+  default     = null
+}
+
+variable "sql_version" {
+  type    = string
+  default = "12.0"
+}
+
 variable "sql_version" {
   type    = string
   default = "12.0"
@@ -34,21 +55,6 @@ variable "minimum_tls_version" {
 }
 
 variable "public_network_access_enabled" {
-  type    = bool
-  default = false
-}
-
-variable "database_max_size_gb" {
-  type    = number
-  default = 32
-}
-
-variable "database_sku_name" {
-  type    = string
-  default = "GP_Gen5_2"
-}
-
-variable "database_zone_redundant" {
   type    = bool
   default = false
 }
@@ -73,6 +79,67 @@ variable "subnet_id" {
 variable "private_dns_zone_ids" {
   type    = list(string)
   default = []
+}
+
+# Failover Group Variables
+variable "enable_failover_group" {
+  type        = bool
+  description = "Enable SQL failover group for geo-replication"
+  default     = false
+}
+
+variable "secondary_location" {
+  type        = string
+  description = "Location for secondary SQL server"
+  default     = null
+}
+
+variable "secondary_resource_group_name" {
+  type        = string
+  description = "Resource group for secondary SQL server"
+  default     = null
+}
+
+variable "secondary_server_name" {
+  type        = string
+  description = "Name of the secondary SQL server"
+  default     = null
+}
+
+variable "secondary_subnet_id" {
+  type        = string
+  description = "Subnet ID for secondary server private endpoint"
+  default     = null
+}
+
+variable "secondary_private_endpoint_name" {
+  type        = string
+  description = "Name of the private endpoint for secondary server"
+  default     = null
+}
+
+variable "secondary_private_service_connection_name" {
+  type        = string
+  description = "Name of the private service connection for secondary server"
+  default     = null
+}
+
+variable "failover_group_name" {
+  type        = string
+  description = "Name of the failover group"
+  default     = null
+}
+
+variable "failover_group_read_write_policy" {
+  type = object({
+    mode          = string
+    grace_minutes = optional(number)
+  })
+  description = "Read-write endpoint failover policy"
+  default = {
+    mode          = "Automatic"
+    grace_minutes = 60
+  }
 }
 
 variable "tags" {

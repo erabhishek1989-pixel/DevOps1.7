@@ -31,6 +31,10 @@ resource_groups_map = {
     name     = "rg-tax-uksouth-amexpagero"
     location = "UK South"
   }
+  "rg-tax-ukwest-amexpagero" = {
+    name     = "rg-tax-ukwest-amexpagero"
+    location = "UK West"
+  }
 }
 
 keyvault_map = {

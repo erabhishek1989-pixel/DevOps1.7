@@ -65,15 +65,19 @@ subnets = {
       }
     }
     subnets = {
-      "snet-tax-ukwest-storage" = {
-        name             = "d3-snet-tax-ukwest-storage"
-        address_prefixes = ["10.2.64.0/28"]
-      },
-      "snet-tax-ukwest-keyvault" = {
-        name             = "d3-snet-tax-ukwest-keyvault"
-        address_prefixes = ["10.2.64.16/28"]
-      }
-    }
+  "snet-tax-ukwest-storage" = {
+    name             = "d3-snet-tax-ukwest-storage"
+    address_prefixes = ["10.2.64.0/28"]
+  },
+  "snet-tax-ukwest-keyvault" = {
+    name             = "d3-snet-tax-ukwest-keyvault"
+    address_prefixes = ["10.2.64.16/28"]
+  },
+  "snet-tax-ukwest-amexpagero" = {  # ADD THIS
+    name             = "d3-snet-tax-ukwest-amexpagero"
+    address_prefixes = ["10.2.64.32/28"]
+  }
+}
     route_tables = {
       "route-tax-uksouth" = {
         name = "d3-route-tax-ukwest-0001"
@@ -107,10 +111,31 @@ sql_server_config = {
   public_network_access_enabled = false
 }
 
-sql_database_config = {
-  max_size_gb    = 32
-  sku_name       = "GP_Gen5_2"
-  zone_redundant = false
+sql_databases_config = {
+  "primary-db" = {
+    name           = "sqldb-amexpagero-uksouth-0001"
+    max_size_gb    = 32
+    sku_name       = "GP_Gen5_2"
+    zone_redundant = false
+  }
+  "secondary-db" = {
+    name           = "sqldb-amexpagero-analytics-uksouth-0001"
+    max_size_gb    = 50
+    sku_name       = "GP_Gen5_2"
+    zone_redundant = false
+  }
+}
+
+sql_failover_config = {
+  enabled                                   = true
+  secondary_location                        = "UK West"
+  secondary_resource_group                  = "rg-tax-ukwest-amexpagero"
+  secondary_server_name                     = "sqlsrvr-amexpagero-ukwest-0001"
+  secondary_subnet_name                     = "snet-tax-ukwest-amexpagero"
+  failover_group_name                       = "fog-amexpagero"
+  grace_minutes                             = 60
+  secondary_private_endpoint_name           = "pe-sql-amexpagero-ukwest-0001"
+  secondary_private_service_connection_name = "psc-sql-amexpagero-ukwest-0001"
 }
 
 app_service_config = {
