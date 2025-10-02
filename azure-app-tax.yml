@@ -1,0 +1,129 @@
+# CI/CD pipeline for Tax
+# https://aka.ms/yaml
+
+name: $(Build.DefinitionName)_$(Build.BuildId)_${{parameters.environment}}
+
+trigger:
+  - main
+
+pool:
+  vmImage: windows-latest
+
+parameters:
+  - name: environment
+    displayName: "Select an environment"
+    type: string
+    default: "development"
+    values:
+      - "development"
+      - "staging"
+      - "production"
+  - name: deployTaxConfig
+    displayName: "Deploy Tax configuration?"
+    type: boolean
+    default: "false"
+
+variables:
+  - name: systemname
+    value: tax
+  - name: ServiceConnection
+    ${{ if eq(parameters['environment'], 'development') }}:
+      value: "Y3-APP-DEV-TAX (91bb7688-5561-4ddf-b353-96ce02e64320)"
+    ${{ if eq(parameters['environment'], 'staging') }}:
+      value: "Y3-APP-STAGING-TAX (759ab282-0fa0-4eb7-983f-a42a2ae5ba5c)"
+    ${{ if eq(parameters['environment'], 'production') }}:
+      value: "Y3-APP-PRODUCTION-TAX (a8c01ee3-0fcd-4f71-9b3a-5771c78d239a)"
+stages:
+  - stage: Build
+    displayName: "Validate and plan"
+    jobs:
+      - job:
+        displayName: "Validate and plan"
+        steps:
+          - task: TerraformInstaller@1
+            displayName: "Install Terraform"
+            inputs:
+              terraformVersion: "latest"
+
+          # Initialising and building UK South resources
+          - task: TerraformTaskV4@4
+            displayName: "Terraform init: $(Build.DefinitionName)"
+            inputs:
+              backendServiceArm: "Y3-CORE (c8be5642-d14b-47b4-b9ef-8080116b2ed0)"
+              backendAzureRmResourceGroupName: "y3-rg-terraform-uksouth-001"
+              backendAzureRmStorageAccountName: "y3stcoreterraformuksouth"
+              backendAzureRmContainerName: "$(Build.DefinitionName)"
+              backendAzureRmKey: "${{parameters.environment}}-app-${{variables.systemname}}.tfstate"
+
+          - task: TerraformTaskV4@4
+            displayName: "Terraform validate: $(Build.DefinitionName)"
+            inputs:
+              command: validate
+              workingDirectory: "$(System.DefaultWorkingDirectory)"
+
+          - task: TerraformTaskV4@4
+            displayName: "Terraform plan: $(Build.DefinitionName)"
+            inputs:
+              provider: "azurerm"
+              command: "plan"
+              commandOptions: "-var-file=./variables/terraform.tfvars -var-file=./variables/${{parameters.environment}}.tfvars -out=$(Build.ArtifactStagingDirectory)/${{parameters.environment}}-app-${{variables.systemname}}.tfplan"
+              environmentServiceNameAzureRM: "${{variables.ServiceConnection}}"
+
+          - task: PublishBuildArtifacts@1
+            displayName: "Publishing artifacts"
+            inputs:
+              PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+              ArtifactName: "drop"
+              publishLocation: "Container"
+
+  - stage: Deploy
+    displayName: "Validate and deploy"
+    condition: and(succeeded(), eq('${{parameters.deployTaxConfig}}', true))
+    jobs:
+      - job: WaitForValidation
+        displayName: "Wait for validation"
+        timeoutInMinutes: 120
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            displayName: "Wait for validation"
+            timeoutInMinutes: 90
+            inputs:
+              notifyUsers: "$(PipelineValidators)"
+              instructions: "Please check output of plan stage and respond appropriately"
+
+      - job: TerraformDeploy
+        displayName: "Terraform deploy"
+        pool:
+          vmImage: windows-latest
+        dependsOn: WaitForValidation
+        steps:
+          - task: TerraformInstaller@1
+            displayName: "Install Terraform latest"
+            inputs:
+              terraformVersion: "latest"
+
+          - task: TerraformTaskV4@4
+            displayName: "Terraform init: $(Build.DefinitionName)"
+            inputs:
+              backendServiceArm: "Y3-CORE (c8be5642-d14b-47b4-b9ef-8080116b2ed0)"
+              backendAzureRmResourceGroupName: "y3-rg-terraform-uksouth-001"
+              backendAzureRmStorageAccountName: "y3stcoreterraformuksouth"
+              backendAzureRmContainerName: "$(Build.DefinitionName)"
+              backendAzureRmKey: "${{parameters.environment}}-app-${{variables.systemname}}.tfstate"
+
+          - task: DownloadBuildArtifacts@1
+            displayName: "Downloading pipeline artifacts"
+            inputs:
+              buildType: "current"
+              downloadType: "specific"
+              itemPattern: '**\*.tfplan'
+              downloadPath: "$(Pipeline.Workspace)"
+
+          - task: TerraformTaskV2@2
+            displayName: "Terraform: Apply"
+            inputs:
+              command: apply
+              workingDirectory: "$(System.DefaultWorkingDirectory)"
+              commandOptions: '$(Pipeline.Workspace)\drop\${{parameters.environment}}-app-${{variables.systemname}}.tfplan'
+              environmentServiceNameAzureRM: "${{variables.ServiceConnection}}"
