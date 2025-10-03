@@ -192,7 +192,7 @@ resource "random_password" "app_service_secret_amexpagero" {
 #---------------  SQL Server Module with Failover Group-----------------#
 
 
-#--------------- SQL SERVERS ---------------#
+
 
 # Generate secure passwords for each SQL server
 resource "random_password" "sql_admin_passwords" {
@@ -202,8 +202,16 @@ resource "random_password" "sql_admin_passwords" {
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
-
-# SQL Server Modules (dynamic for multiple deployments)
+data "azuread_group" "sql_admin_groups" {
+  for_each = {
+    for k, v in var.sql_servers : k => v 
+    if v.enable_azure_ad_admin && v.azure_ad_admin_group_name != null
+  }
+  
+  display_name     = each.value.azure_ad_admin_group_name
+  security_enabled = true
+}
+#--------------- SQL SERVERS (Post review with Max)-------------#
 module "sql_servers" {
   source   = "./Modules/sql_server"
   for_each = var.sql_servers
@@ -318,7 +326,12 @@ module "service_bus_amexpagero" {
   depends_on = [module.resource_groups, module.virtual_networks]
 }
 
-
+resource "azurerm_key_vault_secret" "service_bus_connection_string_amexpagero" {
+  name         = "service-bus-connection-string"
+  value        = module.service_bus_amexpagero.primary_connection_string
+  key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
+  depends_on   = [module.Key_Vaults, module.service_bus_amexpagero]
+}
 
 #--------------- App Service------#
 #App Service
@@ -346,7 +359,7 @@ module "app_service_amexpagero" {
 
   tags = merge(local.common_tags, local.extra_tags)
 
-  depends_on = [module.resource_groups, module.sql_server_amexpagero, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
+  depends_on = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
 }
 resource "time_sleep" "wait_for_app_identity" {
   depends_on      = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
@@ -393,6 +406,12 @@ resource "azurerm_key_vault_secret" "storage_account_name_amexpagero" {
   depends_on   = [module.Key_Vaults, module.storage_accounts]
 }
 
+resource "azurerm_key_vault_secret" "storage_connection_string_amexpagero" {
+  name         = "storage-connection-string"
+  value        = module.storage_accounts["sttaxuksamexpagero"].primary_connection_string
+  key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
+  depends_on   = [module.Key_Vaults, module.storage_accounts]
+}
 #--------------- OUTPUTS ---------------#
 
 output "account_id" {

@@ -207,3 +207,11 @@ variable "sql_servers" {
   description = "Map of SQL Server configurations"
   default     = {}
 }
+variable "amexpagero_resources" {
+  type = object({
+    app_service_plan_name = string
+    app_service_name      = string
+  })
+  description = "Configuration for AMEX Pagero App Service resources"
+  default     = null
+}

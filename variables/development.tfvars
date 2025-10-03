@@ -157,6 +157,11 @@ app_service_config = {
   sku_tier       = "Basic"
 }
 
+amexpagero_resources = {
+  app_service_plan_name = "asp-amexpagero-uksouth-0001"
+  app_service_name      = "app-amexpagero-uksouth-0001"
+}
+
 
 # ----------------------SERVICE BUS---------------------#
 service_bus_config = {
