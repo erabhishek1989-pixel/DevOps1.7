@@ -141,18 +141,3 @@ variable "tags" {
   type    = map(any)
   default = {}
 }
-variable "sql_failover_config" {
-  type = object({
-    enabled                                   = bool
-    secondary_location                        = string
-    secondary_resource_group                  = string
-    secondary_server_name                     = string
-    secondary_subnet_name                     = string
-    failover_group_name                       = string
-    grace_minutes                             = number
-    secondary_private_endpoint_name           = string
-    secondary_private_service_connection_name = string
-  })
-  description = "Configuration for SQL Failover Group"
-  default     = null
-}

@@ -60,7 +60,7 @@ locals {
   # Storage account mappings
   storage_subnet_mapping = {
     "sttaxukspagero"     = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-storage"]
-    "sttaxuksamexpagero" = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
+    "sttaxuksamexpagero" = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-storage"]
   }
 
   storage_keyvault_mapping = {
@@ -155,16 +155,16 @@ module "storage_accounts" {
   source   = "./modules/storage_accounts"
   for_each = var.storage_accounts
   # Basic required attributes
-  name                          = "${var.environment_identifier}${each.value.name}"
-  resource_group_name           = "${var.environment_identifier}-${each.value.resource_group_name}"
-  location                      = each.value.location
-  account_replication_type      = each.value.account_replication_type
-  account_tier                  = each.value.account_tier
-  account_kind                  = each.value.account_kind
-  is_hns_enabled                = each.value.is_hns_enabled
-  sftp_enabled                  = each.value.sftp_enabled
-  sftp_local_users              = each.value.sftp_local_users
-  private_endpoint_enabled      = each.value.private_endpoint_enabled
+  name                     = "${var.environment_identifier}${each.value.name}"
+  resource_group_name      = "${var.environment_identifier}-${each.value.resource_group_name}"
+  location                 = each.value.location
+  account_replication_type = each.value.account_replication_type
+  account_tier             = each.value.account_tier
+  account_kind             = each.value.account_kind
+  is_hns_enabled           = each.value.is_hns_enabled
+  sftp_enabled             = each.value.sftp_enabled
+  sftp_local_users         = each.value.sftp_local_users
+  private_endpoint_enabled = each.value.private_endpoint_enabled
   #private_endpoint_name         = each.value.private_endpoint_name
   public_network_access_enabled = try(each.value.public_network_access_enabled, false)
 
@@ -197,7 +197,7 @@ resource "random_password" "app_service_secret_amexpagero" {
 #--------------- SQL ---------------#
 # SQL Server Module with Failover Group
 module "sql_server_amexpagero" {
-  source = "./Modules/sql_server"  
+  source = "./Modules/sql_server"
 
   sql_server_name               = "${var.environment_identifier}-${var.amexpagero_resources.sql_server_name}"
   sql_databases                 = var.sql_databases_config
@@ -208,33 +208,33 @@ module "sql_server_amexpagero" {
   sql_version                   = var.sql_server_config.version
   minimum_tls_version           = var.sql_server_config.minimum_tls_version
   public_network_access_enabled = var.sql_server_config.public_network_access_enabled
-  
+
   azuread_administrator = {
     login_username              = "G_NL_SQL_ADMIN"
     object_id                   = data.azuread_group.sql_admin_group.object_id
     azuread_authentication_only = false
   }
-  
-  enable_private_endpoint          = true
-  private_endpoint_name            = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_endpoint_name}"
-  private_service_connection_name  = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_service_connection_name}"
-  subnet_id                        = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-privateendpoints"]  
-  private_dns_zone_ids             = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"]
-  
+
+  enable_private_endpoint         = true
+  private_endpoint_name           = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_endpoint_name}"
+  private_service_connection_name = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_service_connection_name}"
+  subnet_id                       = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-privateendpoints"]
+  private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"]
+
   # Failover Group Configuration
-  enable_failover_group                    = var.sql_failover_config != null ? var.sql_failover_config.enabled : false
-  secondary_location                       = var.sql_failover_config != null ? var.sql_failover_config.secondary_location : null
-  secondary_resource_group_name            = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_resource_group}" : null
-  secondary_server_name                    = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_server_name}" : null
-  secondary_subnet_id                      = var.sql_failover_config != null ? module.virtual_networks["vnet-tax-ukwest-0001"].subnet_id[var.sql_failover_config.secondary_subnet_name] : null  #newSubnet-Abhishek
-  secondary_private_endpoint_name          = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_private_endpoint_name}" : null
+  enable_failover_group                     = var.sql_failover_config != null ? var.sql_failover_config.enabled : false
+  secondary_location                        = var.sql_failover_config != null ? var.sql_failover_config.secondary_location : null
+  secondary_resource_group_name             = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_resource_group}" : null
+  secondary_server_name                     = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_server_name}" : null
+  secondary_subnet_id                       = var.sql_failover_config != null ? module.virtual_networks["vnet-tax-ukwest-0001"].subnet_id[var.sql_failover_config.secondary_subnet_name] : null #newSubnet-Abhishek
+  secondary_private_endpoint_name           = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_private_endpoint_name}" : null
   secondary_private_service_connection_name = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_private_service_connection_name}" : null
-  failover_group_name                      = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.failover_group_name}" : null
+  failover_group_name                       = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.failover_group_name}" : null
   failover_group_read_write_policy = var.sql_failover_config != null ? {
     mode          = "Automatic"
     grace_minutes = var.sql_failover_config.grace_minutes
   } : null
-  
+
   tags = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.virtual_networks]
@@ -257,7 +257,7 @@ module "service_bus_amexpagero" {
   enable_private_endpoint         = true
   private_endpoint_name           = "${var.environment_identifier}-pe-sb-amexpagero-uksouth"
   private_service_connection_name = "${var.environment_identifier}-psc-sb-amexpagero-uksouth"
-  subnet_id                       = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-privateendpoints"]  # CHANGED
+  subnet_id                       = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-privateendpoints"] # CHANGED
   private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"]
 
   tags = merge(local.common_tags, local.extra_tags)
@@ -286,7 +286,7 @@ module "app_service_amexpagero" {
   always_on             = false
 
   enable_vnet_integration    = true
-  vnet_integration_subnet_id = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-appservice"]  # CHANGED - uses delegated subnet
+  vnet_integration_subnet_id = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-appservice"] # CHANGED - uses delegated subnet
 
   app_settings = {
     "DATABASE_URL"           = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/sql-connection-string-primary-db/)"
@@ -310,7 +310,7 @@ resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
   scope                = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = module.app_service_amexpagero.app_service_identity_principal_id
-  depends_on           = [module.app_service_amexpagero, module.Key_Vaults, time_sleep.wait_for_app_identity]  
+  depends_on           = [module.app_service_amexpagero, module.Key_Vaults, time_sleep.wait_for_app_identity]
 }
 
 #resource "azurerm_role_assignment" "amexpagero_kv_secrets_officer" {
