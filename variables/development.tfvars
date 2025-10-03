@@ -97,55 +97,68 @@ virtual_networks = {
 }
 }
 
-# ========== AMEX PAGERO CONFIGURATION ========== #
-amexpagero_resources = {
-  sql_server_name                         = "sql-amexpagero-uksouth-0001"      # Updated as per Max's suggestion
-  sql_database_name                       = "sqldb-amexpagero-uksouth-0001"    # Updated as per Max's suggestion
-  sql_admin_username                      = "sqladmin"
-  app_service_plan_name                   = "asp-amexpagero-uksouth-0001"
-  app_service_name                        = "app-amexpagero-uksouth-0001"
-  sql_private_endpoint_name               = "dev-priv-nic-amexpagero-uksouth-0001"
-  sql_private_service_connection_name     = "dev-priv-nic-amexpagero-uksouth-0001-svc"
-}
-sql_server_config = {
-  version                      = "12.0"
-  minimum_tls_version          = "1.2"
-  public_network_access_enabled = false
-}
 
-sql_databases_config = {
-  "primary-db" = {
-    name           = "sqldb-amexpagero-uksouth-0001"
-    max_size_gb    = 32
-    sku_name       = "GP_Gen5_2"
-    zone_redundant = false
+# ----------------------SQL --------------#
+sql_servers = {
+  "amexpagero" = {
+    sql_server_name        = "sql-amexpagero-uksouth-0001"
+    resource_group_name    = "rg-tax-uksouth-amexpagero"
+    location               = "UK South"
+    sql_admin_username     = "sqladmin"
+    enable_azure_ad_admin  = true
+    azure_ad_admin_group_name = "G_NL_SQL_ADMIN" 
+    
+    sql_databases = {
+      "primary-db" = {
+        name           = "sqldb-amexpagero-uksouth-0001"
+        max_size_gb    = 32
+        sku_name       = "GP_Gen5_2"
+        zone_redundant = false
+      }
+      "secondary-db" = {
+        name           = "sqldb-amexpagero-analytics-uksouth-0001"
+        max_size_gb    = 50
+        sku_name       = "GP_Gen5_2"
+        zone_redundant = false
+      }
+    }
+    
+    # Private Endpoint Configuration
+    private_endpoint_name           = "priv-nic-amexpagero-uksouth-0001"
+    private_service_connection_name = "priv-nic-amexpagero-uksouth-0001-svc"
+    subnet_name                     = "snet-tax-uksouth-privateendpoints"
+    vnet_name                       = "vnet-tax-uksouth-0001"
+    private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"]
+    
+    # Failover Configuration
+    failover_config = {
+      enabled                                   = true
+      secondary_location                        = "UK West"
+      secondary_resource_group                  = "rg-tax-ukwest-amexpagero"
+      secondary_server_name                     = "sql-amexpagero-ukwest-0001"
+      secondary_subnet_name                     = "snet-tax-ukwest-privateendpoints"
+      secondary_vnet_name                       = "vnet-tax-ukwest-0001"
+      failover_group_name                       = "fog-amexpagero-ukwest-0001"
+      grace_minutes                             = 60
+      secondary_private_endpoint_name           = "priv-nic-amexpagero-ukwest-0001"
+      secondary_private_service_connection_name = "priv-nic-amexpagero-ukwest-0001-svc"
+    }
+    
+    # Key Vault for secrets
+    keyvault_name              = "kv-tax-uks-amexpagero"
+    store_connection_strings   = true
   }
-  "secondary-db" = {
-    name           = "sqldb-amexpagero-analytics-uksouth-0001"
-    max_size_gb    = 50
-    sku_name       = "GP_Gen5_2"
-    zone_redundant = false
-  }
 }
 
-sql_failover_config = {
-  enabled                                   = true
-  secondary_location                        = "UK West"
-  secondary_resource_group                  = "rg-tax-ukwest-amexpagero"  
-  secondary_server_name                     = "sql-amexpagero-ukwest-0001"      
-  secondary_subnet_name                     = "snet-tax-ukwest-privateendpoints"  
-  failover_group_name                       = "fog-amexpagero-ukwest-0001"      
-  grace_minutes                             = 60
-  secondary_private_endpoint_name           = "dev-priv-nic-amexpagero-ukwest-0001"
-  secondary_private_service_connection_name = "dev-priv-nic-amexpagero-ukwest-0001-svc"
-}
-
+# ----------------------APP SERVICE --------------------#
 app_service_config = {
   python_version = "3.10"
   sku_name       = "B1"
   sku_tier       = "Basic"
 }
-# Service bus 
+
+
+# ----------------------SERVICE BUS---------------------#
 service_bus_config = {
   sku                           = "Standard"
   public_network_access_enabled = true

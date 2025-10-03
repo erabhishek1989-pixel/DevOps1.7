@@ -182,11 +182,6 @@ module "storage_accounts" {
 }
 
 # Generate Secure Passwords
-resource "random_password" "sql_admin_password_amexpagero" {
-  length           = 16
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
-}
 
 resource "random_password" "app_service_secret_amexpagero" {
   length           = 32
@@ -194,52 +189,110 @@ resource "random_password" "app_service_secret_amexpagero" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-#--------------- SQL ---------------#
-# SQL Server Module with Failover Group
-module "sql_server_amexpagero" {
-  source = "./Modules/sql_server"
+#---------------  SQL Server Module with Failover Group-----------------#
 
-  sql_server_name               = "${var.environment_identifier}-${var.amexpagero_resources.sql_server_name}"
-  sql_databases                 = var.sql_databases_config
-  resource_group_name           = "${var.environment_identifier}-rg-tax-uksouth-amexpagero"
-  location                      = "UK South"
-  sql_admin_username            = var.amexpagero_resources.sql_admin_username
-  sql_admin_password            = random_password.sql_admin_password_amexpagero.result
-  sql_version                   = var.sql_server_config.version
-  minimum_tls_version           = var.sql_server_config.minimum_tls_version
-  public_network_access_enabled = var.sql_server_config.public_network_access_enabled
 
-  azuread_administrator = {
-    login_username              = "G_NL_SQL_ADMIN"
-    object_id                   = data.azuread_group.sql_admin_group.object_id
+#--------------- SQL SERVERS ---------------#
+
+# Generate secure passwords for each SQL server
+resource "random_password" "sql_admin_passwords" {
+  for_each = var.sql_servers
+  
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+# SQL Server Modules (dynamic for multiple deployments)
+module "sql_servers" {
+  source   = "./Modules/sql_server"
+  for_each = var.sql_servers
+
+  sql_server_name               = "${var.environment_identifier}-${each.value.sql_server_name}"
+  sql_databases                 = each.value.sql_databases
+  resource_group_name           = "${var.environment_identifier}-${each.value.resource_group_name}"
+  location                      = each.value.location
+  sql_admin_username            = each.value.sql_admin_username
+  sql_admin_password            = random_password.sql_admin_passwords[each.key].result
+  sql_version                   = each.value.sql_version
+  minimum_tls_version           = each.value.minimum_tls_version
+  public_network_access_enabled = each.value.public_network_access_enabled
+
+  # Azure AD Admin (conditional)
+  azuread_administrator = each.value.enable_azure_ad_admin && each.value.azure_ad_admin_group_name != null ? {
+    login_username              = each.value.azure_ad_admin_group_name
+    object_id                   = data.azuread_group.sql_admin_groups[each.key].object_id
     azuread_authentication_only = false
-  }
+  } : null
 
-  enable_private_endpoint         = true
-  private_endpoint_name           = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_endpoint_name}"
-  private_service_connection_name = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_service_connection_name}"
-  subnet_id                       = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-privateendpoints"]
-  private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"]
+  # Private Endpoint
+  enable_private_endpoint         = each.value.enable_private_endpoint
+  private_endpoint_name           = "${var.environment_identifier}-${each.value.private_endpoint_name}"
+  private_service_connection_name = "${var.environment_identifier}-${each.value.private_service_connection_name}"
+  subnet_id                       = module.virtual_networks[each.value.vnet_name].subnet_id[each.value.subnet_name]
+  private_dns_zone_ids            = each.value.private_dns_zone_ids
 
-  # Failover Group Configuration
-  enable_failover_group                     = var.sql_failover_config != null ? var.sql_failover_config.enabled : false
-  secondary_location                        = var.sql_failover_config != null ? var.sql_failover_config.secondary_location : null
-  secondary_resource_group_name             = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_resource_group}" : null
-  secondary_server_name                     = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_server_name}" : null
-  secondary_subnet_id                       = var.sql_failover_config != null ? module.virtual_networks["vnet-tax-ukwest-0001"].subnet_id[var.sql_failover_config.secondary_subnet_name] : null #newSubnet-Abhishek
-  secondary_private_endpoint_name           = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_private_endpoint_name}" : null
-  secondary_private_service_connection_name = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_private_service_connection_name}" : null
-  failover_group_name                       = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.failover_group_name}" : null
-  failover_group_read_write_policy = var.sql_failover_config != null ? {
+  # Failover Group Configuration (if enabled)
+  enable_failover_group                     = each.value.failover_config != null ? each.value.failover_config.enabled : false
+  secondary_location                        = each.value.failover_config != null ? each.value.failover_config.secondary_location : null
+  secondary_resource_group_name             = each.value.failover_config != null ? "${var.environment_identifier}-${each.value.failover_config.secondary_resource_group}" : null
+  secondary_server_name                     = each.value.failover_config != null ? "${var.environment_identifier}-${each.value.failover_config.secondary_server_name}" : null
+  secondary_subnet_id                       = each.value.failover_config != null ? module.virtual_networks[each.value.failover_config.secondary_vnet_name].subnet_id[each.value.failover_config.secondary_subnet_name] : null
+  secondary_private_endpoint_name           = each.value.failover_config != null ? "${var.environment_identifier}-${each.value.failover_config.secondary_private_endpoint_name}" : null
+  secondary_private_service_connection_name = each.value.failover_config != null ? "${var.environment_identifier}-${each.value.failover_config.secondary_private_service_connection_name}" : null
+  failover_group_name                       = each.value.failover_config != null ? "${var.environment_identifier}-${each.value.failover_config.failover_group_name}" : null
+  failover_group_read_write_policy = each.value.failover_config != null ? {
     mode          = "Automatic"
-    grace_minutes = var.sql_failover_config.grace_minutes
+    grace_minutes = each.value.failover_config.grace_minutes
   } : null
 
   tags = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.virtual_networks]
 }
-# Service Bus Module
+
+#--------------- SQL KEY VAULT SECRETS ---------------#
+
+# Store SQL connection strings in Key Vault
+resource "azurerm_key_vault_secret" "sql_connection_strings" {
+  for_each = merge([
+    for server_key, server in var.sql_servers : {
+      for db_key, db in server.sql_databases :
+      "${server_key}-${db_key}" => {
+        server_key  = server_key
+        db_key      = db_key
+        db_name     = db.name
+        keyvault_id = module.Key_Vaults[server.keyvault_name].keyvault_id
+        server_fqdn = module.sql_servers[server_key].sql_server_fqdn
+        username    = server.sql_admin_username
+        password    = random_password.sql_admin_passwords[server_key].result
+      }
+    } if server.store_connection_strings
+  ]...)
+
+  name         = "sql-connection-string-${each.value.db_key}"
+  value        = "Server=tcp:${each.value.server_fqdn},1433;Database=${each.value.db_name};User ID=${each.value.username};Password=${each.value.password};Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
+  key_vault_id = each.value.keyvault_id
+  
+  depends_on = [module.Key_Vaults, module.sql_servers]
+}
+
+# Store Failover Group listener endpoints
+resource "azurerm_key_vault_secret" "sql_failover_listeners" {
+  for_each = {
+    for k, v in var.sql_servers : k => v 
+    if v.failover_config != null && v.failover_config.enabled && v.store_connection_strings
+  }
+
+  name         = "sql-failover-listener-endpoint"
+  value        = module.sql_servers[each.key].failover_group_listener_endpoint
+  key_vault_id = module.Key_Vaults[each.value.keyvault_name].keyvault_id
+  
+  depends_on = [module.Key_Vaults, module.sql_servers]
+}
+
+#---------------Service Bus Module-----------------------#
+
 module "service_bus_amexpagero" {
   source = "./Modules/service_bus"
 
@@ -264,13 +317,8 @@ module "service_bus_amexpagero" {
 
   depends_on = [module.resource_groups, module.virtual_networks]
 }
-# Store Service Bus connection string in Key Vault
-resource "azurerm_key_vault_secret" "service_bus_connection_string_amexpagero" {
-  name         = "service-bus-connection-string"
-  value        = module.service_bus_amexpagero.primary_connection_string
-  key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  depends_on   = [module.Key_Vaults, module.service_bus_amexpagero]
-}
+
+
 
 #--------------- App Service------#
 #App Service
@@ -301,7 +349,7 @@ module "app_service_amexpagero" {
   depends_on = [module.resource_groups, module.sql_server_amexpagero, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
 }
 resource "time_sleep" "wait_for_app_identity" {
-  depends_on      = [module.app_service_amexpagero]
+  depends_on      = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
   create_duration = "20s"
 }
 #--------------- ASSIGNMENTS ---------------#
@@ -329,32 +377,8 @@ resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
 
 #--------------- AMEX PAGERO KEY VAULT SECRETS ---------------#
 
-resource "azurerm_key_vault_secret" "storage_connection_string_amexpagero" {
-  name         = "storage-connection-string"
-  value        = module.storage_accounts["sttaxuksamexpagero"].primary_connection_string #Updated Abhsihek
-  key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  depends_on   = [module.Key_Vaults, module.storage_accounts]
-}
-
-# Store SQL connection strings in Key Vault (for each database)
-resource "azurerm_key_vault_secret" "sql_connection_strings_amexpagero" {
-  for_each = var.sql_databases_config
-
-  name         = "sql-connection-string-${each.key}"
-  value        = "Server=tcp:${module.sql_server_amexpagero.sql_server_fqdn},1433;Database=${each.value.name};User ID=${var.amexpagero_resources.sql_admin_username};Password=${random_password.sql_admin_password_amexpagero.result};Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
-  key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  depends_on   = [module.Key_Vaults, module.sql_server_amexpagero]
-}
 
 # Store Failover Group listener endpoint
-resource "azurerm_key_vault_secret" "sql_failover_listener_amexpagero" {
-  count = var.sql_failover_config != null && var.sql_failover_config.enabled ? 1 : 0
-
-  name         = "sql-failover-listener-endpoint"
-  value        = module.sql_server_amexpagero.failover_group_listener_endpoint
-  key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  depends_on   = [module.Key_Vaults, module.sql_server_amexpagero]
-}
 
 resource "azurerm_key_vault_secret" "app_service_secret_amexpagero" {
   name         = "app-service-secret"
@@ -383,13 +407,9 @@ output "current_time" {
   value = time_static.time_now.rfc3339
 }
 
-data "azuread_group" "sql_admin_group" {
-  display_name     = "G_NL_SQL_ADMIN"
-  security_enabled = true
-}
 
 output "amexpagero_sql_server_fqdn" {
-  value = module.sql_server_amexpagero.sql_server_fqdn
+   value = module.sql_servers["amexpagero"].sql_server_fqdn
 }
 
 output "amexpagero_app_service_url" {
@@ -403,12 +423,18 @@ output "amexpagero_keyvault_id" {
 output "amexpagero_service_bus_endpoint" {
   value = module.service_bus_amexpagero.service_bus_endpoint
 }
-output "sql_admin_group_object_id" {
-  value       = data.azuread_group.sql_admin_group.object_id
-  description = "Object ID of G_NL_SQL_ADMIN group"
+output "sql_servers_fqdns" {
+  value = {
+    for k, v in module.sql_servers : k => v.sql_server_fqdn
+  }
+  description = "FQDNs of all SQL servers"
 }
 
-output "sql_admin_group_display_name" {
-  value       = data.azuread_group.sql_admin_group.display_name
-  description = "Display name of SQL Admin group"
+output "sql_failover_listeners" {
+  value = {
+    for k, v in module.sql_servers : k => v.failover_group_listener_endpoint
+    if var.sql_servers[k].failover_config != null && var.sql_servers[k].failover_config.enabled
+  }
+  description = "Failover group listener endpoints"
+  sensitive = false
 }

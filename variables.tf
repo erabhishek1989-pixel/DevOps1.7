@@ -120,42 +120,6 @@ variable "virtual_networks_dns_servers" {
   description = "List of DNS servers for virtual networks"
 }
 
-variable "amexpagero_resources" {
-  type = object({
-    sql_server_name                     = string
-    sql_database_name                   = string
-    sql_admin_username                  = string
-    app_service_plan_name               = string
-    app_service_name                    = string
-    sql_private_endpoint_name           = string
-    sql_private_service_connection_name = string
-  })
-  description = "Configuration for AMEX Pagero resources"
-  default     = null
-}
-
-variable "sql_server_config" {
-  type = object({
-    version                       = string
-    minimum_tls_version           = string
-    public_network_access_enabled = bool
-  })
-  description = "Configuration for SQL Server"
-  default     = null
-}
-
-variable "sql_databases_config" {
-  type = map(object({
-    name           = string
-    max_size_gb    = number
-    sku_name       = string
-    zone_redundant = bool
-  }))
-  description = "Configuration for SQL Databases"
-  default     = {}
-}
-
-
 variable "app_service_config" {
   type = object({
     python_version = string
@@ -199,18 +163,47 @@ variable "service_bus_config" {
   description = "Configuration for Service Bus"
   default     = null
 }
-variable "sql_failover_config" {
-  type = object({
-    enabled                                   = bool
-    secondary_location                        = string
-    secondary_resource_group                  = string
-    secondary_server_name                     = string
-    secondary_subnet_name                     = string
-    failover_group_name                       = string
-    grace_minutes                             = number
-    secondary_private_endpoint_name           = string
-    secondary_private_service_connection_name = string
-  })
-  description = "Configuration for SQL Failover Group"
-  default     = null
+
+variable "sql_servers" {
+  type = map(object({
+    sql_server_name                     = string
+    sql_databases                       = map(object({
+      name           = string
+      max_size_gb    = number
+      sku_name       = string
+      zone_redundant = bool
+    }))
+    resource_group_name                 = string
+    location                            = string
+    sql_admin_username                  = string
+    enable_azure_ad_admin               = bool
+    azure_ad_admin_group_name           = optional(string)
+    sql_version                         = optional(string, "12.0")
+    minimum_tls_version                 = optional(string, "1.2")
+    public_network_access_enabled       = optional(bool, false)
+    enable_private_endpoint             = optional(bool, true)
+    private_endpoint_name               = string
+    private_service_connection_name     = string
+    subnet_name                         = string
+    vnet_name                           = string
+    private_dns_zone_ids                = list(string)
+    
+    failover_config = optional(object({
+      enabled                                   = bool
+      secondary_location                        = string
+      secondary_resource_group                  = string
+      secondary_server_name                     = string
+      secondary_subnet_name                     = string
+      secondary_vnet_name                       = string
+      failover_group_name                       = string
+      grace_minutes                             = number
+      secondary_private_endpoint_name           = string
+      secondary_private_service_connection_name = string
+    }))
+    
+    keyvault_name                       = string
+    store_connection_strings            = optional(bool, true)
+  }))
+  description = "Map of SQL Server configurations"
+  default     = {}
 }
