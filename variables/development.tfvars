@@ -53,48 +53,48 @@ virtual_networks = {
       }
     }
   },
-  "vnet-tax-ukwest-0001" = {
-    name          = "d3-vnet-tax-ukwest-0001"
-    location      = "UK West"
-    address_space = ["10.2.64.0/24"]
-    peerings = {
-      "tax_ukwest_to_core_ukwest" = {
-        name        = "peer_dev_vnet_tax_ukwest_to_y3_core_networking_ukwest"
-        remote_peer = false
-      },
-      "core_ukwest_to_tax_ukwest" = {
-        name        = "peer_y3_core_networking_ukwest_to_dev_vnet_tax_ukwest"
-        remote_peer = true
-      }
+ "vnet-tax-ukwest-0001" = {
+  name          = "d3-vnet-tax-ukwest-0001"
+  location      = "UK West"
+  address_space = ["10.2.64.0/24"]
+  peerings = {
+    "tax_ukwest_to_core_ukwest" = {
+      name        = "peer_dev_vnet_tax_ukwest_to_y3_core_networking_ukwest"
+      remote_peer = false
+    },
+    "core_ukwest_to_tax_ukwest" = {
+      name        = "peer_y3_core_networking_ukwest_to_dev_vnet_tax_ukwest"
+      remote_peer = true
     }
-    subnets = {
-      "snet-tax-ukwest-storage" = {
-        name             = "d3-snet-tax-ukwest-storage"
-        address_prefixes = ["10.2.64.0/28"]
-      },
-      "snet-tax-ukwest-keyvault" = {
-        name             = "d3-snet-tax-ukwest-keyvault"
-        address_prefixes = ["10.2.64.16/28"]
-      },
-      "snet-tax-ukwest-privateendpoints" = { 
-        name             = "d3-snet-tax-ukwest-privateendpoints" 
-        address_prefixes = ["10.2.64.32/28"]
-      }
+  }
+  subnets = {
+    "snet-tax-ukwest-storage" = {
+      name             = "d3-snet-tax-ukwest-storage"
+      address_prefixes = ["10.2.64.0/28"]
+    },
+    "snet-tax-ukwest-keyvault" = {
+      name             = "d3-snet-tax-ukwest-keyvault"
+      address_prefixes = ["10.2.64.16/28"]
+    },
+    "snet-tax-ukwest-privateendpoints" = { 
+      name             = "d3-snet-tax-ukwest-privateendpoints" 
+      address_prefixes = ["10.2.64.32/28"]
     }
-    route_tables = {
-      "route-tax-ukwest" = {
-        name = "d3-route-tax-ukwest-0001"
-        routes = {
-          "default" = {
-            name                   = "default"
-            address_prefix         = "0.0.0.0/0"
-            next_hop_type          = "VirtualAppliance"
-            next_hop_in_ip_address = "10.0.0.4"
-          }
+  }
+  route_tables = {
+    "route-tax-ukwest" = {
+      name = "d3-route-tax-ukwest-0001"
+      routes = {
+        "default" = {
+          name                   = "default"
+          address_prefix         = "0.0.0.0/0"
+          next_hop_type          = "VirtualAppliance"
+          next_hop_in_ip_address = "10.0.0.4"
         }
       }
     }
   }
+}
 }
 
 # ========== AMEX PAGERO CONFIGURATION ========== #
