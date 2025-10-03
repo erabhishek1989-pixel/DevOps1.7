@@ -21,25 +21,24 @@ virtual_networks = {
       }
     }
     subnets = {
-    "snet-tax-uksouth-storage" = {
-    name             = "d3-snet-tax-uksouth-storage"
-    address_prefixes = ["10.0.64.0/28"]
-   },
-    "snet-tax-uksouth-keyvault" = {
-    name             = "d3-snet-tax-uksouth-keyvault"
-    address_prefixes = ["10.0.64.16/28"]
-   },
-    "snet-tax-uksouth-appservice" = {   
-     name             = "d3-snet-tax-uksouth-appservice"
-    address_prefixes = ["10.0.64.32/28"]
-    delegation       = ["Microsoft.Web/serverFarms"]
-  },
-    "snet-tax-uksouth-privateendpoints" = {  
-    name             = "d3-snet-tax-uksouth-privateendpoints"
-    address_prefixes = ["10.0.64.48/28"]
-    
-  }
-}
+      "snet-tax-uksouth-storage" = {
+        name             = "d3-snet-tax-uksouth-storage"
+        address_prefixes = ["10.0.64.0/28"]
+      },
+      "snet-tax-uksouth-keyvault" = {
+        name             = "d3-snet-tax-uksouth-keyvault"
+        address_prefixes = ["10.0.64.16/28"]
+      },
+      "snet-tax-uksouth-appservice" = {   
+        name             = "d3-snet-tax-uksouth-appservice"
+        address_prefixes = ["10.0.64.32/28"]
+        delegation       = ["Microsoft.Web/serverFarms"]
+      },
+      "snet-tax-uksouth-privateendpoints" = {  
+        name             = "d3-snet-tax-uksouth-privateendpoints"
+        address_prefixes = ["10.0.64.48/28"]
+      }
+    }
     route_tables = {
       "route-tax-uksouth" = {
         name = "d3-route-tax-uksouth-0001"
@@ -69,20 +68,21 @@ virtual_networks = {
       }
     }
     subnets = {
-    "snet-tax-ukwest-storage" = {
-    name             = "d3-snet-tax-ukwest-storage"
-    address_prefixes = ["10.2.64.0/28"]
-    },
-    "snet-tax-ukwest-keyvault" = {
-    name             = "d3-snet-tax-ukwest-keyvault"
-    address_prefixes = ["10.2.64.16/28"]
-    },
-    "snet-tax-ukwest-privateendpoints" = { 
-    name             = "d3-snet-tax-ukwest-privateendpoints" 
-    address_prefixes = ["10.2.64.32/28"]
+      "snet-tax-ukwest-storage" = {
+        name             = "d3-snet-tax-ukwest-storage"
+        address_prefixes = ["10.2.64.0/28"]
+      },
+      "snet-tax-ukwest-keyvault" = {
+        name             = "d3-snet-tax-ukwest-keyvault"
+        address_prefixes = ["10.2.64.16/28"]
+      },
+      "snet-tax-ukwest-privateendpoints" = { 
+        name             = "d3-snet-tax-ukwest-privateendpoints" 
+        address_prefixes = ["10.2.64.32/28"]
+      }
     }
     route_tables = {
-      "route-tax-uksouth" = {
+      "route-tax-ukwest" = {
         name = "d3-route-tax-ukwest-0001"
         routes = {
           "default" = {
