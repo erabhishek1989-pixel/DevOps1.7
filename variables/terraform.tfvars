@@ -86,7 +86,7 @@ EntraID_Groups = {
     security_enabled = true
   }
   }
-
+  
   #Need to be created once we have access on Entra ID
 # "Tax_AMEXPagero_KeyVault_Access" = {
 #   group_name       = "Tax_AMEXPagero_KeyVault_Access"
