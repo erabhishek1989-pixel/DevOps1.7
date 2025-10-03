@@ -29,12 +29,16 @@ subnets = {
     name             = "d3-snet-tax-uksouth-keyvault"
     address_prefixes = ["10.0.64.16/28"]
   },
-  "snet-tax-uksouth-amexpagero" = {
-    name             = "d3-snet-tax-uksouth-amexpagero"
+  "snet-tax-uksouth-appservice" = {   
+    name             = "d3-snet-tax-uksouth-appservice"
     address_prefixes = ["10.0.64.32/28"]
-    delegation       = ["Microsoft.Web/serverFarms"]  # For teh app service
+    delegation       = ["Microsoft.Web/serverFarms"]
+  },
+  "snet-tax-uksouth-privateendpoints" = {  
+    name             = "d3-snet-tax-uksouth-privateendpoints"
+    address_prefixes = ["10.0.64.48/28"]
+    
   }
-
 }
     route_tables = {
       "route-tax-uksouth" = {
@@ -73,7 +77,7 @@ subnets = {
     name             = "d3-snet-tax-ukwest-keyvault"
     address_prefixes = ["10.2.64.16/28"]
   },
-  "snet-tax-ukwest-amexpagero" = {  # ADD THIS
+  "snet-tax-ukwest-amexpagero" = {  
     name             = "d3-snet-tax-ukwest-amexpagero"
     address_prefixes = ["10.2.64.32/28"]
   }
@@ -128,9 +132,9 @@ sql_databases_config = {
 sql_failover_config = {
   enabled                                   = true
   secondary_location                        = "UK West"
-  secondary_resource_group                  = "rg-amexpagero-ukwest-0001"
+  secondary_resource_group                  = "rg-tax-ukwest-amexpagero"  
   secondary_server_name                     = "sql-amexpagero-ukwest-0001"      
-  secondary_subnet_name                     = "snet-tax-ukwest-amexpagero"
+  secondary_subnet_name                     = "snet-tax-ukwest-privateendpoints"  
   failover_group_name                       = "fog-amexpagero-ukwest-0001"      
   grace_minutes                             = 60
   secondary_private_endpoint_name           = "dev-priv-nic-amexpagero-ukwest-0001"

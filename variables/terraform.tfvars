@@ -67,13 +67,13 @@ keyvault_map = {
     resource_group_name = "rg-tax-uksouth-amexpagero"
     location            = "UK South"
     private_endpoint = {
-      name                  = "dev-priv-nic-amexpagero-uksouth-0001"
-      subnet_name           = "snet-tax-uksouth-amexpagero"
-      virtual_network_name  = "vnet-tax-uksouth-0001"
-      private_dns_zone_name = "privatelink.vaultcore.azure.net"
-      static_ip = null
-    }
+    name                  = "dev-priv-nic-amexpagero-uksouth-0001"
+    subnet_name           = "snet-tax-uksouth-privateendpoints"  
+    virtual_network_name  = "vnet-tax-uksouth-0001"
+    private_dns_zone_name = "privatelink.vaultcore.azure.net"
+    static_ip = null
   }
+}
 }
 
 EntraID_Groups = {

@@ -194,7 +194,7 @@ resource "random_password" "app_service_secret_amexpagero" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-# SQL Server Module
+#--------------- SQL ---------------#
 # SQL Server Module with Failover Group
 module "sql_server_amexpagero" {
   source = "./Modules/sql_server"  
@@ -218,7 +218,7 @@ module "sql_server_amexpagero" {
   enable_private_endpoint          = true
   private_endpoint_name            = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_endpoint_name}"
   private_service_connection_name  = "${var.environment_identifier}-${var.amexpagero_resources.sql_private_service_connection_name}"
-  subnet_id                        = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
+  subnet_id                        = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-privateendpoints"]  
   private_dns_zone_ids             = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net"]
   
   # Failover Group Configuration
@@ -226,7 +226,7 @@ module "sql_server_amexpagero" {
   secondary_location                       = var.sql_failover_config != null ? var.sql_failover_config.secondary_location : null
   secondary_resource_group_name            = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_resource_group}" : null
   secondary_server_name                    = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_server_name}" : null
-  secondary_subnet_id                      = var.sql_failover_config != null ? module.virtual_networks["vnet-tax-ukwest-0001"].subnet_id[var.sql_failover_config.secondary_subnet_name] : null
+  secondary_subnet_id                      = var.sql_failover_config != null ? module.virtual_networks["vnet-tax-ukwest-0001"].subnet_id[var.sql_failover_config.secondary_subnet_name] : null  #newSubnet-Abhishek
   secondary_private_endpoint_name          = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_private_endpoint_name}" : null
   secondary_private_service_connection_name = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.secondary_private_service_connection_name}" : null
   failover_group_name                      = var.sql_failover_config != null ? "${var.environment_identifier}-${var.sql_failover_config.failover_group_name}" : null
@@ -250,27 +250,20 @@ module "service_bus_amexpagero" {
   public_network_access_enabled = var.service_bus_config.public_network_access_enabled
   minimum_tls_version           = var.service_bus_config.minimum_tls_version
 
-  # Queues (optional)
-  queues = var.service_bus_config.queues
-
-  # Topics (optional)
-  topics = var.service_bus_config.topics
-
-  # Subscriptions (optional)
+  queues        = var.service_bus_config.queues
+  topics        = var.service_bus_config.topics
   subscriptions = var.service_bus_config.subscriptions
 
-  # Private endpoint
   enable_private_endpoint         = true
   private_endpoint_name           = "${var.environment_identifier}-pe-sb-amexpagero-uksouth"
   private_service_connection_name = "${var.environment_identifier}-psc-sb-amexpagero-uksouth"
-  subnet_id                       = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
+  subnet_id                       = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-privateendpoints"]  # CHANGED
   private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"]
 
   tags = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.virtual_networks]
 }
-
 # Store Service Bus connection string in Key Vault
 resource "azurerm_key_vault_secret" "service_bus_connection_string_amexpagero" {
   name         = "service-bus-connection-string"
@@ -279,7 +272,7 @@ resource "azurerm_key_vault_secret" "service_bus_connection_string_amexpagero" {
   depends_on   = [module.Key_Vaults, module.service_bus_amexpagero]
 }
 
-
+#--------------- App Service------#
 #App Service
 module "app_service_amexpagero" {
   source = "./modules/app_service"
@@ -292,31 +285,32 @@ module "app_service_amexpagero" {
   python_version        = var.app_service_config.python_version
   always_on             = false
 
-  # VNet Integration 
   enable_vnet_integration    = true
-  vnet_integration_subnet_id = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
+  vnet_integration_subnet_id = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-appservice"]  # CHANGED - uses delegated subnet
 
   app_settings = {
-    "DATABASE_URL"           = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/sql-connection-string)"
-    "APP_SECRET"             = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/app-service-secret)"
-    "STORAGE_CONNECTION"     = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/storage-connection-string)"
-    "STORAGE_ACCOUNT"        = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/storage-account-name)"
-    "SERVICE_BUS_CONNECTION" = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id}/secrets/service-bus-connection-string)"
+    "DATABASE_URL"           = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/sql-connection-string-primary-db/)"
+    "APP_SECRET"             = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/app-service-secret/)"
+    "STORAGE_CONNECTION"     = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/storage-connection-string/)"
+    "STORAGE_ACCOUNT"        = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/storage-account-name/)"
+    "SERVICE_BUS_CONNECTION" = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/service-bus-connection-string/)"
   }
-
 
   tags = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.sql_server_amexpagero, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
 }
-
+resource "time_sleep" "wait_for_app_identity" {
+  depends_on      = [module.app_service_amexpagero]
+  create_duration = "20s"
+}
 #--------------- ASSIGNMENTS ---------------#
 
 resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
   scope                = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = module.app_service_amexpagero.app_service_identity_principal_id
-  depends_on           = [module.app_service_amexpagero, module.Key_Vaults]
+  depends_on           = [module.app_service_amexpagero, module.Key_Vaults, time_sleep.wait_for_app_identity]  
 }
 
 #resource "azurerm_role_assignment" "amexpagero_kv_secrets_officer" {

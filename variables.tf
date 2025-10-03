@@ -155,21 +155,7 @@ variable "sql_databases_config" {
   default     = {}
 }
 
-variable "sql_failover_config" {
-  type = object({
-    enabled                                   = bool
-    secondary_location                        = string
-    secondary_resource_group                  = string
-    secondary_server_name                     = string
-    secondary_subnet_name                     = string
-    failover_group_name                       = string
-    grace_minutes                             = number
-    secondary_private_endpoint_name           = string
-    secondary_private_service_connection_name = string
-  })
-  description = "Configuration for SQL Failover Group"
-  default     = null
-}
+
 variable "app_service_config" {
   type = object({
     python_version = string
@@ -211,5 +197,20 @@ variable "service_bus_config" {
     }))
   })
   description = "Configuration for Service Bus"
+  default     = null
+}
+variable "sql_failover_config" {
+  type = object({
+    enabled                                   = bool
+    secondary_location                        = string
+    secondary_resource_group                  = string
+    secondary_server_name                     = string
+    secondary_subnet_name                     = string
+    failover_group_name                       = string
+    grace_minutes                             = number
+    secondary_private_endpoint_name           = string
+    secondary_private_service_connection_name = string
+  })
+  description = "Configuration for SQL Failover Group"
   default     = null
 }
