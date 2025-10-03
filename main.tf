@@ -145,7 +145,7 @@ module "Key_Vaults" {
 module "EntraID_groups" {
   source           = "./modules/EntraID_Groups"
   for_each         = var.EntraID_Groups
-  display_name     = "G_NL_AAD_APP_${var.environment}_${each.value.group_name}"
+  display_name     = each.value.group_name
   security_enabled = each.value["security_enabled"]
   subscription_id  = "/subscriptions/${var.subscription_id}"
 }
