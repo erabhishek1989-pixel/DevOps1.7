@@ -116,18 +116,16 @@ EntraID_Groups = {
     group_name       = "Tax_Pagero_Keyvault_Secrets_Officer"
     security_enabled = true
   }
-  }
   
-  #Need to be created once we have access on Entra ID
-# "Tax_AMEXPagero_KeyVault_Access" = {
-#   group_name       = "Tax_AMEXPagero_KeyVault_Access"
-#   security_enabled = true
-# }
-# "Tax_AMEXPagero_Storage_Access" = {
-#   group_name       = "Tax_AMEXPagero_Storage_Access"
-#   security_enabled = true
-#}
-#
+  "Tax_AMEXPagero_KeyVault_Access" = {
+   group_name       = "Tax_AMEXPagero_KeyVault_Access"
+   security_enabled = true
+ }
+ "Tax_AMEXPagero_Storage_Access" = {
+   group_name       = "Tax_AMEXPagero_Storage_Access"
+   security_enabled = true
+}}
+
 
 storage_accounts = {
 

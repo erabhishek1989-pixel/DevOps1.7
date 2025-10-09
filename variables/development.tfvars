@@ -153,8 +153,8 @@ sql_servers = {
 # ----------------------APP SERVICE --------------------#
 app_services = {
   "amexpagero" = {
-    app_service_plan_name = "asp-amexpagero-uksouth-0001"
-    app_service_name      = "app-amexpagero-uksouth-0001"
+    app_service_plan_name = "amexpagero-asp-uksouth-0001"
+    app_service_name      = "app-uksouth-amexpagero"
     resource_group_name   = "rg-tax-uksouth-amexpagero"
     location              = "UK South"
     sku_name              = "B1"
@@ -173,7 +173,7 @@ app_services = {
       "SERVICE_BUS_CONNECTION" = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/amexpagero-service-bus-connection-string/)"
     }
     
-    keyvault_name       = "kv-tax-uks-amexpagero"
+    keyvault_name       = "kvtaxuksamexpagero"
     sql_server_key      = "amexpagero"
     storage_account_key = "sttaxuksamexpagero"
     service_bus_key     = "amexpagero"

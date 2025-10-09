@@ -364,19 +364,19 @@ resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
   depends_on           = [module.app_service, module.Key_Vaults, time_sleep.wait_for_app_identity]
 }
 
-#resource "azurerm_role_assignment" "amexpagero_kv_secrets_officer" {
-#  scope                = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-#  role_definition_name = "Key Vault Secrets Officer"
-#  principal_id         = module.EntraID_groups["Tax_AMEXPagero_KeyVault_Access"].object_id
-#  depends_on = [module.Key_Vaults, module.EntraID_groups]
-#}
+resource "azurerm_role_assignment" "amexpagero_kv_secrets_officer" {
+  scope                = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = module.EntraID_groups["Tax_AMEXPagero_KeyVault_Access"].object_id
+  depends_on = [module.Key_Vaults, module.EntraID_groups]
+}
 
-#resource "azurerm_role_assignment" "amexpagero_storage_access" {
-#  scope                = module.storage_accounts["sttaxuksamexpagero"].id
-#  role_definition_name = "Storage Blob Data Contributor"
-#  principal_id         = module.EntraID_groups["Tax_AMEXPagero_Storage_Access"].object_id
-#  depends_on = [module.storage_accounts, module.EntraID_groups]
-#}
+resource "azurerm_role_assignment" "amexpagero_storage_access" {
+  scope                = module.storage_accounts["sttaxuksamexpagero"].id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = module.EntraID_groups["Tax_AMEXPagero_Storage_Access"].object_id
+  depends_on = [module.storage_accounts, module.EntraID_groups]
+}
 
 #--------------- AMEX PAGERO KEY VAULT SECRETS ---------------#
 
