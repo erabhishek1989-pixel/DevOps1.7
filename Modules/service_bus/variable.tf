@@ -28,7 +28,7 @@ variable "capacity" {
 variable "public_network_access_enabled" {
   type        = bool
   description = "Whether public network access is enabled"
-  default     = false
+  default     = true  # Changed to true by default
 }
 
 variable "minimum_tls_version" {
@@ -78,7 +78,7 @@ variable "subscriptions" {
 variable "enable_private_endpoint" {
   type        = bool
   description = "Enable private endpoint"
-  default     = true
+  default     = false  # Changed to false by default
 }
 
 variable "private_endpoint_name" {
@@ -110,6 +110,7 @@ variable "tags" {
   description = "Tags to apply to resources"
   default     = {}
 }
+
 variable "keyvault_id" {
   type        = string
   description = "Key Vault ID for storing connection string"

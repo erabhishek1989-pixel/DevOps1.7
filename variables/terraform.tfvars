@@ -1,6 +1,15 @@
-tenant_id = "fb973a23-5188-45ab-b4fb-277919443584"
-infrastructure_client_id = "12a25e77-8484-41ff-98c1-e58557bdf161"
+tenant_id                       = "fb973a23-5188-45ab-b4fb-277919443584"
+infrastructure_client_id        = "12a25e77-8484-41ff-98c1-e58557bdf161"
 infra_client_ent_app__object_id = "9bcf1bd1-59a7-4b70-a5a2-52931d9238d8"
+
+core_networking_tenant_id       = "fb973a23-5188-45ab-b4fb-277919443584"
+core_networking_subscription_id = "1753c763-47da-4014-991c-4b094cababda"
+
+common_tags = {
+  Application    = "Tax"
+  Owner          = "ServiceLine - Tax"
+  Classification = "Company Confidential"
+}
 
 resource_groups_map = {
   "rg-tax-uksouth-alteryx" = {
@@ -38,7 +47,6 @@ resource_groups_map = {
 }
 
 keyvault_map = {
-  #Keyvault 1
   "kv-tax-uks-alteryx" = {
     keyvault_name       = "kv-tax-uks-alteryx"
     resource_group_name = "rg-tax-uksouth-alteryx"
@@ -46,21 +54,20 @@ keyvault_map = {
     
     allowed_subnet_ids = [
       {
-        virtual_network_name = "vnet-tax-uksouth-0001"
-        subnet_name          = "snet-tax-uksouth-keyvault"
+        virtual_network_key = "vnet-tax-uksouth-0001"
+        subnet_name         = "snet-tax-uksouth-keyvault"
       }
     ]
     
     private_endpoint = {
-      name                  = "priv-nic-kv-alteryx-uksouth-0001"  # FIXED - UNIQUE NAME
-      subnet_name           = "snet-tax-uksouth-keyvault"
-      virtual_network_name  = "vnet-tax-uksouth-0001"
-      private_dns_zone_name = "privatelink.vaultcore.azure.net"
-      static_ip = null
+      name                            = "priv-nic-kv-alteryx-uksouth-0001"
+      subnet_name                     = "snet-tax-uksouth-keyvault"
+      virtual_network_key             = "vnet-tax-uksouth-0001"
+      private_service_connection_name = "priv-nic-kv-alteryx-uksouth-0001-svc"
+      static_ip                       = null
     }
   }
 
-  #Keyvault 2
   "kvtaxukspagero" = {
     keyvault_name       = "kvtaxukspagero"
     resource_group_name = "rg-tax-uksouth-pagero"
@@ -68,21 +75,20 @@ keyvault_map = {
     
     allowed_subnet_ids = [
       {
-        virtual_network_name = "vnet-tax-uksouth-0001"
-        subnet_name          = "snet-tax-uksouth-keyvault"
+        virtual_network_key = "vnet-tax-uksouth-0001"
+        subnet_name         = "snet-tax-uksouth-keyvault"
       }
     ]
     
     private_endpoint = {
-      name                  = "priv-nic-kv-pagero-uksouth-0001"  # FIXED - UNIQUE NAME
-      subnet_name           = "snet-tax-uksouth-keyvault"
-      virtual_network_name  = "vnet-tax-uksouth-0001"
-      private_dns_zone_name = "privatelink.vaultcore.azure.net"
-      static_ip = null
+      name                            = "priv-nic-kv-pagero-uksouth-0001"
+      subnet_name                     = "snet-tax-uksouth-keyvault"
+      virtual_network_key             = "vnet-tax-uksouth-0001"
+      private_service_connection_name = "priv-nic-kv-pagero-uksouth-0001-svc"
+      static_ip                       = null
     }
   }
 
-  #Keyvault 3
   "kv-tax-uks-amexpagero" = {
     keyvault_name       = "kv-tax-uks-amexpagero"
     resource_group_name = "rg-tax-uksouth-amexpagero"
@@ -90,58 +96,25 @@ keyvault_map = {
     
     allowed_subnet_ids = [
       {
-        virtual_network_name = "vnet-tax-uksouth-0001"
-        subnet_name          = "snet-tax-uksouth-keyvault"
+        virtual_network_key = "vnet-tax-uksouth-0001"
+        subnet_name         = "snet-tax-uksouth-keyvault"
       }
     ]
     
     private_endpoint = {
-      name                  = "priv-nic-kv-amexpagero-uksouth-0001"
-      subnet_name           = "snet-tax-uksouth-privateendpoints"
-      virtual_network_name  = "vnet-tax-uksouth-0001"
-      private_dns_zone_name = "privatelink.vaultcore.azure.net"
-      static_ip = null
+      name                            = "priv-nic-kv-amexpagero-uksouth-0001"
+      subnet_name                     = "snet-tax-uksouth-privateendpoints"
+      virtual_network_key             = "vnet-tax-uksouth-0001"
+      private_service_connection_name = "priv-nic-kv-amexpagero-uksouth-0001-svc"
+      static_ip                       = null
     }
   }
 }
 
-EntraID_Groups = {
-  "Tax_Pagero_StorageReader" = {
-    group_name       = "Tax_Pagero_StorageReader"
-    security_enabled = true
-    keyvault_assignments = {}
-    storage_assignments = {}
-  }
-  
-  "Tax_Pagero_Keyvault_Secrets_Officer" = {
-    group_name       = "Tax_Pagero_Keyvault_Secrets_Officer"
-    security_enabled = true
-    keyvault_assignments = {}
-    storage_assignments = {}
-  }
-  
-  "Tax_AMEXPagero_KeyVault_Access" = {
-    group_name       = "Tax_AMEXPagero_KeyVault_Access"
-    security_enabled = true
-    # These assignments will be passed from main.tf dynamically
-    keyvault_assignments = {}
-    storage_assignments = {}
-  }
-  
-  "Tax_AMEXPagero_Storage_Access" = {
-    group_name       = "Tax_AMEXPagero_Storage_Access"
-    security_enabled = true
-    keyvault_assignments = {}
-    # These assignments will be passed from main.tf dynamically
-    storage_assignments = {}
-  }
-}
-
 storage_accounts = {
-  #Number 1
   "sttaxukspagero" = {
     name                          = "sttaxukspagero"
-    resource_group_name           = "rg-tax-uksouth-pagero"
+    resource_group_key            = "rg-tax-uksouth-pagero"
     location                      = "UK South"
     account_kind                  = "StorageV2"
     account_tier                  = "Standard"
@@ -150,10 +123,10 @@ storage_accounts = {
     is_hns_enabled                = true
     sftp_enabled                  = true
     private_endpoint_enabled      = true
-        
-    virtual_network_name = "vnet-tax-uksouth-0001"
-    subnet_name          = "snet-tax-uksouth-storage"
-    keyvault_name        = "kvtaxukspagero"
+    
+    virtual_network_key = "vnet-tax-uksouth-0001"
+    subnet_name         = "snet-tax-uksouth-storage"
+    keyvault_key        = "kvtaxukspagero"
     
     sftp_local_users = {
       "accountone" = {
@@ -168,10 +141,9 @@ storage_accounts = {
     }
   }
 
-  #Number 2
   "sttaxuksamexpagero" = {
     name                          = "sttaxuksamexpagero"
-    resource_group_name           = "rg-tax-uksouth-amexpagero"
+    resource_group_key            = "rg-tax-uksouth-amexpagero"
     location                      = "UK South"
     account_kind                  = "StorageV2"
     account_tier                  = "Standard"
@@ -181,9 +153,9 @@ storage_accounts = {
     public_network_access_enabled = false
     private_endpoint_enabled      = true
     
-    virtual_network_name = "vnet-tax-uksouth-0001"
-    subnet_name          = "snet-tax-uksouth-storage"
-    keyvault_name        = "kv-tax-uks-amexpagero"
+    virtual_network_key = "vnet-tax-uksouth-0001"
+    subnet_name         = "snet-tax-uksouth-storage"
+    keyvault_key        = "kv-tax-uks-amexpagero"
     
     sftp_local_users = {}
   }

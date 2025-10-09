@@ -8,7 +8,11 @@ variable "security_enabled" {
   description = "Whether the group is security enabled"
 }
 
-variable "subscription_id" {
-  type        = string
-  description = "Subscription ID for role assignments (in format: /subscriptions/xxx)"
+variable "role_assignments" {
+  type = map(object({
+    scope     = string
+    role_name = string
+  }))
+  description = "Map of role assignments for this group"
+  default     = {}
 }

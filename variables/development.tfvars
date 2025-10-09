@@ -2,7 +2,7 @@ environment            = "Development"
 environment_identifier = "d3"
 subscription_id        = "91bb7688-5561-4ddf-b353-96ce02e64320"
 
-### NETWORKING ###
+#---------------- NETWORKING ------------------#
 virtual_networks_dns_servers = ["10.0.0.116", "172.21.112.10"]
 
 virtual_networks = {
@@ -173,7 +173,7 @@ app_services = {
       "SERVICE_BUS_CONNECTION" = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/amexpagero-service-bus-connection-string/)"
     }
     
-    keyvault_name       = "kvtaxuksamexpagero"
+    keyvault_name       = "kv-tax-uks-amexpagero"  
     sql_server_key      = "amexpagero"
     storage_account_key = "sttaxuksamexpagero"
     service_bus_key     = "amexpagero"
@@ -185,10 +185,11 @@ app_services = {
 service_buses = {
   "amexpagero" = {
     service_bus_name              = "sb-amexpagero-uksouth"
-    resource_group_name           = "rg-tax-uksouth-amexpagero"
+    resource_group_key            = "rg-tax-uksouth-amexpagero"
     location                      = "UK South"
     sku                           = "Standard"
-    public_network_access_enabled = false
+    capacity                      = 0
+    public_network_access_enabled = true  # Public access enabled
     minimum_tls_version           = "1.2"
     
     queues = {
@@ -214,13 +215,10 @@ service_buses = {
       }
     }
     
-    enable_private_endpoint         = true
-    private_endpoint_name           = "pe-sb-amexpagero-uksouth"
-    private_service_connection_name = "psc-sb-amexpagero-uksouth"
-    virtual_network_name            = "vnet-tax-uksouth-0001"
-    subnet_name                     = "snet-tax-uksouth-privateendpoints"
-    private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"]
+    # No Private Endpoint- Requesed by project team
+    enable_private_endpoint = false
     
-    keyvault_name = "kv-tax-uks-amexpagero"
+    # Optional: Store connection string in Key Vault
+    keyvault_key = "kv-tax-uks-amexpagero"
   }
 }
