@@ -153,7 +153,7 @@ sql_servers = {
 # ----------------------APP SERVICE --------------------#
 app_services = {
   "amexpagero" = {
-    app_service_plan_name = "amexpagero-asp-uksouth-0001"
+    app_service_plan_name = "plan-amexpagero-uksouth-0001"
     app_service_name      = "app-uksouth-amexpagero"
     resource_group_name   = "rg-tax-uksouth-amexpagero"
     location              = "UK South"
@@ -189,7 +189,7 @@ service_buses = {
     location                      = "UK South"
     sku                           = "Standard"
     capacity                      = 0
-    public_network_access_enabled = true  # Public access enabled
+    public_network_access_enabled = true  
     minimum_tls_version           = "1.2"
     
     queues = {
@@ -217,7 +217,6 @@ service_buses = {
     
     # No Private Endpoint- Requesed by project team
     enable_private_endpoint = false
-    
     # Optional: Store connection string in Key Vault
     keyvault_key = "kv-tax-uks-amexpagero"
   }
