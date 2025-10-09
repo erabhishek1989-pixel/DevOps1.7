@@ -44,7 +44,6 @@ keyvault_map = {
     resource_group_name = "rg-tax-uksouth-alteryx"
     location            = "UK South"
     
-    
     allowed_subnet_ids = [
       {
         virtual_network_name = "vnet-tax-uksouth-0001"
@@ -53,7 +52,7 @@ keyvault_map = {
     ]
     
     private_endpoint = {
-      name                  = "dev-priv-nic-tax-uksouth-0001"
+      name                  = "priv-nic-kv-alteryx-uksouth-0001"  # FIXED - UNIQUE NAME
       subnet_name           = "snet-tax-uksouth-keyvault"
       virtual_network_name  = "vnet-tax-uksouth-0001"
       private_dns_zone_name = "privatelink.vaultcore.azure.net"
@@ -61,12 +60,11 @@ keyvault_map = {
     }
   }
 
-   #Keyvault 2
+  #Keyvault 2
   "kvtaxukspagero" = {
     keyvault_name       = "kvtaxukspagero"
     resource_group_name = "rg-tax-uksouth-pagero"
     location            = "UK South"
-    
     
     allowed_subnet_ids = [
       {
@@ -76,19 +74,19 @@ keyvault_map = {
     ]
     
     private_endpoint = {
-      name                  = "dev-priv-nic-tax-uksouth-0001"
+      name                  = "priv-nic-kv-pagero-uksouth-0001"  # FIXED - UNIQUE NAME
       subnet_name           = "snet-tax-uksouth-keyvault"
       virtual_network_name  = "vnet-tax-uksouth-0001"
       private_dns_zone_name = "privatelink.vaultcore.azure.net"
       static_ip = null
     }
   }
-   #Keyvault 3
+
+  #Keyvault 3
   "kv-tax-uks-amexpagero" = {
     keyvault_name       = "kv-tax-uks-amexpagero"
     resource_group_name = "rg-tax-uksouth-amexpagero"
     location            = "UK South"
-    
     
     allowed_subnet_ids = [
       {
@@ -98,7 +96,7 @@ keyvault_map = {
     ]
     
     private_endpoint = {
-      name                  = "dev-priv-nic-amexpagero-uksouth-0001"
+      name                  = "priv-nic-kv-amexpagero-uksouth-0001"
       subnet_name           = "snet-tax-uksouth-privateendpoints"
       virtual_network_name  = "vnet-tax-uksouth-0001"
       private_dns_zone_name = "privatelink.vaultcore.azure.net"
@@ -111,24 +109,35 @@ EntraID_Groups = {
   "Tax_Pagero_StorageReader" = {
     group_name       = "Tax_Pagero_StorageReader"
     security_enabled = true
+    keyvault_assignments = {}
+    storage_assignments = {}
   }
+  
   "Tax_Pagero_Keyvault_Secrets_Officer" = {
     group_name       = "Tax_Pagero_Keyvault_Secrets_Officer"
     security_enabled = true
+    keyvault_assignments = {}
+    storage_assignments = {}
   }
   
   "Tax_AMEXPagero_KeyVault_Access" = {
-   group_name       = "Tax_AMEXPagero_KeyVault_Access"
-   security_enabled = true
- }
- "Tax_AMEXPagero_Storage_Access" = {
-   group_name       = "Tax_AMEXPagero_Storage_Access"
-   security_enabled = true
-}}
-
+    group_name       = "Tax_AMEXPagero_KeyVault_Access"
+    security_enabled = true
+    # These assignments will be passed from main.tf dynamically
+    keyvault_assignments = {}
+    storage_assignments = {}
+  }
+  
+  "Tax_AMEXPagero_Storage_Access" = {
+    group_name       = "Tax_AMEXPagero_Storage_Access"
+    security_enabled = true
+    keyvault_assignments = {}
+    # These assignments will be passed from main.tf dynamically
+    storage_assignments = {}
+  }
+}
 
 storage_accounts = {
-
   #Number 1
   "sttaxukspagero" = {
     name                          = "sttaxukspagero"
@@ -176,6 +185,6 @@ storage_accounts = {
     subnet_name          = "snet-tax-uksouth-storage"
     keyvault_name        = "kv-tax-uks-amexpagero"
     
-    sftp_local_users              = {}
+    sftp_local_users = {}
   }
 }

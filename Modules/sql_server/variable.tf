@@ -24,11 +24,6 @@ variable "sql_admin_username" {
   type = string
 }
 
-variable "sql_admin_password" {
-  type      = string
-  sensitive = true
-}
-
 variable "azuread_administrator" {
   type = object({
     login_username              = string
@@ -140,4 +135,15 @@ variable "failover_group_read_write_policy" {
 variable "tags" {
   type    = map(any)
   default = {}
+}
+variable "keyvault_id" {
+  type        = string
+  description = "Key Vault ID for storing secrets"
+  default     = null
+}
+
+variable "store_connection_strings" {
+  type        = bool
+  description = "Whether to store connection strings in Key Vault"
+  default     = true
 }

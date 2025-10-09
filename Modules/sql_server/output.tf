@@ -19,7 +19,7 @@ output "sql_database_names" {
 output "sql_connection_strings" {
   value = {
     for k, v in azurerm_mssql_database.sql_databases :
-    k => "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name},1433;Database=${v.name};User ID=${var.sql_admin_username};Password=${var.sql_admin_password};Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
+    k => "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name},1433;Database=${v.name};User ID=${var.sql_admin_username};Password=${random_password.sql_admin_password.result};Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
   }
   sensitive   = true
   description = "Map of SQL connection strings"
@@ -50,4 +50,11 @@ output "failover_group_listener_endpoint" {
 output "failover_group_readonly_endpoint" {
   value       = var.enable_failover_group ? "${var.failover_group_name}.secondary.database.windows.net" : null
   description = "Failover Group read-only endpoint"
+}
+
+# Password output (sensitive)
+output "sql_admin_password" {
+  value     = random_password.sql_admin_password.result
+  sensitive = true
+  description = "SQL Server admin password"
 }

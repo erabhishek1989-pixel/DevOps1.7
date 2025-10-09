@@ -110,3 +110,8 @@ variable "tags" {
   description = "Tags to apply to resources"
   default     = {}
 }
+variable "keyvault_id" {
+  type        = string
+  description = "Key Vault ID for storing connection string"
+  default     = null
+}

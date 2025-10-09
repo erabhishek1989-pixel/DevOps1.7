@@ -78,3 +78,13 @@ resource "azurerm_private_endpoint" "service_bus_private_endpoint" {
 
   tags = var.tags
 }
+# Store Service Bus connection string in Key Vault
+resource "azurerm_key_vault_secret" "service_bus_connection_string" {
+  count = var.keyvault_id != null ? 1 : 0
+
+  name         = "${var.service_bus_name}-connection-string"
+  value        = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
+  key_vault_id = var.keyvault_id
+  
+  depends_on = [azurerm_servicebus_namespace.service_bus]
+}

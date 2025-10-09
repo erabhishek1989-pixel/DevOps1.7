@@ -1,3 +1,10 @@
+
+# Generate password internally
+resource "random_password" "sql_admin_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
 # Primary SQL Server
 resource "azurerm_mssql_server" "sql_server" {
   name                          = var.sql_server_name
@@ -5,7 +12,7 @@ resource "azurerm_mssql_server" "sql_server" {
   location                      = var.location
   version                       = var.sql_version
   administrator_login           = var.sql_admin_username
-  administrator_login_password  = var.sql_admin_password
+  administrator_login_password  = random_password.sql_admin_password.result
   minimum_tls_version           = var.minimum_tls_version
   public_network_access_enabled = var.public_network_access_enabled
   
@@ -67,7 +74,7 @@ resource "azurerm_mssql_server" "sql_server_secondary" {
   location                      = var.secondary_location
   version                       = var.sql_version
   administrator_login           = var.sql_admin_username
-  administrator_login_password  = var.sql_admin_password
+  administrator_login_password  = random_password.sql_admin_password.result
   minimum_tls_version           = var.minimum_tls_version
   public_network_access_enabled = var.public_network_access_enabled
   
@@ -130,4 +137,26 @@ resource "azurerm_mssql_failover_group" "failover_group" {
     azurerm_mssql_database.sql_databases,
     azurerm_mssql_server.sql_server_secondary
   ]
+}
+
+# Store SQL connection strings in Key Vault
+resource "azurerm_key_vault_secret" "sql_connection_strings" {
+  for_each = var.store_connection_strings && var.keyvault_id != null ? var.sql_databases : {}
+
+  name         = "sql-connection-string-${each.key}"
+  value        = "Server=tcp:${azurerm_mssql_server.sql_server.fully_qualified_domain_name},1433;Database=${each.value.name};User ID=${var.sql_admin_username};Password=${random_password.sql_admin_password.result};Encrypt=true;TrustServerCertificate=false;Connection Timeout=30;"
+  key_vault_id = var.keyvault_id
+  
+  depends_on = [azurerm_mssql_database.sql_databases]
+}
+
+# Store Failover Group listener endpoint
+resource "azurerm_key_vault_secret" "sql_failover_listener" {
+  count = var.enable_failover_group && var.store_connection_strings && var.keyvault_id != null ? 1 : 0
+
+  name         = "sql-failover-listener-endpoint"
+  value        = "${var.failover_group_name}.database.windows.net"
+  key_vault_id = var.keyvault_id
+  
+  depends_on = [azurerm_mssql_failover_group.failover_group]
 }

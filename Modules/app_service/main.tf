@@ -45,3 +45,19 @@ resource "azurerm_app_service_virtual_network_swift_connection" "vnet_integratio
   app_service_id = azurerm_linux_web_app.app_service.id
   subnet_id      = var.vnet_integration_subnet_id
 }
+# Wait for managed identity propagation
+resource "time_sleep" "wait_for_identity" {
+  depends_on      = [azurerm_linux_web_app.app_service]
+  create_duration = "30s"
+}
+
+# Role assignment for Key Vault access
+resource "azurerm_role_assignment" "keyvault_secrets_user" {
+  count = var.keyvault_id != null ? 1 : 0
+
+  scope                = var.keyvault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_linux_web_app.app_service.identity[0].principal_id
+  
+  depends_on = [time_sleep.wait_for_identity]
+}

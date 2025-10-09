@@ -49,3 +49,8 @@ variable "vnet_integration_subnet_id" {
   type    = string
   default = null
 }
+variable "keyvault_id" {
+  type        = string
+  description = "Key Vault ID for role assignment"
+  default     = null
+}
