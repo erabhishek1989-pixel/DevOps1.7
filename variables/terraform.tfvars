@@ -1,3 +1,4 @@
+#---------------- ENVIRONMENT ------------------#
 tenant_id                       = "fb973a23-5188-45ab-b4fb-277919443584"
 infrastructure_client_id        = "12a25e77-8484-41ff-98c1-e58557bdf161"
 infra_client_ent_app__object_id = "9bcf1bd1-59a7-4b70-a5a2-52931d9238d8"
@@ -10,7 +11,7 @@ common_tags = {
   Owner          = "ServiceLine - Tax"
   Classification = "Company Confidential"
 }
-
+#---------------- RESOURCE GROUP ------------------#
 resource_groups_map = {
   "rg-tax-uksouth-alteryx" = {
     name     = "rg-tax-uksouth-alteryx"
@@ -45,7 +46,7 @@ resource_groups_map = {
     location = "UK West"
   }
 }
-
+#---------------- KEY VAULTS ------------------#
 keyvault_map = {
   "kv-tax-uks-alteryx" = {
     keyvault_name       = "kv-tax-uks-alteryx"
@@ -110,7 +111,7 @@ keyvault_map = {
     }
   }
 }
-
+#---------------- STORAGE ACCOUNT ------------------#
 storage_accounts = {
   "sttaxukspagero" = {
     name                          = "sttaxukspagero"
