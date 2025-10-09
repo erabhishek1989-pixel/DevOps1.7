@@ -327,13 +327,6 @@ resource "azurerm_key_vault_secret" "service_bus_connection_strings" {
   depends_on = [module.Key_Vaults, module.service_buses]
 }
 
-resource "azurerm_key_vault_secret" "service_bus_connection_string_amexpagero" {
-  name         = "service-bus-connection-string"
-  value        = module.service_bus_amexpagero.primary_connection_string
-  key_vault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  depends_on   = [module.Key_Vaults, module.service_bus_amexpagero]
-}
-
 #--------------- App Service------#
 #App Service
 module "app_services" {
@@ -358,23 +351,6 @@ module "app_services" {
   depends_on = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
 }
 
-resource "time_sleep" "wait_for_app_identities" {
-  for_each = var.app_services
-  
-  depends_on      = [module.app_services]
-  create_duration = "20s"
-}
-
-# Role assignments for App Services to access Key Vault
-resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
-  for_each = var.app_services
-
-  scope                = module.Key_Vaults[each.value.keyvault_name].keyvault_id
-  role_definition_name = "Key Vault Secrets User"
-  principal_id         = module.app_services[each.key].app_service_identity_principal_id
-  
-  depends_on = [module.app_services, module.Key_Vaults, time_sleep.wait_for_app_identities]
-}
 resource "time_sleep" "wait_for_app_identity" {
   depends_on      = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
   create_duration = "20s"
