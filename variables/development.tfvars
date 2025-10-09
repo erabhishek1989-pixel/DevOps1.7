@@ -151,47 +151,76 @@ sql_servers = {
 }
 
 # ----------------------APP SERVICE --------------------#
-app_service_config = {
-  python_version = "3.10"
-  sku_name       = "B1"
-  sku_tier       = "Basic"
-}
-
-amexpagero_resources = {
-  app_service_plan_name = "asp-amexpagero-uksouth-0001"
-  app_service_name      = "app-amexpagero-uksouth-0001"
+app_services = {
+  "amexpagero" = {
+    app_service_plan_name = "asp-amexpagero-uksouth-0001"
+    app_service_name      = "app-amexpagero-uksouth-0001"
+    resource_group_name   = "rg-tax-uksouth-amexpagero"
+    location              = "UK South"
+    sku_name              = "B1"
+    python_version        = "3.10"
+    always_on             = false
+    
+    enable_vnet_integration = true
+    virtual_network_name    = "vnet-tax-uksouth-0001"
+    subnet_name             = "snet-tax-uksouth-appservice"
+    
+    app_settings = {
+      "DATABASE_URL"           = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/sql-connection-string-primary-db/)"
+      "APP_SECRET"             = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/app-service-secret/)"
+      "STORAGE_CONNECTION"     = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/storage-connection-string/)"
+      "STORAGE_ACCOUNT"        = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/storage-account-name/)"
+      "SERVICE_BUS_CONNECTION" = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/amexpagero-service-bus-connection-string/)"
+    }
+    
+    keyvault_name       = "kv-tax-uks-amexpagero"
+    sql_server_key      = "amexpagero"
+    storage_account_key = "sttaxuksamexpagero"
+    service_bus_key     = "amexpagero"
+  }
 }
 
 
 # ----------------------SERVICE BUS---------------------#
-service_bus_config = {
-  sku                           = "Standard"
-  public_network_access_enabled = true
-  minimum_tls_version          = "1.2"
-  
-  # Define queues (example)
-  queues = {
-    "invoice-queue" = {
-      name                  = "invoice-processing"
-      max_size_in_megabytes = 1024
-      max_delivery_count    = 10
+service_buses = {
+  "amexpagero" = {
+    service_bus_name              = "sb-amexpagero-uksouth"
+    resource_group_name           = "rg-tax-uksouth-amexpagero"
+    location                      = "UK South"
+    sku                           = "Standard"
+    public_network_access_enabled = false
+    minimum_tls_version           = "1.2"
+    
+    queues = {
+      "invoice-queue" = {
+        name                  = "invoice-processing"
+        max_size_in_megabytes = 1024
+        max_delivery_count    = 10
+      }
     }
-  }
-  
-  # Define topics (example)
-  topics = {
-    "events-topic" = {
-      name                  = "amexpagero-events"
-      max_size_in_megabytes = 1024
+    
+    topics = {
+      "events-topic" = {
+        name                  = "amexpagero-events"
+        max_size_in_megabytes = 1024
+      }
     }
-  }
-  
-  # Define subscriptions (example)
-  subscriptions = {
-    "invoice-sub" = {
-      name       = "invoice-subscription"
-      topic_name = "events-topic"
-      max_delivery_count = 10
+    
+    subscriptions = {
+      "invoice-sub" = {
+        name               = "invoice-subscription"
+        topic_name         = "events-topic"
+        max_delivery_count = 10
+      }
     }
+    
+    enable_private_endpoint         = true
+    private_endpoint_name           = "pe-sb-amexpagero-uksouth"
+    private_service_connection_name = "psc-sb-amexpagero-uksouth"
+    virtual_network_name            = "vnet-tax-uksouth-0001"
+    subnet_name                     = "snet-tax-uksouth-privateendpoints"
+    private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"]
+    
+    keyvault_name = "kv-tax-uks-amexpagero"
   }
 }

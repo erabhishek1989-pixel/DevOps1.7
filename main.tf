@@ -57,17 +57,6 @@ locals {
 
   extra_tags = {}
 
-  # Storage account mappings
-  storage_subnet_mapping = {
-    "sttaxukspagero"     = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-storage"]
-    "sttaxuksamexpagero" = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-storage"]
-  }
-
-  storage_keyvault_mapping = {
-    "sttaxukspagero"     = module.Key_Vaults["kvtaxukspagero"].keyvault_id
-    "sttaxuksamexpagero" = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-  }
-
   private_dns_zone_id = data.terraform_remote_state.y3-core-networking-ci.outputs.dns-core-private-storage-blob-id
 }
 #--------------- DEPLOYMENT ---------------#
@@ -75,15 +64,14 @@ locals {
 #--------------- Resource Groups ---------------#
 
 module "resource_groups" {
-  source = "./modules/resourcegroups"
+  source = "./Modules/resourcegroups"
 
   for_each               = var.resource_groups_map
-  rgname                 = each.value.name
-  rglocation             = each.value["location"]
+  rg-name                = each.value.name
+  location               = each.value["location"]
   environment_identifier = var.environment_identifier
-  rgtags                 = merge(local.common_tags, local.extra_tags)
+  tags                   = merge(local.common_tags, local.extra_tags)
 }
-
 #--------------- Virtual Networks ---------------#
 
 module "virtual_networks" {
@@ -115,7 +103,7 @@ module "virtual_networks" {
 #--------------- Key Vaults ---------------#
 
 module "Key_Vaults" {
-  source = "./modules/keyvaults"
+  source = "./Modules/keyvaults"
 
   for_each                        = var.keyvault_map
   key_vault_name                  = each.value.keyvault_name
@@ -124,10 +112,13 @@ module "Key_Vaults" {
   location                        = each.value.location
   infra_client_ent_app__object_id = var.infra_client_ent_app__object_id
   tenant_id                       = var.tenant_id
+  
+  # Build allowed_subnet_ids dynamically from configuration
   allowed_subnet_ids = [
-    module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-keyvault"],
-    module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-amexpagero"]
+    for subnet in each.value.allowed_subnet_ids :
+    module.virtual_networks[subnet.virtual_network_name].subnet_id[subnet.subnet_name]
   ]
+  
   private_endpoint = {
     name                            = each.value.private_endpoint.name
     subnet_id                       = module.virtual_networks["${each.value.private_endpoint.virtual_network_name}"].subnet_id["${each.value.private_endpoint.subnet_name}"]
@@ -152,26 +143,25 @@ module "EntraID_groups" {
 
 #--------------- Storage Accounts ---------------#
 module "storage_accounts" {
-  source   = "./modules/storage_accounts"
+  source   = "./Modules/storage_accounts"
   for_each = var.storage_accounts
-  # Basic required attributes
-  name                     = "${var.environment_identifier}${each.value.name}"
-  resource_group_name      = "${var.environment_identifier}-${each.value.resource_group_name}"
-  location                 = each.value.location
-  account_replication_type = each.value.account_replication_type
-  account_tier             = each.value.account_tier
-  account_kind             = each.value.account_kind
-  is_hns_enabled           = each.value.is_hns_enabled
-  sftp_enabled             = each.value.sftp_enabled
-  sftp_local_users         = each.value.sftp_local_users
-  private_endpoint_enabled = each.value.private_endpoint_enabled
-  #private_endpoint_name         = each.value.private_endpoint_name
+  
+  name                          = "${var.environment_identifier}${each.value.name}"
+  resource_group_name           = "${var.environment_identifier}-${each.value.resource_group_name}"
+  location                      = each.value.location
+  account_replication_type      = each.value.account_replication_type
+  account_tier                  = each.value.account_tier
+  account_kind                  = each.value.account_kind
+  is_hns_enabled                = each.value.is_hns_enabled
+  sftp_enabled                  = each.value.sftp_enabled
+  sftp_local_users              = each.value.sftp_local_users
+  private_endpoint_enabled      = each.value.private_endpoint_enabled
   public_network_access_enabled = try(each.value.public_network_access_enabled, false)
 
-  # Explicitly set all required attributes
-  subnet_id              = local.storage_subnet_mapping[each.key]
+  
+  subnet_id              = module.virtual_networks[each.value.virtual_network_name].subnet_id[each.value.subnet_name]
   private_dns_zone_id    = local.private_dns_zone_id
-  keyvault_id            = local.storage_keyvault_mapping[each.key]
+  keyvault_id            = module.Key_Vaults[each.value.keyvault_name].keyvault_id
   environment_identifier = var.environment_identifier
 
   depends_on = [
@@ -180,8 +170,7 @@ module "storage_accounts" {
     module.resource_groups
   ]
 }
-
-# Generate Secure Passwords
+# Generating Secure Passwords
 
 resource "random_password" "app_service_secret_amexpagero" {
   length           = 32
@@ -301,29 +290,41 @@ resource "azurerm_key_vault_secret" "sql_failover_listeners" {
 
 #---------------Service Bus Module-----------------------#
 
-module "service_bus_amexpagero" {
-  source = "./Modules/service_bus"
+module "service_buses" {
+  source   = "./Modules/service_bus"
+  for_each = var.service_buses
 
-  service_bus_name              = "${var.environment_identifier}-sb-amexpagero-uksouth"
-  resource_group_name           = "${var.environment_identifier}-rg-tax-uksouth-amexpagero"
-  location                      = "UK South"
-  sku                           = var.service_bus_config.sku
-  public_network_access_enabled = var.service_bus_config.public_network_access_enabled
-  minimum_tls_version           = var.service_bus_config.minimum_tls_version
+  service_bus_name              = "${var.environment_identifier}-${each.value.service_bus_name}"
+  resource_group_name           = "${var.environment_identifier}-${each.value.resource_group_name}"
+  location                      = each.value.location
+  sku                           = each.value.sku
+  public_network_access_enabled = each.value.public_network_access_enabled
+  minimum_tls_version           = each.value.minimum_tls_version
 
-  queues        = var.service_bus_config.queues
-  topics        = var.service_bus_config.topics
-  subscriptions = var.service_bus_config.subscriptions
+  queues        = each.value.queues
+  topics        = each.value.topics
+  subscriptions = each.value.subscriptions
 
-  enable_private_endpoint         = true
-  private_endpoint_name           = "${var.environment_identifier}-pe-sb-amexpagero-uksouth"
-  private_service_connection_name = "${var.environment_identifier}-psc-sb-amexpagero-uksouth"
-  subnet_id                       = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-privateendpoints"] # CHANGED
-  private_dns_zone_ids            = ["/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"]
+  enable_private_endpoint         = each.value.enable_private_endpoint
+  private_endpoint_name           = "${var.environment_identifier}-${each.value.private_endpoint_name}"
+  private_service_connection_name = "${var.environment_identifier}-${each.value.private_service_connection_name}"
+  subnet_id                       = module.virtual_networks[each.value.virtual_network_name].subnet_id[each.value.subnet_name]
+  private_dns_zone_ids            = each.value.private_dns_zone_ids
 
   tags = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.virtual_networks]
+}
+
+# Store Service Bus connection strings in Key Vault
+resource "azurerm_key_vault_secret" "service_bus_connection_strings" {
+  for_each = var.service_buses
+
+  name         = "${each.key}-service-bus-connection-string"
+  value        = module.service_buses[each.key].primary_connection_string
+  key_vault_id = module.Key_Vaults[each.value.keyvault_name].keyvault_id
+  
+  depends_on = [module.Key_Vaults, module.service_buses]
 }
 
 resource "azurerm_key_vault_secret" "service_bus_connection_string_amexpagero" {
@@ -335,31 +336,44 @@ resource "azurerm_key_vault_secret" "service_bus_connection_string_amexpagero" {
 
 #--------------- App Service------#
 #App Service
-module "app_service_amexpagero" {
-  source = "./modules/app_service"
+module "app_services" {
+  source   = "./Modules/app_service"
+  for_each = var.app_services
 
-  app_service_plan_name = "${var.environment_identifier}-${var.amexpagero_resources.app_service_plan_name}"
-  app_service_name      = "${var.environment_identifier}-${var.amexpagero_resources.app_service_name}"
-  resource_group_name   = "${var.environment_identifier}-rg-tax-uksouth-amexpagero"
-  location              = "UK South"
-  sku_name              = var.app_service_config.sku_name
-  python_version        = var.app_service_config.python_version
-  always_on             = false
+  app_service_plan_name = "${var.environment_identifier}-${each.value.app_service_plan_name}"
+  app_service_name      = "${var.environment_identifier}-${each.value.app_service_name}"
+  resource_group_name   = "${var.environment_identifier}-${each.value.resource_group_name}"
+  location              = each.value.location
+  sku_name              = each.value.sku_name
+  python_version        = each.value.python_version
+  always_on             = each.value.always_on
 
-  enable_vnet_integration    = true
-  vnet_integration_subnet_id = module.virtual_networks["vnet-tax-uksouth-0001"].subnet_id["snet-tax-uksouth-appservice"] # CHANGED - uses delegated subnet
+  enable_vnet_integration    = each.value.enable_vnet_integration
+  vnet_integration_subnet_id = each.value.enable_vnet_integration ? module.virtual_networks[each.value.virtual_network_name].subnet_id[each.value.subnet_name] : null
 
-  app_settings = {
-    "DATABASE_URL"           = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/sql-connection-string-primary-db/)"
-    "APP_SECRET"             = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/app-service-secret/)"
-    "STORAGE_CONNECTION"     = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/storage-connection-string/)"
-    "STORAGE_ACCOUNT"        = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/storage-account-name/)"
-    "SERVICE_BUS_CONNECTION" = "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_uri}secrets/service-bus-connection-string/)"
-  }
+  app_settings = each.value.app_settings
 
   tags = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
+}
+
+resource "time_sleep" "wait_for_app_identities" {
+  for_each = var.app_services
+  
+  depends_on      = [module.app_services]
+  create_duration = "20s"
+}
+
+# Role assignments for App Services to access Key Vault
+resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
+  for_each = var.app_services
+
+  scope                = module.Key_Vaults[each.value.keyvault_name].keyvault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = module.app_services[each.key].app_service_identity_principal_id
+  
+  depends_on = [module.app_services, module.Key_Vaults, time_sleep.wait_for_app_identities]
 }
 resource "time_sleep" "wait_for_app_identity" {
   depends_on      = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]

@@ -1,14 +1,14 @@
-variable "rgname" {
+variable "rg-name" {
   description = "Name of the resource group"
   type        = string
 }
 
-variable "rglocation" {
+variable "location" {
   description = "Location of the resource group"
   type        = string
 }
 
-variable "rgtags" {
+variable "tags" {
   description = "Tags"
   type        = map(any)
 }

@@ -38,10 +38,20 @@ resource_groups_map = {
 }
 
 keyvault_map = {
+  #Keyvault 1
   "kv-tax-uks-alteryx" = {
     keyvault_name       = "kv-tax-uks-alteryx"
     resource_group_name = "rg-tax-uksouth-alteryx"
     location            = "UK South"
+    
+    
+    allowed_subnet_ids = [
+      {
+        virtual_network_name = "vnet-tax-uksouth-0001"
+        subnet_name          = "snet-tax-uksouth-keyvault"
+      }
+    ]
+    
     private_endpoint = {
       name                  = "dev-priv-nic-tax-uksouth-0001"
       subnet_name           = "snet-tax-uksouth-keyvault"
@@ -50,10 +60,21 @@ keyvault_map = {
       static_ip = null
     }
   }
+
+   #Keyvault 2
   "kvtaxukspagero" = {
     keyvault_name       = "kvtaxukspagero"
     resource_group_name = "rg-tax-uksouth-pagero"
     location            = "UK South"
+    
+    
+    allowed_subnet_ids = [
+      {
+        virtual_network_name = "vnet-tax-uksouth-0001"
+        subnet_name          = "snet-tax-uksouth-keyvault"
+      }
+    ]
+    
     private_endpoint = {
       name                  = "dev-priv-nic-tax-uksouth-0001"
       subnet_name           = "snet-tax-uksouth-keyvault"
@@ -62,18 +83,28 @@ keyvault_map = {
       static_ip = null
     }
   }
+   #Keyvault 3
   "kv-tax-uks-amexpagero" = {
     keyvault_name       = "kv-tax-uks-amexpagero"
     resource_group_name = "rg-tax-uksouth-amexpagero"
     location            = "UK South"
+    
+    
+    allowed_subnet_ids = [
+      {
+        virtual_network_name = "vnet-tax-uksouth-0001"
+        subnet_name          = "snet-tax-uksouth-keyvault"
+      }
+    ]
+    
     private_endpoint = {
-    name                  = "dev-priv-nic-amexpagero-uksouth-0001"
-    subnet_name           = "snet-tax-uksouth-privateendpoints"  
-    virtual_network_name  = "vnet-tax-uksouth-0001"
-    private_dns_zone_name = "privatelink.vaultcore.azure.net"
-    static_ip = null
+      name                  = "dev-priv-nic-amexpagero-uksouth-0001"
+      subnet_name           = "snet-tax-uksouth-privateendpoints"
+      virtual_network_name  = "vnet-tax-uksouth-0001"
+      private_dns_zone_name = "privatelink.vaultcore.azure.net"
+      static_ip = null
+    }
   }
-}
 }
 
 EntraID_Groups = {
@@ -99,6 +130,8 @@ EntraID_Groups = {
 #
 
 storage_accounts = {
+
+  #Number 1
   "sttaxukspagero" = {
     name                          = "sttaxukspagero"
     resource_group_name           = "rg-tax-uksouth-pagero"
@@ -110,6 +143,11 @@ storage_accounts = {
     is_hns_enabled                = true
     sftp_enabled                  = true
     private_endpoint_enabled      = true
+        
+    virtual_network_name = "vnet-tax-uksouth-0001"
+    subnet_name          = "snet-tax-uksouth-storage"
+    keyvault_name        = "kvtaxukspagero"
+    
     sftp_local_users = {
       "accountone" = {
         name              = "accountone"
@@ -122,17 +160,24 @@ storage_accounts = {
       }
     }
   }
+
+  #Number 2
   "sttaxuksamexpagero" = {
     name                          = "sttaxuksamexpagero"
     resource_group_name           = "rg-tax-uksouth-amexpagero"
     location                      = "UK South"
     account_kind                  = "StorageV2"
     account_tier                  = "Standard"
-    account_replication_type      = "LRS"
+    account_replication_type      = "GRS"
     is_hns_enabled                = false
     sftp_enabled                  = false
     public_network_access_enabled = false
     private_endpoint_enabled      = true
+    
+    virtual_network_name = "vnet-tax-uksouth-0001"
+    subnet_name          = "snet-tax-uksouth-storage"
+    keyvault_name        = "kv-tax-uks-amexpagero"
+    
     sftp_local_users              = {}
   }
 }

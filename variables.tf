@@ -1,3 +1,4 @@
+#---------ENVIRONMENT-----------#
 variable "environment" {
   type        = string
   description = "The environment name (Development, Staging, Production)"
@@ -36,11 +37,19 @@ variable "resource_groups_map" {
   description = "Map of resource groups to create"
 }
 
+
+#---------KEY VAULT-----------#
 variable "keyvault_map" {
   type = map(object({
     keyvault_name       = string
     resource_group_name = string
     location            = string
+    
+      allowed_subnet_ids = optional(list(object({
+      virtual_network_name = string
+      subnet_name          = string
+    })), [])
+    
     private_endpoint = object({
       name                  = string
       subnet_name           = string
@@ -67,6 +76,12 @@ variable "storage_accounts" {
     account_tier                  = optional(string)
     is_hns_enabled                = optional(bool)
     sftp_enabled                  = optional(bool)
+    
+    # Changing this to explicit rathar than map-Abhishek
+    virtual_network_name = string
+    subnet_name          = string
+    keyvault_name        = string
+    
     sftp_local_users = map(object({
       name              = optional(string)
       keyvault          = optional(string)
@@ -80,6 +95,7 @@ variable "storage_accounts" {
   description = "Map of storage accounts to create"
 }
 
+#---------ENTRA ID-----------#
 variable "EntraID_Groups" {
   type = map(object({
     group_name       = string
@@ -120,20 +136,42 @@ variable "virtual_networks_dns_servers" {
   description = "List of DNS servers for virtual networks"
 }
 
-variable "app_service_config" {
-  type = object({
-    python_version = string
-    sku_name       = string
-    sku_tier       = string
-  })
-  description = "Configuration for App Service"
-  default     = null
+
+
+variable "app_services" {
+  type = map(object({
+    app_service_plan_name = string
+    app_service_name      = string
+    resource_group_name   = string
+    location              = string
+    sku_name              = string
+    python_version        = string
+    always_on             = bool
+    
+    enable_vnet_integration = bool
+    virtual_network_name    = optional(string)
+    subnet_name             = optional(string)
+    
+    app_settings      = map(string)
+    keyvault_name     = string
+    sql_server_key    = optional(string)
+    storage_account_key = optional(string)
+    service_bus_key   = optional(string)
+  }))
+  description = "Map of App Service configurations"
+  default     = {}
 }
-variable "service_bus_config" {
-  type = object({
+
+#---------SERVICE BUS-----------#
+variable "service_buses" {
+  type = map(object({
+    service_bus_name              = string
+    resource_group_name           = string
+    location                      = string
     sku                           = string
     public_network_access_enabled = bool
     minimum_tls_version           = string
+    
     queues = map(object({
       name                                 = string
       enable_partitioning                  = optional(bool)
@@ -145,12 +183,14 @@ variable "service_bus_config" {
       lock_duration                        = optional(string)
       max_delivery_count                   = optional(number)
     }))
+    
     topics = map(object({
       name                  = string
       enable_partitioning   = optional(bool)
       max_size_in_megabytes = optional(number)
       default_message_ttl   = optional(string)
     }))
+    
     subscriptions = map(object({
       name                                 = string
       topic_name                           = string
@@ -159,11 +199,24 @@ variable "service_bus_config" {
       requires_session                     = optional(bool)
       dead_lettering_on_message_expiration = optional(bool)
     }))
-  })
-  description = "Configuration for Service Bus"
-  default     = null
+    
+    # Networking
+    enable_private_endpoint         = bool
+    private_endpoint_name           = string
+    private_service_connection_name = string
+    virtual_network_name            = string
+    subnet_name                     = string
+    private_dns_zone_ids            = list(string)
+    
+    # Key Vault for storing connection string
+    keyvault_name = string
+  }))
+  description = "Map of Service Bus configurations"
+  default     = {}
 }
 
+
+#---------SQL-----------#
 variable "sql_servers" {
   type = map(object({
     sql_server_name                     = string
@@ -206,12 +259,4 @@ variable "sql_servers" {
   }))
   description = "Map of SQL Server configurations"
   default     = {}
-}
-variable "amexpagero_resources" {
-  type = object({
-    app_service_plan_name = string
-    app_service_name      = string
-  })
-  description = "Configuration for AMEX Pagero App Service resources"
-  default     = null
 }
