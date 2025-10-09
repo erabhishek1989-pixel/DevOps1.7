@@ -348,36 +348,51 @@ module "app_services" {
 
   tags = merge(local.common_tags, local.extra_tags)
 
-  depends_on = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
+  depends_on = [
+    module.resource_groups, 
+    module.sql_servers, 
+    module.Key_Vaults, 
+    module.storage_accounts, 
+    module.virtual_networks,
+    azurerm_key_vault_secret.sql_connection_strings,  
+    azurerm_key_vault_secret.storage_connection_string_amexpagero,  
+    azurerm_key_vault_secret.service_bus_connection_strings 
+  ]
 }
 
-resource "time_sleep" "wait_for_app_identity" {
-  depends_on      = [module.resource_groups, module.sql_servers, module.Key_Vaults, module.storage_accounts, module.virtual_networks]
-  create_duration = "20s"
-}
+
 #--------------- ASSIGNMENTS ---------------#
+
+# Wait for managed identity propagation
+resource "time_sleep" "wait_for_app_identity" {
+  depends_on      = [module.app_services]  
+  create_duration = "30s"  
+}
 
 resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
   scope                = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = module.app_service.app_service_identity_principal_id
-  depends_on           = [module.app_service, module.Key_Vaults, time_sleep.wait_for_app_identity]
+  principal_id         = module.app_services["amexpagero"].app_service_identity_principal_id 
+  depends_on           = [
+    module.app_services, 
+    module.Key_Vaults, 
+    time_sleep.wait_for_app_identity 
+  ]
 }
 
 resource "azurerm_role_assignment" "amexpagero_kv_secrets_officer" {
   scope                = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
   role_definition_name = "Key Vault Secrets Officer"
   principal_id         = module.EntraID_groups["Tax_AMEXPagero_KeyVault_Access"].object_id
-  depends_on = [module.Key_Vaults, module.EntraID_groups]
+  depends_on           = [module.Key_Vaults, module.EntraID_groups]
 }
 
 resource "azurerm_role_assignment" "amexpagero_storage_access" {
   scope                = module.storage_accounts["sttaxuksamexpagero"].id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = module.EntraID_groups["Tax_AMEXPagero_Storage_Access"].object_id
-  depends_on = [module.storage_accounts, module.EntraID_groups]
+  depends_on           = [module.storage_accounts, module.EntraID_groups]
 }
-
 #--------------- AMEX PAGERO KEY VAULT SECRETS ---------------#
 
 
@@ -416,13 +431,12 @@ output "current_time" {
   value = time_static.time_now.rfc3339
 }
 
-
 output "amexpagero_sql_server_fqdn" {
-   value = module.sql_servers["amexpagero"].sql_server_fqdn
+  value = module.sql_servers["amexpagero"].sql_server_fqdn
 }
 
 output "amexpagero_app_service_url" {
-  value = module.app_service.app_service_default_hostname
+  value = module.app_services["amexpagero"].app_service_default_hostname  
 }
 
 output "amexpagero_keyvault_id" {
@@ -430,13 +444,14 @@ output "amexpagero_keyvault_id" {
 }
 
 output "amexpagero_service_bus_endpoint" {
-  value = module.service_bus.service_bus_endpoint
+  value = module.service_buses["amexpagero"].service_bus_endpoint  
 }
+
 output "sql_servers_fqdns" {
   value = {
     for k, v in module.sql_servers : k => v.sql_server_fqdn
   }
-  description = "FQDNs of all SQL servers"
+  description = "FQDNs of SQL servers"
 }
 
 output "sql_failover_listeners" {
@@ -445,5 +460,5 @@ output "sql_failover_listeners" {
     if var.sql_servers[k].failover_config != null && var.sql_servers[k].failover_config.enabled
   }
   description = "Failover group listener endpoints"
-  sensitive = false
+  sensitive   = false
 }
