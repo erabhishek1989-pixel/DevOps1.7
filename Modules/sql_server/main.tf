@@ -1,10 +1,10 @@
-
 # Generate password internally
 resource "random_password" "sql_admin_password" {
   length           = 16
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
+
 # Primary SQL Server
 resource "azurerm_mssql_server" "sql_server" {
   name                          = var.sql_server_name
@@ -86,6 +86,7 @@ resource "azurerm_mssql_server" "sql_server_secondary" {
       azuread_authentication_only = var.azuread_administrator.azuread_authentication_only
     }
   }
+  
   tags = var.tags
 }
 

@@ -100,10 +100,19 @@ variable "EntraID_Groups" {
   type = map(object({
     group_name       = string
     security_enabled = bool
+    keyvault_assignments = optional(map(object({
+      keyvault_id = string
+      role_name   = string
+    })), {})
+    storage_assignments = optional(map(object({
+      storage_id = string
+      role_name  = string
+    })), {})
   }))
-  description = "Map of Entra ID groups to create"
+  description = "Map of Entra ID groups to create with its role assignments"
 }
 
+#---------NETWORK-----------#
 variable "virtual_networks" {
   type = map(object({
     name          = string
@@ -136,7 +145,7 @@ variable "virtual_networks_dns_servers" {
   description = "List of DNS servers for virtual networks"
 }
 
-
+#---------APP SERVICE-----------#
 
 variable "app_services" {
   type = map(object({

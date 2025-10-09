@@ -34,7 +34,6 @@ provider "azurerm" {
 }
 
 data "azurerm_client_config" "current" {}
-
 data "azuread_client_config" "current" {}
 
 terraform {
@@ -42,7 +41,6 @@ terraform {
 }
 
 #--------------- CURRENT TIMESTAMP ---------------#
-
 resource "time_static" "time_now" {}
 
 #--------------- TAGS ---------------#
@@ -55,39 +53,15 @@ locals {
     LastUpdated    = time_static.time_now.rfc3339
   }
 
-  extra_tags = {}
-
-  private_dns_zone_id = data.terraform_remote_state.y3-core-networking-ci.outputs.dns-core-private-storage-blob-id
-  
-  # Dynamic EntraID Group assignments
-  entraid_groups_with_assignments = {
-    for k, v in var.EntraID_Groups : k => merge(v, {
-      # Add dynamic Key Vault assignments based on group name
-      keyvault_assignments = k == "Tax_AMEXPagero_KeyVault_Access" ? {
-        "amexpagero_kv" = {
-          keyvault_id = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
-          role_name   = "Key Vault Secrets Officer"
-        }
-      } : {}
-      
-      # Add dynamic Storage assignments based on group name
-      storage_assignments = k == "Tax_AMEXPagero_Storage_Access" ? {
-        "amexpagero_storage" = {
-          storage_id = module.storage_accounts["sttaxuksamexpagero"].id
-          role_name  = "Storage Blob Data Contributor"
-        }
-      } : {}
-    })
-  }
+  extra_tags              = {}
+  private_dns_zone_id     = data.terraform_remote_state.y3-core-networking-ci.outputs.dns-core-private-storage-blob-id
 }
 
 #--------------- DEPLOYMENT ---------------#
 
 #--------------- Resource Groups ---------------#
-
 module "resource_groups" {
-  source = "./Modules/resourcegroups"
-
+  source                 = "./Modules/resourcegroups"
   for_each               = var.resource_groups_map
   rg-name                = each.value.name
   location               = each.value["location"]
@@ -96,11 +70,9 @@ module "resource_groups" {
 }
 
 #--------------- Virtual Networks ---------------#
-
 module "virtual_networks" {
-  source   = "./modules/virtual_network"
-  for_each = var.virtual_networks
-
+  source                                  = "./modules/virtual_network"
+  for_each                                = var.virtual_networks
   name                                    = each.value.name
   location                                = each.value.location
   resource_group_name                     = each.value.location == "UK South" ? module.resource_groups["rg-tax-uksouth-network"].rg_name : module.resource_groups["rg-tax-ukwest-network"].rg_name
@@ -124,10 +96,8 @@ module "virtual_networks" {
 }
 
 #--------------- Key Vaults ---------------#
-
 module "Key_Vaults" {
-  source = "./Modules/keyvaults"
-
+  source                          = "./Modules/keyvaults"
   for_each                        = var.keyvault_map
   key_vault_name                  = each.value.keyvault_name
   rg-name                         = each.value["resource_group_name"]
@@ -154,11 +124,9 @@ module "Key_Vaults" {
 }
 
 #--------------- Storage Accounts ---------------#
-
 module "storage_accounts" {
-  source   = "./Modules/storage_accounts"
-  for_each = var.storage_accounts
-  
+  source                        = "./Modules/storage_accounts"
+  for_each                      = var.storage_accounts
   name                          = "${var.environment_identifier}${each.value.name}"
   resource_group_name           = "${var.environment_identifier}-${each.value.resource_group_name}"
   location                      = each.value.location
@@ -170,30 +138,37 @@ module "storage_accounts" {
   sftp_local_users              = each.value.sftp_local_users
   private_endpoint_enabled      = each.value.private_endpoint_enabled
   public_network_access_enabled = try(each.value.public_network_access_enabled, false)
-  
-  subnet_id              = module.virtual_networks[each.value.virtual_network_name].subnet_id[each.value.subnet_name]
-  private_dns_zone_id    = local.private_dns_zone_id
-  keyvault_id            = module.Key_Vaults[each.value.keyvault_name].keyvault_id
-  environment_identifier = var.environment_identifier
+  subnet_id                     = module.virtual_networks[each.value.virtual_network_name].subnet_id[each.value.subnet_name]
+  private_dns_zone_id           = local.private_dns_zone_id
+  keyvault_id                   = module.Key_Vaults[each.value.keyvault_name].keyvault_id
+  environment_identifier        = var.environment_identifier
 
   depends_on = [module.Key_Vaults, module.virtual_networks, module.resource_groups]
 }
 
-#--------------- Entra ID Groups (with dynamic assignments) ---------------#
-
+#--------------- Entra ID Groups ---------------#
 module "EntraID_groups" {
   source           = "./modules/EntraID_Groups"
-  for_each         = local.entraid_groups_with_assignments
-  
+  for_each         = var.EntraID_Groups
   display_name     = each.value.group_name
   security_enabled = each.value.security_enabled
   subscription_id  = "/subscriptions/${var.subscription_id}"
   
-  # Pass dynamic assignments
-  keyvault_assignments = each.value.keyvault_assignments
-  storage_assignments  = each.value.storage_assignments
+  # Pass specific resource IDs for role assignments
+  keyvault_id_for_amexpagero = each.key == "Tax_AMEXPagero_KeyVault_Access" ? module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id : null
+  storage_id_for_amexpagero  = each.key == "Tax_AMEXPagero_Storage_Access" ? module.storage_accounts["sttaxuksamexpagero"].id : null
   
   depends_on = [module.Key_Vaults, module.storage_accounts]
+}
+
+#--------------- SQL SERVERS ---------------#
+data "azuread_group" "sql_admin_groups" {
+  for_each = {
+    for k, v in var.sql_servers : k => v 
+    if v.enable_azure_ad_admin && v.azure_ad_admin_group_name != null
+  }
+  display_name     = each.value.azure_ad_admin_group_name
+  security_enabled = true
 }
 
 #--------------- SQL SERVERS ---------------#
@@ -204,7 +179,6 @@ data "azuread_group" "sql_admin_groups" {
     for k, v in var.sql_servers : k => v 
     if v.enable_azure_ad_admin && v.azure_ad_admin_group_name != null
   }
-  
   display_name     = each.value.azure_ad_admin_group_name
   security_enabled = true
 }
@@ -218,25 +192,23 @@ module "sql_servers" {
   resource_group_name           = "${var.environment_identifier}-${each.value.resource_group_name}"
   location                      = each.value.location
   sql_admin_username            = each.value.sql_admin_username
+  # NO sql_admin_password HERE!
   sql_version                   = each.value.sql_version
   minimum_tls_version           = each.value.minimum_tls_version
   public_network_access_enabled = each.value.public_network_access_enabled
 
-  # Azure AD Admin
   azuread_administrator = each.value.enable_azure_ad_admin && each.value.azure_ad_admin_group_name != null ? {
     login_username              = each.value.azure_ad_admin_group_name
     object_id                   = data.azuread_group.sql_admin_groups[each.key].object_id
     azuread_authentication_only = false
   } : null
 
-  # Private Endpoint
   enable_private_endpoint         = each.value.enable_private_endpoint
   private_endpoint_name           = "${var.environment_identifier}-${each.value.private_endpoint_name}"
   private_service_connection_name = "${var.environment_identifier}-${each.value.private_service_connection_name}"
   subnet_id                       = module.virtual_networks[each.value.vnet_name].subnet_id[each.value.subnet_name]
   private_dns_zone_ids            = each.value.private_dns_zone_ids
 
-  # Failover Group Configuration
   enable_failover_group                     = each.value.failover_config != null ? each.value.failover_config.enabled : false
   secondary_location                        = each.value.failover_config != null ? each.value.failover_config.secondary_location : null
   secondary_resource_group_name             = each.value.failover_config != null ? "${var.environment_identifier}-${each.value.failover_config.secondary_resource_group}" : null
@@ -250,7 +222,6 @@ module "sql_servers" {
     grace_minutes = each.value.failover_config.grace_minutes
   } : null
 
-  # Key Vault integration - passwords & secrets handled in module
   keyvault_id              = module.Key_Vaults[each.value.keyvault_name].keyvault_id
   store_connection_strings = each.value.store_connection_strings
 
@@ -260,59 +231,45 @@ module "sql_servers" {
 }
 
 #--------------- Service Bus ---------------#
-
 module "service_buses" {
-  source   = "./Modules/service_bus"
-  for_each = var.service_buses
-
-  service_bus_name              = "${var.environment_identifier}-${each.value.service_bus_name}"
-  resource_group_name           = "${var.environment_identifier}-${each.value.resource_group_name}"
-  location                      = each.value.location
-  sku                           = each.value.sku
-  public_network_access_enabled = each.value.public_network_access_enabled
-  minimum_tls_version           = each.value.minimum_tls_version
-
-  queues        = each.value.queues
-  topics        = each.value.topics
-  subscriptions = each.value.subscriptions
-
+  source                          = "./Modules/service_bus"
+  for_each                        = var.service_buses
+  service_bus_name                = "${var.environment_identifier}-${each.value.service_bus_name}"
+  resource_group_name             = "${var.environment_identifier}-${each.value.resource_group_name}"
+  location                        = each.value.location
+  sku                             = each.value.sku
+  public_network_access_enabled   = each.value.public_network_access_enabled
+  minimum_tls_version             = each.value.minimum_tls_version
+  queues                          = each.value.queues
+  topics                          = each.value.topics
+  subscriptions                   = each.value.subscriptions
   enable_private_endpoint         = each.value.enable_private_endpoint
   private_endpoint_name           = "${var.environment_identifier}-${each.value.private_endpoint_name}"
   private_service_connection_name = "${var.environment_identifier}-${each.value.private_service_connection_name}"
   subnet_id                       = module.virtual_networks[each.value.virtual_network_name].subnet_id[each.value.subnet_name]
   private_dns_zone_ids            = each.value.private_dns_zone_ids
-
-  # Key Vault integration - connection string stored in module
-  keyvault_id = module.Key_Vaults[each.value.keyvault_name].keyvault_id
-
-  tags = merge(local.common_tags, local.extra_tags)
+  keyvault_id                     = module.Key_Vaults[each.value.keyvault_name].keyvault_id
+  tags                            = merge(local.common_tags, local.extra_tags)
 
   depends_on = [module.resource_groups, module.virtual_networks, module.Key_Vaults]
 }
 
 #--------------- App Service ---------------#
-
 module "app_services" {
-  source   = "./Modules/app_service"
-  for_each = var.app_services
-
-  app_service_plan_name = "${var.environment_identifier}-${each.value.app_service_plan_name}"
-  app_service_name      = "${var.environment_identifier}-${each.value.app_service_name}"
-  resource_group_name   = "${var.environment_identifier}-${each.value.resource_group_name}"
-  location              = each.value.location
-  sku_name              = each.value.sku_name
-  python_version        = each.value.python_version
-  always_on             = each.value.always_on
-
+  source                     = "./Modules/app_service"
+  for_each                   = var.app_services
+  app_service_plan_name      = "${var.environment_identifier}-${each.value.app_service_plan_name}"
+  app_service_name           = "${var.environment_identifier}-${each.value.app_service_name}"
+  resource_group_name        = "${var.environment_identifier}-${each.value.resource_group_name}"
+  location                   = each.value.location
+  sku_name                   = each.value.sku_name
+  python_version             = each.value.python_version
+  always_on                  = each.value.always_on
   enable_vnet_integration    = each.value.enable_vnet_integration
   vnet_integration_subnet_id = each.value.enable_vnet_integration ? module.virtual_networks[each.value.virtual_network_name].subnet_id[each.value.subnet_name] : null
-
-  app_settings = each.value.app_settings
-
-  # Key Vault integration - identity & role assignment handled in module
-  keyvault_id = module.Key_Vaults[each.value.keyvault_name].keyvault_id
-
-  tags = merge(local.common_tags, local.extra_tags)
+  app_settings               = each.value.app_settings
+  keyvault_id                = module.Key_Vaults[each.value.keyvault_name].keyvault_id
+  tags                       = merge(local.common_tags, local.extra_tags)
 
   depends_on = [
     module.resource_groups, 
@@ -325,7 +282,6 @@ module "app_services" {
 }
 
 #--------------- OUTPUTS ---------------#
-
 output "account_id" {
   value = data.azurerm_client_config.current.client_id
 }

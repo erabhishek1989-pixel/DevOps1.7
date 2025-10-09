@@ -1,5 +1,6 @@
 variable "sql_server_name" {
-  type = string
+  type        = string
+  description = "Name of the SQL Server"
 }
 
 variable "sql_databases" {
@@ -13,15 +14,18 @@ variable "sql_databases" {
 }
 
 variable "resource_group_name" {
-  type = string
+  type        = string
+  description = "Resource group name"
 }
 
 variable "location" {
-  type = string
+  type        = string
+  description = "Azure region location"
 }
 
 variable "sql_admin_username" {
-  type = string
+  type        = string
+  description = "SQL Server administrator username"
 }
 
 variable "azuread_administrator" {
@@ -35,40 +39,48 @@ variable "azuread_administrator" {
 }
 
 variable "sql_version" {
-  type    = string
-  default = "12.0"
+  type        = string
+  description = "SQL Server version"
+  default     = "12.0"
 }
 
 variable "minimum_tls_version" {
-  type    = string
-  default = "1.2"
+  type        = string
+  description = "Minimum TLS version"
+  default     = "1.2"
 }
 
 variable "public_network_access_enabled" {
-  type    = bool
-  default = false
+  type        = bool
+  description = "Enable public network access"
+  default     = false
 }
 
 variable "enable_private_endpoint" {
-  type    = bool
-  default = true
+  type        = bool
+  description = "Enable private endpoint"
+  default     = true
 }
 
 variable "private_endpoint_name" {
-  type = string
+  type        = string
+  description = "Private endpoint name"
 }
 
 variable "private_service_connection_name" {
-  type = string
+  type        = string
+  description = "Private service connection name"
 }
 
 variable "subnet_id" {
-  type = string
+  type        = string
+  description = "Subnet ID for private endpoint"
 }
 
 variable "private_dns_zone_ids" {
-  type    = list(string)
-  default = []
+  type        = list(string)
+  description = "Private DNS zone IDs"
+  default     = []
 }
 
 # Failover Group Variables
@@ -133,9 +145,12 @@ variable "failover_group_read_write_policy" {
 }
 
 variable "tags" {
-  type    = map(any)
-  default = {}
+  type        = map(any)
+  description = "Tags to apply to resources"
+  default     = {}
 }
+
+# Key Vault integration variables
 variable "keyvault_id" {
   type        = string
   description = "Key Vault ID for storing secrets"

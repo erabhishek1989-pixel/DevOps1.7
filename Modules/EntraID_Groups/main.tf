@@ -15,20 +15,3 @@ resource "azurerm_role_assignment" "sql-firewall-rbac-tax" {
   role_definition_name = "Key Vault Secrets Officer"
   principal_id         = azuread_group.EntraID_Group.object_id
 }
-# Role assignments for Key Vault
-resource "azurerm_role_assignment" "group_keyvault_access" {
-  for_each = var.keyvault_assignments
-
-  scope                = each.value.keyvault_id
-  role_definition_name = each.value.role_name
-  principal_id         = azuread_group.EntraID_Group.object_id
-}
-
-# Role assignments for Storage
-resource "azurerm_role_assignment" "group_storage_access" {
-  for_each = var.storage_assignments
-
-  scope                = each.value.storage_id
-  role_definition_name = each.value.role_name
-  principal_id         = azuread_group.EntraID_Group.object_id
-}

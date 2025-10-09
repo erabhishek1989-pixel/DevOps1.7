@@ -1,28 +1,14 @@
 variable "display_name" {
-  type = string
+  type        = string
+  description = "Display name of the Entra ID group"
 }
 
 variable "security_enabled" {
-  type = bool
+  type        = bool
+  description = "Whether the group is security enabled"
 }
 
 variable "subscription_id" {
-  type = string
-}
-variable "keyvault_assignments" {
-  type = map(object({
-    keyvault_id = string
-    role_name   = string
-  }))
-  description = "Map of Key Vault role assignments for this group"
-  default     = {}
-}
-
-variable "storage_assignments" {
-  type = map(object({
-    storage_id = string
-    role_name  = string
-  }))
-  description = "Map of Storage role assignments for this group"
-  default     = {}
+  type        = string
+  description = "Subscription ID for role assignments (in format: /subscriptions/xxx)"
 }

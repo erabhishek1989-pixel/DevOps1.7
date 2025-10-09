@@ -1,18 +1,20 @@
 output "sql_server_id" {
-  value = azurerm_mssql_server.sql_server.id
+  value       = azurerm_mssql_server.sql_server.id
+  description = "SQL Server ID"
 }
 
 output "sql_server_fqdn" {
-  value = azurerm_mssql_server.sql_server.fully_qualified_domain_name
+  value       = azurerm_mssql_server.sql_server.fully_qualified_domain_name
+  description = "SQL Server FQDN"
 }
 
 output "sql_database_ids" {
-  value = { for k, v in azurerm_mssql_database.sql_databases : k => v.id }
+  value       = { for k, v in azurerm_mssql_database.sql_databases : k => v.id }
   description = "Map of database IDs"
 }
 
 output "sql_database_names" {
-  value = { for k, v in azurerm_mssql_database.sql_databases : k => v.name }
+  value       = { for k, v in azurerm_mssql_database.sql_databases : k => v.name }
   description = "Map of database names"
 }
 
@@ -54,7 +56,7 @@ output "failover_group_readonly_endpoint" {
 
 # Password output (sensitive)
 output "sql_admin_password" {
-  value     = random_password.sql_admin_password.result
-  sensitive = true
+  value       = random_password.sql_admin_password.result
+  sensitive   = true
   description = "SQL Server admin password"
 }
