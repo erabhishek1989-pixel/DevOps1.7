@@ -360,8 +360,8 @@ resource "time_sleep" "wait_for_app_identity" {
 resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
   scope                = module.Key_Vaults["kv-tax-uks-amexpagero"].keyvault_id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = module.app_service_amexpagero.app_service_identity_principal_id
-  depends_on           = [module.app_service_amexpagero, module.Key_Vaults, time_sleep.wait_for_app_identity]
+  principal_id         = module.app_service.app_service_identity_principal_id
+  depends_on           = [module.app_service, module.Key_Vaults, time_sleep.wait_for_app_identity]
 }
 
 #resource "azurerm_role_assignment" "amexpagero_kv_secrets_officer" {
@@ -422,7 +422,7 @@ output "amexpagero_sql_server_fqdn" {
 }
 
 output "amexpagero_app_service_url" {
-  value = module.app_service_amexpagero.app_service_default_hostname
+  value = module.app_service.app_service_default_hostname
 }
 
 output "amexpagero_keyvault_id" {
@@ -430,7 +430,7 @@ output "amexpagero_keyvault_id" {
 }
 
 output "amexpagero_service_bus_endpoint" {
-  value = module.service_bus_amexpagero.service_bus_endpoint
+  value = module.service_bus.service_bus_endpoint
 }
 output "sql_servers_fqdns" {
   value = {
