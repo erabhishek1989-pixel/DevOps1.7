@@ -151,35 +151,39 @@ sql_servers = {
 }
 
 # ----------------------APP SERVICE --------------------#
+
 app_services = {
   "amexpagero" = {
     app_service_plan_name = "plan-amexpagero-uksouth-0001"
     app_service_name      = "app-uksouth-amexpagero"
-    resource_group_name   = "rg-tax-uksouth-amexpagero"
+    resource_group_key    = "rg-tax-uksouth-amexpagero"
     location              = "UK South"
     sku_name              = "B1"
     python_version        = "3.10"
     always_on             = false
     
     enable_vnet_integration = true
-    virtual_network_name    = "vnet-tax-uksouth-0001"
+    virtual_network_key     = "vnet-tax-uksouth-0001"
     subnet_name             = "snet-tax-uksouth-appservice"
     
-    app_settings = {
-      "DATABASE_URL"           = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/sql-connection-string-primary-db/)"
-      "APP_SECRET"             = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/app-service-secret/)"
-      "STORAGE_CONNECTION"     = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/storage-connection-string/)"
-      "STORAGE_ACCOUNT"        = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/storage-account-name/)"
-      "SERVICE_BUS_CONNECTION" = "@Microsoft.KeyVault(SecretUri=https://d3-kv-tax-uks-amexpagero.vault.azure.net/secrets/amexpagero-service-bus-connection-string/)"
+  
+    keyvault_secrets = {
+      "DATABASE_URL"           = "sql-connection-string-primary-db"
+      "APP_SECRET"             = "app-service-secret"
+      "STORAGE_CONNECTION"     = "storage-connection-string"
+      "STORAGE_ACCOUNT"        = "storage-account-name"
+      "SERVICE_BUS_CONNECTION" = "d3-sb-amexpagero-uksouth-connection-string"
     }
     
-    keyvault_name       = "kv-tax-uks-amexpagero"  
-    sql_server_key      = "amexpagero"
-    storage_account_key = "sttaxuksamexpagero"
-    service_bus_key     = "amexpagero"
+    # Static app settings 
+    static_app_settings = {
+      "PYTHON_VERSION" = "3.10"
+      "ENVIRONMENT"    = "Development"
+    }
+    
+    keyvault_key = "kv-tax-uks-amexpagero"
   }
 }
-
 
 # ----------------------SERVICE BUS---------------------#
 service_buses = {

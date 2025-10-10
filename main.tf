@@ -253,9 +253,19 @@ module "app_services" {
   always_on                  = each.value.always_on
   enable_vnet_integration    = each.value.enable_vnet_integration
   vnet_integration_subnet_id = each.value.enable_vnet_integration ? module.virtual_networks[each.value.virtual_network_key].subnet_id[each.value.subnet_name] : null
-  app_settings               = each.value.app_settings
-  keyvault_id                = module.Key_Vaults[each.value.keyvault_key].keyvault_id
-  tags                       = local.common_tags
+  
+  app_settings = merge(
+    # Key Vault references - built dynamically
+    {
+      for key, secret_name in each.value.keyvault_secrets :
+      key => "@Microsoft.KeyVault(SecretUri=${module.Key_Vaults[each.value.keyvault_key].keyvault_uri}secrets/${secret_name}/)"
+    },
+    # Static settings 
+    each.value.static_app_settings
+  )
+  
+  keyvault_id = module.Key_Vaults[each.value.keyvault_key].keyvault_id
+  tags        = local.common_tags
 
   depends_on = [
     module.resource_groups, 

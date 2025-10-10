@@ -170,8 +170,12 @@ variable "app_services" {
     enable_vnet_integration = bool
     virtual_network_key     = optional(string)
     subnet_name             = optional(string)
-    app_settings            = map(string)
-    keyvault_key            = string
+    
+ 
+    keyvault_secrets      = optional(map(string), {})  # Map of setting_name, changed as per the feedback
+    static_app_settings   = optional(map(string), {})  # Map of static settings
+    
+    keyvault_key = string
   }))
   description = "Map of App Service configurations"
   default     = {}
