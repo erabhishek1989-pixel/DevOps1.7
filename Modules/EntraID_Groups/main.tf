@@ -1,5 +1,5 @@
 resource "azuread_group" "EntraID_Group" {
-  display_name            = var.display_name
+  display_name            = "G_NL_AAD_APP_${var.environment}_${var.display_name}"
   security_enabled        = var.security_enabled
   prevent_duplicate_names = true
 }
