@@ -41,7 +41,7 @@ resource_groups_map = {
     name     = "rg-tax-uksouth-pageroapi"
     location = "UK South"
   }
-  " rg-tax-ukwest-pageroapi" = {
+  "rg-tax-ukwest-pageroapi" = {
     name     = "rg-tax-ukwest-pageroapi"
     location = "UK West"
   }
@@ -147,7 +147,7 @@ keyvault_map = {
     
     private_endpoint = {
       name                            = "priv-nic-kv-tax-pageroapi-uksouth-0001"
-      subnet_name                     = "snet-tax-uksouth-privateendpoints"
+      subnet_name                     = "snet-tax-uksouth-keyvault"
       virtual_network_key             = "vnet-tax-uksouth-0001"
       private_service_connection_name = "priv-nic-kv-tax-pageroapi-uksouth-0001-svc"
       static_ip                       = null
