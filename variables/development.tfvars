@@ -153,7 +153,7 @@ sql_servers = {
     }
     
     # Key Vault for secrets
-    keyvault_key             = "kv-tax-uks-amexpagero"  
+    keyvault_key             = "kv-tax-pageroapi-uks"  
     store_connection_strings = true
   }
 }
@@ -189,7 +189,7 @@ app_services = {
       "ENVIRONMENT"    = "Development"
     }
     
-    keyvault_key = "kv-tax-uks-amexpagero"
+    keyvault_key = "kv-tax-pageroapi-uks"
   }
 }
 
@@ -230,6 +230,6 @@ service_buses = {
     # No Private Endpoint- Requesed by project team
     enable_private_endpoint = false
     # Optional: Store connection string in Key Vault
-    keyvault_key = "kv-tax-uks-amexpagero"
+    keyvault_key = "kv-tax-pageroapi-uks"
   }
 }
