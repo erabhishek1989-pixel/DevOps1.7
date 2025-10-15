@@ -16,3 +16,7 @@ variable "role_assignments" {
   description = "Map of role assignments for this group"
   default     = {}
 }
+variable "environment" {  
+  type        = string
+  description = "Environment name Development, Staging or Production"
+}
