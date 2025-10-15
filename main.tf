@@ -25,7 +25,10 @@ provider "azurerm" {
   subscription_id = var.subscription_id
   features {}
 }
-
+provider "azuread" {
+  tenant_id = var.tenant_id
+  use_cli   = true
+}
 provider "azurerm" {
   alias           = "y3-core-networking"
   tenant_id       = var.core_networking_tenant_id
@@ -150,7 +153,7 @@ module "EntraID_groups" {
   display_name     = each.value.group_name
   security_enabled = each.value.security_enabled
   role_assignments = each.value.role_assignments
-  
+  environment      = var.environment
   depends_on = [module.Key_Vaults, module.storage_accounts]
 }
 
