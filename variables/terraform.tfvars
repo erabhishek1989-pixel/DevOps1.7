@@ -73,7 +73,7 @@ EntraID_Groups = {
     security_enabled = true
     role_assignments = {
       "amexpagero-kv-secrets" = {
-        scope     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-amexpagero/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-amexpagero"
+        scope     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pageroapi/providers/Microsoft.KeyVault/vaults/d3-kv-tax-pageroapi-uks"
         role_name = "Key Vault Secrets User"
       }
     }
@@ -83,7 +83,7 @@ EntraID_Groups = {
     security_enabled = true
     role_assignments = {
       "amexpagero-storage-reader" = {
-        scope     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-amexpagero/providers/Microsoft.Storage/storageAccounts/d3sttaxuksamexpagero"
+        scope     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pageroapi/providers/Microsoft.Storage/storageAccounts/d3sttaxpageroapiuks"
         role_name = "Storage Blob Data Reader"
       }
     }
@@ -135,7 +135,7 @@ keyvault_map = {
 
   "kv-tax-pageroapi-uks" = {
     keyvault_name       = "kv-tax-pageroapi-uks"
-    resource_group_name = "rg-tax-uksouth-amexpagero"
+    resource_group_name = "rg-tax-uksouth-pageroapi"
     location            = "UK South"
     
     allowed_subnet_ids = [
@@ -187,7 +187,7 @@ storage_accounts = {
 
   "sttaxpageroapiuks" = {
     name                          = "sttaxpageroapiuks"
-    resource_group_key            = "rg-tax-uksouth-amexpagero"
+    resource_group_key            = "rg-tax-uksouth-pageroapi"
     location                      = "UK South"
     account_kind                  = "StorageV2"
     account_tier                  = "Standard"
@@ -199,7 +199,7 @@ storage_accounts = {
     
     virtual_network_key = "vnet-tax-uksouth-0001"
     subnet_name         = "snet-tax-uksouth-storage"
-    keyvault_key        = "kv-tax-uks-amexpagero"
+    keyvault_key        = "kv-tax-pageroapi-uks"
     
     sftp_local_users = {}
   }
