@@ -1,0 +1,1573 @@
+2025-10-15T17:57:50.3289902Z ##[section]Starting: Terraform plan: azure-app-tax
+2025-10-15T17:57:50.3299768Z ==============================================================================
+2025-10-15T17:57:50.3299970Z Task         : Terraform
+2025-10-15T17:57:50.3300066Z Description  : Execute terraform commands to manage resources on AzureRM, Amazon Web Services(AWS), Google Cloud Platform(GCP) and Oracle Cloud Infrastructure(OCI). v4.241.11
+2025-10-15T17:57:50.3300387Z Version      : 4.241.36
+2025-10-15T17:57:50.3300484Z Author       : Microsoft Corporation
+2025-10-15T17:57:50.3300600Z Help         : [Learn more about this task](https://aka.ms/devlabs/ado/tf/task/v4)
+2025-10-15T17:57:50.3300744Z ==============================================================================
+2025-10-15T17:57:50.7020412Z [command]C:\hostedtoolcache\windows\terraform\1.13.4\x64\terraform.exe providers
+2025-10-15T17:57:51.7281929Z 
+2025-10-15T17:57:51.7287089Z Providers required by configuration:
+2025-10-15T17:57:51.7287776Z .
+2025-10-15T17:57:51.7289240Z ├── provider[registry.terraform.io/hashicorp/random] ~> 3.6.1
+2025-10-15T17:57:51.7290087Z ├── provider[registry.terraform.io/hashicorp/azurerm] ~> 4.5.0
+2025-10-15T17:57:51.7290800Z ├── provider[terraform.io/builtin/terraform]
+2025-10-15T17:57:51.7291558Z ├── provider[registry.terraform.io/hashicorp/azuread] ~> 3.0.0
+2025-10-15T17:57:51.7292237Z ├── provider[registry.terraform.io/hashicorp/time] ~> 0.11.1
+2025-10-15T17:57:51.7292860Z ├── module.resource_groups
+2025-10-15T17:57:51.7293422Z │   └── provider[registry.terraform.io/hashicorp/azurerm]
+2025-10-15T17:57:51.7293966Z ├── module.service_buses
+2025-10-15T17:57:51.7294591Z │   └── provider[registry.terraform.io/hashicorp/azurerm]
+2025-10-15T17:57:51.7295153Z ├── module.sql_servers
+2025-10-15T17:57:51.7295699Z │   ├── provider[registry.terraform.io/hashicorp/azurerm]
+2025-10-15T17:57:51.7296332Z │   └── provider[registry.terraform.io/hashicorp/random]
+2025-10-15T17:57:51.7296869Z ├── module.storage_accounts
+2025-10-15T17:57:51.7297429Z │   └── provider[registry.terraform.io/hashicorp/azurerm]
+2025-10-15T17:57:51.7299004Z ├── module.virtual_networks
+2025-10-15T17:57:51.7299656Z │   └── provider[registry.terraform.io/hashicorp/azurerm] ~> 4.0
+2025-10-15T17:57:51.7300190Z ├── module.EntraID_groups
+2025-10-15T17:57:51.7301135Z │   ├── provider[registry.terraform.io/hashicorp/azurerm]
+2025-10-15T17:57:51.7301757Z │   └── provider[registry.terraform.io/hashicorp/azuread]
+2025-10-15T17:57:51.7302370Z ├── module.Key_Vaults
+2025-10-15T17:57:51.7302911Z │   └── provider[registry.terraform.io/hashicorp/azurerm]
+2025-10-15T17:57:51.7303426Z └── module.app_services
+2025-10-15T17:57:51.7303964Z     ├── provider[registry.terraform.io/hashicorp/azurerm]
+2025-10-15T17:57:51.7304573Z     └── provider[registry.terraform.io/hashicorp/time]
+2025-10-15T17:57:51.7304847Z 
+2025-10-15T17:57:51.7305284Z Providers required by state:
+2025-10-15T17:57:51.7305609Z 
+2025-10-15T17:57:51.7368066Z     provider[registry.terraform.io/hashicorp/azuread]
+2025-10-15T17:57:51.7389787Z 
+2025-10-15T17:57:51.7504872Z     provider[registry.terraform.io/hashicorp/azurerm]
+2025-10-15T17:57:51.7507006Z 
+2025-10-15T17:57:51.7508046Z     provider[registry.terraform.io/hashicorp/time]
+2025-10-15T17:57:51.7508890Z 
+2025-10-15T17:57:51.7509530Z     provider[terraform.io/builtin/terraform]
+2025-10-15T17:57:51.7510238Z 
+2025-10-15T17:57:51.7672583Z [command]C:\hostedtoolcache\windows\terraform\1.13.4\x64\terraform.exe plan -var-file=./variables/terraform.tfvars -var-file=./variables/development.tfvars -out=D:\a\1\a/development-app-tax.tfplan -detailed-exitcode
+2025-10-15T17:57:55.2431000Z [0m[1mdata.terraform_remote_state.core-monitoring: Reading...[0m[0m
+2025-10-15T17:57:55.2527921Z [0m[1mdata.terraform_remote_state.y3-core-networking-ci: Reading...[0m[0m
+2025-10-15T17:57:55.2571562Z [0m[1mtime_static.time_now: Refreshing state... [id=2025-02-20T14:39:27Z][0m
+2025-10-15T17:57:55.4621291Z [0m[1mdata.azuread_client_config.current: Reading...[0m[0m
+2025-10-15T17:57:55.4636429Z [0m[1mdata.azuread_client_config.current: Read complete after 0s [id=fb973a23-5188-45ab-b4fb-277919443584-***-19ca4413-f971-4e4d-b9f3-796b218d50fc][0m
+2025-10-15T17:57:55.4640371Z [0m[1mdata.azuread_group.sql_admin_groups["amexpagero"]: Reading...[0m[0m
+2025-10-15T17:57:55.9123291Z [0m[1mdata.terraform_remote_state.core-monitoring: Read complete after 1s[0m
+2025-10-15T17:57:55.9276723Z [0m[1mdata.azuread_group.sql_admin_groups["amexpagero"]: Read complete after 1s [id=/groups/3ae61915-f566-42fa-af82-e63f8533310e][0m
+2025-10-15T17:57:55.9648307Z [0m[1mdata.terraform_remote_state.y3-core-networking-ci: Read complete after 1s[0m
+2025-10-15T17:57:59.5553713Z [0m[1mdata.azurerm_resource_group.rg-core-networking-ukwest-0001: Reading...[0m[0m
+2025-10-15T17:57:59.5560541Z [0m[1mdata.azurerm_resource_group.rg-core-networking-uksouth-0001: Reading...[0m[0m
+2025-10-15T17:57:59.6884145Z [0m[1mdata.azurerm_resource_group.rg-core-networking-uksouth-0001: Read complete after 0s [id=/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001][0m
+2025-10-15T17:57:59.6899793Z [0m[1mdata.azurerm_virtual_network.vnet-core-uksouth-0001: Reading...[0m[0m
+2025-10-15T17:57:59.7115507Z [0m[1mdata.azurerm_resource_group.rg-core-networking-ukwest-0001: Read complete after 0s [id=/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-ukwest-0001][0m
+2025-10-15T17:57:59.7128592Z [0m[1mdata.azurerm_virtual_network.vnet-core-ukwest-0001: Reading...[0m[0m
+2025-10-15T17:58:00.0165294Z [0m[1mdata.azurerm_virtual_network.vnet-core-ukwest-0001: Read complete after 0s [id=/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-ukwest-0001/providers/Microsoft.Network/virtualNetworks/y3-vnet-core-ukwest-0001][0m
+2025-10-15T17:58:00.0259273Z [0m[1mdata.azurerm_virtual_network.vnet-core-uksouth-0001: Read complete after 0s [id=/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/virtualNetworks/y3-vnet-core-uksouth-0001][0m
+2025-10-15T17:58:02.3584265Z [0m[1mmodule.resource_groups["rg-tax-uksouth-network"].azurerm_resource_group.resource_group: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network][0m
+2025-10-15T17:58:02.3586529Z [0m[1mdata.azurerm_client_config.current: Reading...[0m[0m
+2025-10-15T17:58:02.3593941Z [0m[1mmodule.resource_groups["rg-tax-uksouth-pagero"].azurerm_resource_group.resource_group: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero][0m
+2025-10-15T17:58:02.3605461Z [0m[1mmodule.resource_groups["rg-tax-ukwest-pagero"].azurerm_resource_group.resource_group: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-pagero][0m
+2025-10-15T17:58:02.3612569Z [0m[1mmodule.resource_groups["rg-tax-ukwest-network"].azurerm_resource_group.resource_group: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network][0m
+2025-10-15T17:58:02.3620351Z [0m[1mmodule.resource_groups["rg-tax-ukwest-alteryx"].azurerm_resource_group.resource_group: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-alteryx][0m
+2025-10-15T17:58:02.3626084Z [0m[1mmodule.resource_groups["rg-tax-uksouth-alteryx"].azurerm_resource_group.resource_group: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx][0m
+2025-10-15T17:58:02.3636484Z [0m[1mdata.azurerm_client_config.current: Read complete after 0s [id=Y2xpZW50Q29uZmlncy9jbGllbnRJZD1jYzg0OWY0Mi05MzczLTQzNDMtYjVmMS02M2NhMmJjOGU4NGM7b2JqZWN0SWQ9MTljYTQ0MTMtZjk3MS00ZTRkLWI5ZjMtNzk2YjIxOGQ1MGZjO3N1YnNjcmlwdGlvbklkPTkxYmI3Njg4LTU1NjEtNGRkZi1iMzUzLTk2Y2UwMmU2NDMyMDt0ZW5hbnRJZD1mYjk3M2EyMy01MTg4LTQ1YWItYjRmYi0yNzc5MTk0NDM1ODQ=][0m
+2025-10-15T17:58:02.6098453Z [0m[1mmodule.virtual_networks["vnet-tax-ukwest-0001"].azurerm_virtual_network.virtual_network: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001][0m
+2025-10-15T17:58:02.6122834Z [0m[1mmodule.virtual_networks["vnet-tax-uksouth-0001"].azurerm_virtual_network.virtual_network: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001][0m
+2025-10-15T17:58:02.6135885Z [0m[1mmodule.virtual_networks["vnet-tax-uksouth-0001"].azurerm_route_table.route_table["route-tax-uksouth"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/routeTables/d3-route-tax-uksouth-0001][0m
+2025-10-15T17:58:02.6141052Z [0m[1mmodule.virtual_networks["vnet-tax-ukwest-0001"].azurerm_route_table.route_table["route-tax-uksouth"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/routeTables/d3-route-tax-ukwest-0001][0m
+2025-10-15T17:58:02.8734003Z [0m[1mmodule.virtual_networks["vnet-tax-uksouth-0001"].azurerm_virtual_network_peering.vnet_peering_remote["peer_y3_core_networking_uksouth_to_dev_vnet_tax_uksouth"]: Refreshing state... [id=/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/virtualNetworks/y3-vnet-core-uksouth-0001/virtualNetworkPeerings/peer_y3_core_networking_uksouth_to_dev_vnet_tax_uksouth][0m
+2025-10-15T17:58:02.8750621Z [0m[1mmodule.virtual_networks["vnet-tax-ukwest-0001"].azurerm_virtual_network_peering.vnet_peering_remote["peer_y3_core_networking_ukwest_to_dev_vnet_tax_ukwest"]: Refreshing state... [id=/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-ukwest-0001/providers/Microsoft.Network/virtualNetworks/y3-vnet-core-ukwest-0001/virtualNetworkPeerings/peer_y3_core_networking_ukwest_to_dev_vnet_tax_ukwest][0m
+2025-10-15T17:58:02.8760683Z [0m[1mmodule.virtual_networks["vnet-tax-ukwest-0001"].azurerm_subnet.subnet["snet-tax-ukwest-storage"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/subnets/d3-snet-tax-ukwest-storage][0m
+2025-10-15T17:58:02.8772220Z [0m[1mmodule.virtual_networks["vnet-tax-uksouth-0001"].azurerm_subnet.subnet["snet-tax-uksouth-keyvault"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001/subnets/d3-snet-tax-uksouth-keyvault][0m
+2025-10-15T17:58:02.8781660Z [0m[1mmodule.virtual_networks["vnet-tax-ukwest-0001"].azurerm_virtual_network_peering.vnet_peering["peer_dev_vnet_tax_ukwest_to_y3_core_networking_ukwest"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/virtualNetworkPeerings/peer_dev_vnet_tax_ukwest_to_y3_core_networking_ukwest][0m
+2025-10-15T17:58:02.8787327Z [0m[1mmodule.virtual_networks["vnet-tax-ukwest-0001"].azurerm_subnet.subnet["snet-tax-ukwest-keyvault"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/subnets/d3-snet-tax-ukwest-keyvault][0m
+2025-10-15T17:58:02.8815283Z [0m[1mmodule.virtual_networks["vnet-tax-uksouth-0001"].azurerm_subnet.subnet["snet-tax-uksouth-storage"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001/subnets/d3-snet-tax-uksouth-storage][0m
+2025-10-15T17:58:02.8877012Z [0m[1mmodule.virtual_networks["vnet-tax-uksouth-0001"].azurerm_virtual_network_peering.vnet_peering["peer_dev_vnet_tax_uksouth_to_y3_core_networking_uksouth"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001/virtualNetworkPeerings/peer_dev_vnet_tax_uksouth_to_y3_core_networking_uksouth][0m
+2025-10-15T17:58:03.0842387Z [0m[1mmodule.virtual_networks["vnet-tax-ukwest-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-ukwest-keyvault"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/subnets/d3-snet-tax-ukwest-keyvault][0m
+2025-10-15T17:58:03.0852683Z [0m[1mmodule.virtual_networks["vnet-tax-uksouth-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-uksouth-keyvault"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001/subnets/d3-snet-tax-uksouth-keyvault][0m
+2025-10-15T17:58:03.0854245Z [0m[1mmodule.virtual_networks["vnet-tax-uksouth-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-uksouth-storage"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001/subnets/d3-snet-tax-uksouth-storage][0m
+2025-10-15T17:58:03.0857459Z [0m[1mmodule.virtual_networks["vnet-tax-ukwest-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-ukwest-storage"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/subnets/d3-snet-tax-ukwest-storage][0m
+2025-10-15T17:58:03.5607362Z [0m[1mmodule.Key_Vaults["kv-tax-uks-alteryx"].azurerm_key_vault.keyvault: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-alteryx][0m
+2025-10-15T17:58:03.5626648Z [0m[1mmodule.Key_Vaults["kvtaxukspagero"].azurerm_key_vault.keyvault: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.KeyVault/vaults/d3-kvtaxukspagero][0m
+2025-10-15T17:58:07.3002598Z [0m[1mmodule.Key_Vaults["kvtaxukspagero"].azurerm_role_assignment.role_assignment_spn_key_vault_administrator: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.KeyVault/vaults/d3-kvtaxukspagero/providers/Microsoft.Authorization/roleAssignments/fb12b147-e34a-b0ee-e749-bfee630998af][0m
+2025-10-15T17:58:07.3025505Z [0m[1mmodule.Key_Vaults["kv-tax-uks-alteryx"].azurerm_private_endpoint.private_endpoint[0]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.Network/privateEndpoints/dev-priv-nic-tax-uksouth-0001][0m
+2025-10-15T17:58:07.3030304Z [0m[1mmodule.Key_Vaults["kv-tax-uks-alteryx"].azurerm_role_assignment.role_assignment_spn_key_vault_secrets_officer: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-alteryx/providers/Microsoft.Authorization/roleAssignments/5bf53994-096e-fe51-a520-8330f1e0ee4c][0m
+2025-10-15T17:58:07.3037660Z [0m[1mmodule.Key_Vaults["kv-tax-uks-alteryx"].azurerm_role_assignment.role_assignment_spn_key_vault_administrator: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-alteryx/providers/Microsoft.Authorization/roleAssignments/da261d55-46d1-4379-4592-59b8db83d966][0m
+2025-10-15T17:58:07.3064966Z [0m[1mmodule.Key_Vaults["kvtaxukspagero"].azurerm_role_assignment.role_assignment_spn_key_vault_secrets_officer: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.KeyVault/vaults/d3-kvtaxukspagero/providers/Microsoft.Authorization/roleAssignments/9efec8ea-0222-5a96-cd70-08e5d04af97a][0m
+2025-10-15T17:58:07.3066991Z [0m[1mmodule.Key_Vaults["kvtaxukspagero"].azurerm_private_endpoint.private_endpoint[0]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Network/privateEndpoints/dev-priv-nic-tax-uksouth-0001][0m
+2025-10-15T17:58:08.2696160Z [0m[1mmodule.storage_accounts["sttaxukspagero"].azurerm_storage_account.storage_account: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Storage/storageAccounts/d3sttaxukspagero][0m
+2025-10-15T17:58:09.5990784Z [0m[1mmodule.storage_accounts["sttaxukspagero"].azurerm_private_endpoint.private_endpoint[0]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Network/privateEndpoints/priv-nic-d3sttaxukspagero][0m
+2025-10-15T17:58:09.5994915Z [0m[1mmodule.storage_accounts["sttaxukspagero"].azurerm_storage_container.sftp_storage_container["accountone"]: Refreshing state... [id=https://d3sttaxukspagero.blob.core.windows.net/accountone][0m
+2025-10-15T17:58:09.6289046Z [0m[1mmodule.storage_accounts["sttaxukspagero"].azurerm_storage_account_local_user.storage_account_local_user["accountone"]: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Storage/storageAccounts/d3sttaxukspagero/localUsers/d3accountone][0m
+2025-10-15T17:58:09.8971772Z [0m[1mmodule.storage_accounts["sttaxukspagero"].azurerm_key_vault_secret.keyvault_secret_sftp_user_password["accountone"]: Refreshing state... [id=https://d3-kvtaxukspagero.vault.azure.net/secrets/accountone-ssh-password/fb09a492c88d43ac9f0ccbbac0c0cc76][0m
+2025-10-15T17:58:10.5136957Z [0m[1mmodule.EntraID_groups["Tax_Pagero_StorageReader"].azurerm_role_assignment.sub-rbac-tax: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleAssignments/ac05b52f-42a0-96a3-ed22-afdcf080a423][0m
+2025-10-15T17:58:10.5166240Z [0m[1mmodule.EntraID_groups["Tax_Pagero_StorageReader"].azuread_group.EntraID_Group: Refreshing state... [id=/groups/f52f32b8-0b14-4724-ac27-318929715ca0][0m
+2025-10-15T17:58:10.5178102Z [0m[1mmodule.EntraID_groups["Tax_Pagero_StorageReader"].azurerm_role_assignment.sql-firewall-rbac-tax: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleAssignments/cd734f08-fa3e-266d-5cbf-29b6e86df7cf][0m
+2025-10-15T17:58:10.5189212Z [0m[1mmodule.EntraID_groups["Tax_Pagero_Keyvault_Secrets_Officer"].azurerm_role_assignment.sub-rbac-tax: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleAssignments/20fcfd23-f6b1-5bd6-a3c5-0886a9b2f410][0m
+2025-10-15T17:58:10.5190998Z [0m[1mmodule.EntraID_groups["Tax_Pagero_Keyvault_Secrets_Officer"].azurerm_role_assignment.sql-firewall-rbac-tax: Refreshing state... [id=/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleAssignments/8c54dbad-c5eb-cfc6-c554-f1fb329df073][0m
+2025-10-15T17:58:10.5197170Z [0m[1mmodule.EntraID_groups["Tax_Pagero_Keyvault_Secrets_Officer"].azuread_group.EntraID_Group: Refreshing state... [id=/groups/6ec49daf-0e89-494e-8609-8ec1464296c1][0m
+2025-10-15T17:58:10.9911978Z 
+2025-10-15T17:58:10.9913775Z Terraform used the selected providers to generate the following execution
+2025-10-15T17:58:10.9917024Z plan. Resource actions are indicated with the following symbols:
+2025-10-15T17:58:10.9917585Z   [32m+[0m create[0m
+2025-10-15T17:58:10.9920066Z   [33m~[0m update in-place[0m
+2025-10-15T17:58:10.9920460Z   [31m-[0m destroy[0m
+2025-10-15T17:58:10.9921430Z [31m-[0m/[32m+[0m destroy and then create replacement[0m
+2025-10-15T17:58:10.9921604Z 
+2025-10-15T17:58:10.9921845Z Terraform will perform the following actions:
+2025-10-15T17:58:10.9934131Z 
+2025-10-15T17:58:10.9937472Z [1m  # module.EntraID_groups["Tax_AMEXPagero_KeyVault_Access"].azuread_group.EntraID_Group[0m will be created
+2025-10-15T17:58:10.9938354Z [0m  [32m+[0m[0m resource "azuread_group" "EntraID_Group" {
+2025-10-15T17:58:10.9938949Z       [32m+[0m[0m auto_subscribe_new_members     = (known after apply)
+2025-10-15T17:58:10.9939577Z       [32m+[0m[0m display_name                   = "G_NL_AAD_APP_Development_Tax_AMEXPagero_KeyVault_Access"
+2025-10-15T17:58:10.9940208Z       [32m+[0m[0m external_senders_allowed       = (known after apply)
+2025-10-15T17:58:10.9940754Z       [32m+[0m[0m hide_from_address_lists        = (known after apply)
+2025-10-15T17:58:10.9941322Z       [32m+[0m[0m hide_from_outlook_clients      = (known after apply)
+2025-10-15T17:58:10.9941873Z       [32m+[0m[0m id                             = (known after apply)
+2025-10-15T17:58:10.9942429Z       [32m+[0m[0m mail                           = (known after apply)
+2025-10-15T17:58:10.9942940Z       [32m+[0m[0m mail_nickname                  = (known after apply)
+2025-10-15T17:58:10.9943484Z       [32m+[0m[0m members                        = (known after apply)
+2025-10-15T17:58:10.9944014Z       [32m+[0m[0m object_id                      = (known after apply)
+2025-10-15T17:58:10.9944547Z       [32m+[0m[0m onpremises_domain_name         = (known after apply)
+2025-10-15T17:58:10.9945086Z       [32m+[0m[0m onpremises_group_type          = (known after apply)
+2025-10-15T17:58:10.9945857Z       [32m+[0m[0m onpremises_netbios_name        = (known after apply)
+2025-10-15T17:58:10.9946441Z       [32m+[0m[0m onpremises_sam_account_name    = (known after apply)
+2025-10-15T17:58:10.9947013Z       [32m+[0m[0m onpremises_security_identifier = (known after apply)
+2025-10-15T17:58:10.9947569Z       [32m+[0m[0m onpremises_sync_enabled        = (known after apply)
+2025-10-15T17:58:10.9948096Z       [32m+[0m[0m owners                         = (known after apply)
+2025-10-15T17:58:10.9948625Z       [32m+[0m[0m preferred_language             = (known after apply)
+2025-10-15T17:58:10.9949228Z       [32m+[0m[0m prevent_duplicate_names        = true
+2025-10-15T17:58:10.9949792Z       [32m+[0m[0m proxy_addresses                = (known after apply)
+2025-10-15T17:58:10.9950305Z       [32m+[0m[0m security_enabled               = true
+2025-10-15T17:58:10.9950821Z       [32m+[0m[0m visibility                     = (known after apply)
+2025-10-15T17:58:10.9951347Z       [32m+[0m[0m writeback_enabled              = false
+2025-10-15T17:58:10.9951723Z     }
+2025-10-15T17:58:10.9951940Z 
+2025-10-15T17:58:10.9952641Z [1m  # module.EntraID_groups["Tax_AMEXPagero_KeyVault_Access"].azurerm_role_assignment.role_assignments["amexpagero-kv-secrets"][0m will be created
+2025-10-15T17:58:10.9953341Z [0m  [32m+[0m[0m resource "azurerm_role_assignment" "role_assignments" {
+2025-10-15T17:58:10.9953891Z       [32m+[0m[0m id                               = (known after apply)
+2025-10-15T17:58:10.9954394Z       [32m+[0m[0m name                             = (known after apply)
+2025-10-15T17:58:10.9954953Z       [32m+[0m[0m principal_id                     = (known after apply)
+2025-10-15T17:58:10.9955483Z       [32m+[0m[0m principal_type                   = (known after apply)
+2025-10-15T17:58:10.9956030Z       [32m+[0m[0m role_definition_id               = (known after apply)
+2025-10-15T17:58:10.9956785Z       [32m+[0m[0m role_definition_name             = "Key Vault Secrets User"
+2025-10-15T17:58:10.9957620Z       [32m+[0m[0m scope                            = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pageroapi/providers/Microsoft.KeyVault/vaults/d3-kv-tax-pageroapi-uks"
+2025-10-15T17:58:10.9958310Z       [32m+[0m[0m skip_service_principal_aad_check = (known after apply)
+2025-10-15T17:58:10.9958716Z     }
+2025-10-15T17:58:10.9958938Z 
+2025-10-15T17:58:10.9959553Z [1m  # module.EntraID_groups["Tax_AMEXPagero_Storage_Access"].azuread_group.EntraID_Group[0m will be created
+2025-10-15T17:58:10.9960450Z [0m  [32m+[0m[0m resource "azuread_group" "EntraID_Group" {
+2025-10-15T17:58:10.9961057Z       [32m+[0m[0m auto_subscribe_new_members     = (known after apply)
+2025-10-15T17:58:10.9961681Z       [32m+[0m[0m display_name                   = "G_NL_AAD_APP_Development_Tax_AMEXPagero_Storage_Access"
+2025-10-15T17:58:10.9962298Z       [32m+[0m[0m external_senders_allowed       = (known after apply)
+2025-10-15T17:58:10.9962871Z       [32m+[0m[0m hide_from_address_lists        = (known after apply)
+2025-10-15T17:58:10.9963425Z       [32m+[0m[0m hide_from_outlook_clients      = (known after apply)
+2025-10-15T17:58:10.9963975Z       [32m+[0m[0m id                             = (known after apply)
+2025-10-15T17:58:10.9964489Z       [32m+[0m[0m mail                           = (known after apply)
+2025-10-15T17:58:10.9965032Z       [32m+[0m[0m mail_nickname                  = (known after apply)
+2025-10-15T17:58:10.9965569Z       [32m+[0m[0m members                        = (known after apply)
+2025-10-15T17:58:10.9966100Z       [32m+[0m[0m object_id                      = (known after apply)
+2025-10-15T17:58:10.9966641Z       [32m+[0m[0m onpremises_domain_name         = (known after apply)
+2025-10-15T17:58:10.9967220Z       [32m+[0m[0m onpremises_group_type          = (known after apply)
+2025-10-15T17:58:10.9967792Z       [32m+[0m[0m onpremises_netbios_name        = (known after apply)
+2025-10-15T17:58:10.9970257Z       [32m+[0m[0m onpremises_sam_account_name    = (known after apply)
+2025-10-15T17:58:10.9971032Z       [32m+[0m[0m onpremises_security_identifier = (known after apply)
+2025-10-15T17:58:10.9971603Z       [32m+[0m[0m onpremises_sync_enabled        = (known after apply)
+2025-10-15T17:58:10.9972142Z       [32m+[0m[0m owners                         = (known after apply)
+2025-10-15T17:58:10.9972700Z       [32m+[0m[0m preferred_language             = (known after apply)
+2025-10-15T17:58:10.9973266Z       [32m+[0m[0m prevent_duplicate_names        = true
+2025-10-15T17:58:10.9973818Z       [32m+[0m[0m proxy_addresses                = (known after apply)
+2025-10-15T17:58:10.9974338Z       [32m+[0m[0m security_enabled               = true
+2025-10-15T17:58:10.9974874Z       [32m+[0m[0m visibility                     = (known after apply)
+2025-10-15T17:58:10.9975416Z       [32m+[0m[0m writeback_enabled              = false
+2025-10-15T17:58:10.9975801Z     }
+2025-10-15T17:58:10.9976021Z 
+2025-10-15T17:58:10.9976689Z [1m  # module.EntraID_groups["Tax_AMEXPagero_Storage_Access"].azurerm_role_assignment.role_assignments["amexpagero-storage-reader"][0m will be created
+2025-10-15T17:58:10.9977355Z [0m  [32m+[0m[0m resource "azurerm_role_assignment" "role_assignments" {
+2025-10-15T17:58:10.9977898Z       [32m+[0m[0m id                               = (known after apply)
+2025-10-15T17:58:10.9978415Z       [32m+[0m[0m name                             = (known after apply)
+2025-10-15T17:58:10.9978989Z       [32m+[0m[0m principal_id                     = (known after apply)
+2025-10-15T17:58:10.9979502Z       [32m+[0m[0m principal_type                   = (known after apply)
+2025-10-15T17:58:10.9980039Z       [32m+[0m[0m role_definition_id               = (known after apply)
+2025-10-15T17:58:10.9980981Z       [32m+[0m[0m role_definition_name             = "Storage Blob Data Reader"
+2025-10-15T17:58:10.9982004Z       [32m+[0m[0m scope                            = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pageroapi/providers/Microsoft.Storage/storageAccounts/d3sttaxpageroapiuks"
+2025-10-15T17:58:10.9982703Z       [32m+[0m[0m skip_service_principal_aad_check = (known after apply)
+2025-10-15T17:58:10.9983115Z     }
+2025-10-15T17:58:10.9983326Z 
+2025-10-15T17:58:10.9983965Z [1m  # module.EntraID_groups["Tax_Pagero_Keyvault_Secrets_Officer"].azurerm_role_assignment.role_assignments["keyvault-secrets"][0m will be created
+2025-10-15T17:58:10.9984632Z [0m  [32m+[0m[0m resource "azurerm_role_assignment" "role_assignments" {
+2025-10-15T17:58:10.9985162Z       [32m+[0m[0m id                               = (known after apply)
+2025-10-15T17:58:10.9985666Z       [32m+[0m[0m name                             = (known after apply)
+2025-10-15T17:58:10.9986234Z       [32m+[0m[0m principal_id                     = "6ec49daf-0e89-494e-8609-8ec1464296c1"
+2025-10-15T17:58:10.9986802Z       [32m+[0m[0m principal_type                   = (known after apply)
+2025-10-15T17:58:10.9987340Z       [32m+[0m[0m role_definition_id               = (known after apply)
+2025-10-15T17:58:10.9987913Z       [32m+[0m[0m role_definition_name             = "Key Vault Secrets Officer"
+2025-10-15T17:58:10.9988529Z       [32m+[0m[0m scope                            = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320"
+2025-10-15T17:58:10.9989110Z       [32m+[0m[0m skip_service_principal_aad_check = (known after apply)
+2025-10-15T17:58:10.9989514Z     }
+2025-10-15T17:58:10.9989734Z 
+2025-10-15T17:58:10.9990371Z [1m  # module.EntraID_groups["Tax_Pagero_Keyvault_Secrets_Officer"].azurerm_role_assignment.sql-firewall-rbac-tax[0m will be [1m[31mdestroyed[0m
+2025-10-15T17:58:10.9990938Z   # (because azurerm_role_assignment.sql-firewall-rbac-tax is not in configuration)
+2025-10-15T17:58:10.9991539Z [0m  [31m-[0m[0m resource "azurerm_role_assignment" "sql-firewall-rbac-tax" {
+2025-10-15T17:58:10.9992511Z       [31m-[0m[0m id                                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleAssignments/8c54dbad-c5eb-cfc6-c554-f1fb329df073" [90m-> null[0m[0m
+2025-10-15T17:58:10.9993286Z       [31m-[0m[0m name                                   = "8c54dbad-c5eb-cfc6-c554-f1fb329df073" [90m-> null[0m[0m
+2025-10-15T17:58:10.9993898Z       [31m-[0m[0m principal_id                           = "6ec49daf-0e89-494e-8609-8ec1464296c1" [90m-> null[0m[0m
+2025-10-15T17:58:10.9994476Z       [31m-[0m[0m principal_type                         = "Group" [90m-> null[0m[0m
+2025-10-15T17:58:10.9995274Z       [31m-[0m[0m role_definition_id                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleDefinitions/b86a8fe4-44ce-4948-aee5-eccb2c155cd7" [90m-> null[0m[0m
+2025-10-15T17:58:10.9996010Z       [31m-[0m[0m role_definition_name                   = "Key Vault Secrets Officer" [90m-> null[0m[0m
+2025-10-15T17:58:10.9996681Z       [31m-[0m[0m scope                                  = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320" [90m-> null[0m[0m
+2025-10-15T17:58:10.9997235Z         [90m# (4 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:10.9997649Z     }
+2025-10-15T17:58:10.9997854Z 
+2025-10-15T17:58:10.9998475Z [1m  # module.EntraID_groups["Tax_Pagero_Keyvault_Secrets_Officer"].azurerm_role_assignment.sub-rbac-tax[0m will be [1m[31mdestroyed[0m
+2025-10-15T17:58:10.9999076Z   # (because azurerm_role_assignment.sub-rbac-tax is not in configuration)
+2025-10-15T17:58:10.9999691Z [0m  [31m-[0m[0m resource "azurerm_role_assignment" "sub-rbac-tax" {
+2025-10-15T17:58:11.0000818Z       [31m-[0m[0m id                                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleAssignments/20fcfd23-f6b1-5bd6-a3c5-0886a9b2f410" [90m-> null[0m[0m
+2025-10-15T17:58:11.0001746Z       [31m-[0m[0m name                                   = "20fcfd23-f6b1-5bd6-a3c5-0886a9b2f410" [90m-> null[0m[0m
+2025-10-15T17:58:11.0002358Z       [31m-[0m[0m principal_id                           = "6ec49daf-0e89-494e-8609-8ec1464296c1" [90m-> null[0m[0m
+2025-10-15T17:58:11.0002925Z       [31m-[0m[0m principal_type                         = "Group" [90m-> null[0m[0m
+2025-10-15T17:58:11.0003714Z       [31m-[0m[0m role_definition_id                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleDefinitions/2a2b9908-6ea1-4ae2-8e65-a410df84e7d1" [90m-> null[0m[0m
+2025-10-15T17:58:11.0004441Z       [31m-[0m[0m role_definition_name                   = "Storage Blob Data Reader" [90m-> null[0m[0m
+2025-10-15T17:58:11.0005133Z       [31m-[0m[0m scope                                  = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320" [90m-> null[0m[0m
+2025-10-15T17:58:11.0005700Z         [90m# (4 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0006073Z     }
+2025-10-15T17:58:11.0006291Z 
+2025-10-15T17:58:11.0006911Z [1m  # module.EntraID_groups["Tax_Pagero_StorageReader"].azurerm_role_assignment.role_assignments["storage-reader"][0m will be created
+2025-10-15T17:58:11.0007560Z [0m  [32m+[0m[0m resource "azurerm_role_assignment" "role_assignments" {
+2025-10-15T17:58:11.0008128Z       [32m+[0m[0m id                               = (known after apply)
+2025-10-15T17:58:11.0008635Z       [32m+[0m[0m name                             = (known after apply)
+2025-10-15T17:58:11.0009206Z       [32m+[0m[0m principal_id                     = "f52f32b8-0b14-4724-ac27-318929715ca0"
+2025-10-15T17:58:11.0009756Z       [32m+[0m[0m principal_type                   = (known after apply)
+2025-10-15T17:58:11.0010312Z       [32m+[0m[0m role_definition_id               = (known after apply)
+2025-10-15T17:58:11.0010875Z       [32m+[0m[0m role_definition_name             = "Storage Blob Data Reader"
+2025-10-15T17:58:11.0011650Z       [32m+[0m[0m scope                            = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320"
+2025-10-15T17:58:11.0012275Z       [32m+[0m[0m skip_service_principal_aad_check = (known after apply)
+2025-10-15T17:58:11.0012681Z     }
+2025-10-15T17:58:11.0012912Z 
+2025-10-15T17:58:11.0013585Z [1m  # module.EntraID_groups["Tax_Pagero_StorageReader"].azurerm_role_assignment.sql-firewall-rbac-tax[0m will be [1m[31mdestroyed[0m
+2025-10-15T17:58:11.0014189Z   # (because azurerm_role_assignment.sql-firewall-rbac-tax is not in configuration)
+2025-10-15T17:58:11.0015055Z [0m  [31m-[0m[0m resource "azurerm_role_assignment" "sql-firewall-rbac-tax" {
+2025-10-15T17:58:11.0015861Z       [31m-[0m[0m id                                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleAssignments/cd734f08-fa3e-266d-5cbf-29b6e86df7cf" [90m-> null[0m[0m
+2025-10-15T17:58:11.0016749Z       [31m-[0m[0m name                                   = "cd734f08-fa3e-266d-5cbf-29b6e86df7cf" [90m-> null[0m[0m
+2025-10-15T17:58:11.0017383Z       [31m-[0m[0m principal_id                           = "f52f32b8-0b14-4724-ac27-318929715ca0" [90m-> null[0m[0m
+2025-10-15T17:58:11.0018002Z       [31m-[0m[0m principal_type                         = "Group" [90m-> null[0m[0m
+2025-10-15T17:58:11.0018769Z       [31m-[0m[0m role_definition_id                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleDefinitions/b86a8fe4-44ce-4948-aee5-eccb2c155cd7" [90m-> null[0m[0m
+2025-10-15T17:58:11.0019459Z       [31m-[0m[0m role_definition_name                   = "Key Vault Secrets Officer" [90m-> null[0m[0m
+2025-10-15T17:58:11.0020093Z       [31m-[0m[0m scope                                  = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320" [90m-> null[0m[0m
+2025-10-15T17:58:11.0021548Z         [90m# (4 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0021818Z     }
+2025-10-15T17:58:11.0022086Z 
+2025-10-15T17:58:11.0022709Z [1m  # module.EntraID_groups["Tax_Pagero_StorageReader"].azurerm_role_assignment.sub-rbac-tax[0m will be [1m[31mdestroyed[0m
+2025-10-15T17:58:11.0023115Z   # (because azurerm_role_assignment.sub-rbac-tax is not in configuration)
+2025-10-15T17:58:11.0023708Z [0m  [31m-[0m[0m resource "azurerm_role_assignment" "sub-rbac-tax" {
+2025-10-15T17:58:11.0024532Z       [31m-[0m[0m id                                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleAssignments/ac05b52f-42a0-96a3-ed22-afdcf080a423" [90m-> null[0m[0m
+2025-10-15T17:58:11.0025336Z       [31m-[0m[0m name                                   = "ac05b52f-42a0-96a3-ed22-afdcf080a423" [90m-> null[0m[0m
+2025-10-15T17:58:11.0026009Z       [31m-[0m[0m principal_id                           = "f52f32b8-0b14-4724-ac27-318929715ca0" [90m-> null[0m[0m
+2025-10-15T17:58:11.0026642Z       [31m-[0m[0m principal_type                         = "Group" [90m-> null[0m[0m
+2025-10-15T17:58:11.0027497Z       [31m-[0m[0m role_definition_id                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleDefinitions/2a2b9908-6ea1-4ae2-8e65-a410df84e7d1" [90m-> null[0m[0m
+2025-10-15T17:58:11.0028262Z       [31m-[0m[0m role_definition_name                   = "Storage Blob Data Reader" [90m-> null[0m[0m
+2025-10-15T17:58:11.0028976Z       [31m-[0m[0m scope                                  = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320" [90m-> null[0m[0m
+2025-10-15T17:58:11.0029575Z         [90m# (4 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0029983Z     }
+2025-10-15T17:58:11.0030205Z 
+2025-10-15T17:58:11.0030739Z [1m  # module.Key_Vaults["kv-tax-pageroapi-uks"].azurerm_key_vault.keyvault[0m will be created
+2025-10-15T17:58:11.0031305Z [0m  [32m+[0m[0m resource "azurerm_key_vault" "keyvault" {
+2025-10-15T17:58:11.0032085Z       [32m+[0m[0m access_policy                 = (known after apply)
+2025-10-15T17:58:11.0032672Z       [32m+[0m[0m enable_rbac_authorization     = true
+2025-10-15T17:58:11.0033200Z       [32m+[0m[0m enabled_for_disk_encryption   = true
+2025-10-15T17:58:11.0033787Z       [32m+[0m[0m id                            = (known after apply)
+2025-10-15T17:58:11.0034332Z       [32m+[0m[0m location                      = "uksouth"
+2025-10-15T17:58:11.0034908Z       [32m+[0m[0m name                          = "d3-kv-tax-pageroapi-uks"
+2025-10-15T17:58:11.0035452Z       [32m+[0m[0m public_network_access_enabled = true
+2025-10-15T17:58:11.0036429Z       [32m+[0m[0m purge_protection_enabled      = false
+2025-10-15T17:58:11.0037040Z       [32m+[0m[0m resource_group_name           = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0037438Z       [32m+[0m[0m sku_name                      = "standard"
+2025-10-15T17:58:11.0037970Z       [32m+[0m[0m soft_delete_retention_days    = 7
+2025-10-15T17:58:11.0038490Z       [32m+[0m[0m tags                          = {
+2025-10-15T17:58:11.0038967Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0039548Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0040106Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0040654Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0041058Z         }
+2025-10-15T17:58:11.0042200Z       [32m+[0m[0m tenant_id                     = "fb973a23-5188-45ab-b4fb-277919443584"
+2025-10-15T17:58:11.0043457Z       [32m+[0m[0m vault_uri                     = (known after apply)
+2025-10-15T17:58:11.0043636Z 
+2025-10-15T17:58:11.0044156Z       [32m+[0m[0m contact (known after apply)
+2025-10-15T17:58:11.0044291Z 
+2025-10-15T17:58:11.0044626Z       [32m+[0m[0m network_acls (known after apply)
+2025-10-15T17:58:11.0045027Z     }
+2025-10-15T17:58:11.0045101Z 
+2025-10-15T17:58:11.0045538Z [1m  # module.Key_Vaults["kv-tax-pageroapi-uks"].azurerm_private_endpoint.private_endpoint[0][0m will be created
+2025-10-15T17:58:11.0046025Z [0m  [32m+[0m[0m resource "azurerm_private_endpoint" "private_endpoint" {
+2025-10-15T17:58:11.0046481Z       [32m+[0m[0m custom_dns_configs       = (known after apply)
+2025-10-15T17:58:11.0046865Z       [32m+[0m[0m id                       = (known after apply)
+2025-10-15T17:58:11.0047375Z       [32m+[0m[0m location                 = "uksouth"
+2025-10-15T17:58:11.0047771Z       [32m+[0m[0m name                     = "d3-priv-nic-kv-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0048193Z       [32m+[0m[0m network_interface        = (known after apply)
+2025-10-15T17:58:11.0048519Z       [32m+[0m[0m private_dns_zone_configs = (known after apply)
+2025-10-15T17:58:11.0048858Z       [32m+[0m[0m resource_group_name      = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0049581Z       [32m+[0m[0m subnet_id                = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001/subnets/d3-snet-tax-uksouth-keyvault"
+2025-10-15T17:58:11.0050099Z       [32m+[0m[0m tags                     = {
+2025-10-15T17:58:11.0050386Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0050700Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0051057Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0051409Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0051626Z         }
+2025-10-15T17:58:11.0051701Z 
+2025-10-15T17:58:11.0052009Z       [32m+[0m[0m private_dns_zone_group {
+2025-10-15T17:58:11.0052369Z           [32m+[0m[0m id                   = (known after apply)
+2025-10-15T17:58:11.0052731Z           [32m+[0m[0m name                 = "key-vault-dns-zone-group"
+2025-10-15T17:58:11.0053239Z           [32m+[0m[0m private_dns_zone_ids = [
+2025-10-15T17:58:11.0053857Z               [32m+[0m[0m "/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net",
+2025-10-15T17:58:11.0054254Z             ]
+2025-10-15T17:58:11.0054442Z         }
+2025-10-15T17:58:11.0054515Z 
+2025-10-15T17:58:11.0054845Z       [32m+[0m[0m private_service_connection {
+2025-10-15T17:58:11.0055214Z           [32m+[0m[0m is_manual_connection           = false
+2025-10-15T17:58:11.0055643Z           [32m+[0m[0m name                           = "d3-priv-nic-kv-tax-pageroapi-uksouth-0001-svc"
+2025-10-15T17:58:11.0056078Z           [32m+[0m[0m private_connection_resource_id = (known after apply)
+2025-10-15T17:58:11.0056505Z           [32m+[0m[0m private_ip_address             = (known after apply)
+2025-10-15T17:58:11.0056899Z           [32m+[0m[0m subresource_names              = [
+2025-10-15T17:58:11.0057227Z               [32m+[0m[0m "vault",
+2025-10-15T17:58:11.0057419Z             ]
+2025-10-15T17:58:11.0057592Z         }
+2025-10-15T17:58:11.0057763Z     }
+2025-10-15T17:58:11.0057836Z 
+2025-10-15T17:58:11.0058283Z [1m  # module.Key_Vaults["kv-tax-pageroapi-uks"].azurerm_role_assignment.role_assignment_spn_key_vault_administrator[0m will be created
+2025-10-15T17:58:11.0058792Z [0m  [32m+[0m[0m resource "azurerm_role_assignment" "role_assignment_spn_key_vault_administrator" {
+2025-10-15T17:58:11.0059181Z       [32m+[0m[0m id                               = (known after apply)
+2025-10-15T17:58:11.0059490Z       [32m+[0m[0m name                             = (known after apply)
+2025-10-15T17:58:11.0059876Z       [32m+[0m[0m principal_id                     = "a275c283-41dc-482e-9aa7-366964c4a92e"
+2025-10-15T17:58:11.0060231Z       [32m+[0m[0m principal_type                   = (known after apply)
+2025-10-15T17:58:11.0060751Z       [32m+[0m[0m role_definition_id               = (known after apply)
+2025-10-15T17:58:11.0061122Z       [32m+[0m[0m role_definition_name             = "Key Vault Administrator"
+2025-10-15T17:58:11.0061513Z       [32m+[0m[0m scope                            = (known after apply)
+2025-10-15T17:58:11.0061882Z       [32m+[0m[0m skip_service_principal_aad_check = (known after apply)
+2025-10-15T17:58:11.0062108Z     }
+2025-10-15T17:58:11.0062178Z 
+2025-10-15T17:58:11.0062647Z [1m  # module.Key_Vaults["kv-tax-pageroapi-uks"].azurerm_role_assignment.role_assignment_spn_key_vault_secrets_officer[0m will be created
+2025-10-15T17:58:11.0063164Z [0m  [32m+[0m[0m resource "azurerm_role_assignment" "role_assignment_spn_key_vault_secrets_officer" {
+2025-10-15T17:58:11.0063945Z       [32m+[0m[0m id                               = (known after apply)
+2025-10-15T17:58:11.0064300Z       [32m+[0m[0m name                             = (known after apply)
+2025-10-15T17:58:11.0064698Z       [32m+[0m[0m principal_id                     = "a275c283-41dc-482e-9aa7-366964c4a92e"
+2025-10-15T17:58:11.0065031Z       [32m+[0m[0m principal_type                   = (known after apply)
+2025-10-15T17:58:11.0065361Z       [32m+[0m[0m role_definition_id               = (known after apply)
+2025-10-15T17:58:11.0065701Z       [32m+[0m[0m role_definition_name             = "Key Vault Secrets Officer"
+2025-10-15T17:58:11.0066081Z       [32m+[0m[0m scope                            = (known after apply)
+2025-10-15T17:58:11.0066469Z       [32m+[0m[0m skip_service_principal_aad_check = (known after apply)
+2025-10-15T17:58:11.0066698Z     }
+2025-10-15T17:58:11.0066766Z 
+2025-10-15T17:58:11.0067124Z [1m  # module.Key_Vaults["kv-tax-uks-alteryx"].azurerm_key_vault.keyvault[0m will be updated in-place
+2025-10-15T17:58:11.0067475Z [0m  [33m~[0m[0m resource "azurerm_key_vault" "keyvault" {
+2025-10-15T17:58:11.0067845Z         id                              = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-alteryx"
+2025-10-15T17:58:11.0068369Z         name                            = "d3-kv-tax-uks-alteryx"
+2025-10-15T17:58:11.0068694Z       [33m~[0m[0m tags                            = {
+2025-10-15T17:58:11.0068998Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0069343Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0069741Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0070123Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0070335Z         }
+2025-10-15T17:58:11.0070632Z         [90m# (13 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0070742Z 
+2025-10-15T17:58:11.0071034Z         [90m# (1 unchanged block hidden)[0m[0m
+2025-10-15T17:58:11.0071254Z     }
+2025-10-15T17:58:11.0071324Z 
+2025-10-15T17:58:11.0071736Z [1m  # module.Key_Vaults["kv-tax-uks-alteryx"].azurerm_private_endpoint.private_endpoint[0][0m must be [1m[31mreplaced[0m
+2025-10-15T17:58:11.0072191Z [0m[31m-[0m/[32m+[0m[0m resource "azurerm_private_endpoint" "private_endpoint" {
+2025-10-15T17:58:11.0072597Z       [33m~[0m[0m custom_dns_configs            = [] -> (known after apply)
+2025-10-15T17:58:11.0073289Z       [33m~[0m[0m id                            = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.Network/privateEndpoints/dev-priv-nic-tax-uksouth-0001" -> (known after apply)
+2025-10-15T17:58:11.0073962Z       [33m~[0m[0m name                          = "dev-priv-nic-tax-uksouth-0001" [33m->[0m[0m "d3-priv-nic-kv-alteryx-uksouth-0001" [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0074361Z       [33m~[0m[0m network_interface             = [
+2025-10-15T17:58:11.0074651Z           [31m-[0m[0m {
+2025-10-15T17:58:11.0075525Z               [31m-[0m[0m id   = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.Network/networkInterfaces/dev-priv-nic-tax-uksouth-0001.nic.b8ec0b61-e8e8-4309-a044-e3d03223e948"
+2025-10-15T17:58:11.0076228Z               [31m-[0m[0m name = "dev-priv-nic-tax-uksouth-0001.nic.b8ec0b61-e8e8-4309-a044-e3d03223e948"
+2025-10-15T17:58:11.0076540Z             },
+2025-10-15T17:58:11.0076759Z         ] -> (known after apply)
+2025-10-15T17:58:11.0077123Z       [33m~[0m[0m private_dns_zone_configs      = [
+2025-10-15T17:58:11.0077404Z           [31m-[0m[0m {
+2025-10-15T17:58:11.0078278Z               [31m-[0m[0m id                  = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.Network/privateEndpoints/dev-priv-nic-tax-uksouth-0001/privateDnsZoneGroups/key-vault-dns-zone-group/privateDnsZoneConfigs/privatelink.vaultcore.azure.net"
+2025-10-15T17:58:11.0078937Z               [31m-[0m[0m name                = "privatelink.vaultcore.azure.net"
+2025-10-15T17:58:11.0079617Z               [31m-[0m[0m private_dns_zone_id = "/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+2025-10-15T17:58:11.0080117Z               [31m-[0m[0m record_sets         = [
+2025-10-15T17:58:11.0080397Z                   [31m-[0m[0m {
+2025-10-15T17:58:11.0080822Z                       [31m-[0m[0m fqdn         = "d3-kv-tax-uks-alteryx.privatelink.vaultcore.azure.net"
+2025-10-15T17:58:11.0081197Z                       [31m-[0m[0m ip_addresses = [
+2025-10-15T17:58:11.0081529Z                           [31m-[0m[0m "10.0.64.20",
+2025-10-15T17:58:11.0081766Z                         ]
+2025-10-15T17:58:11.0082108Z                       [31m-[0m[0m name         = "d3-kv-tax-uks-alteryx"
+2025-10-15T17:58:11.0082460Z                       [31m-[0m[0m ttl          = 10
+2025-10-15T17:58:11.0083347Z                       [31m-[0m[0m type         = "A"
+2025-10-15T17:58:11.0083549Z                     },
+2025-10-15T17:58:11.0084050Z                 ]
+2025-10-15T17:58:11.0084246Z             },
+2025-10-15T17:58:11.0084473Z         ] -> (known after apply)
+2025-10-15T17:58:11.0084799Z       [33m~[0m[0m tags                          = {
+2025-10-15T17:58:11.0085008Z             "Application"    = "Tax"
+2025-10-15T17:58:11.0085243Z             "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0085612Z           [31m-[0m[0m "Environment"    = "Development" [90m-> null[0m[0m
+2025-10-15T17:58:11.0085903Z             "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0086149Z             "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0086347Z         }
+2025-10-15T17:58:11.0086646Z         [90m# (4 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0086771Z 
+2025-10-15T17:58:11.0087053Z       [33m~[0m[0m private_dns_zone_group {
+2025-10-15T17:58:11.0087773Z           [33m~[0m[0m id                   = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.Network/privateEndpoints/dev-priv-nic-tax-uksouth-0001/privateDnsZoneGroups/key-vault-dns-zone-group" -> (known after apply)
+2025-10-15T17:58:11.0088282Z             name                 = "key-vault-dns-zone-group"
+2025-10-15T17:58:11.0088647Z             [90m# (1 unchanged attribute hidden)[0m[0m
+2025-10-15T17:58:11.0088849Z         }
+2025-10-15T17:58:11.0088915Z 
+2025-10-15T17:58:11.0089186Z       [33m~[0m[0m private_service_connection {
+2025-10-15T17:58:11.0089737Z           [33m~[0m[0m name                              = "dev-priv-nic-tax-uksouth-0001-svc-connection" [33m->[0m[0m "d3-priv-nic-kv-alteryx-uksouth-0001-svc" [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0090244Z           [33m~[0m[0m private_ip_address                = "10.0.64.20" -> (known after apply)
+2025-10-15T17:58:11.0090763Z             [90m# (5 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0090979Z         }
+2025-10-15T17:58:11.0091166Z     }
+2025-10-15T17:58:11.0091227Z 
+2025-10-15T17:58:11.0091706Z [1m  # module.Key_Vaults["kv-tax-uks-alteryx"].azurerm_role_assignment.role_assignment_spn_key_vault_administrator[0m must be [1m[31mreplaced[0m
+2025-10-15T17:58:11.0092290Z [0m[31m-[0m/[32m+[0m[0m resource "azurerm_role_assignment" "role_assignment_spn_key_vault_administrator" {
+2025-10-15T17:58:11.0093177Z       [33m~[0m[0m id                                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-alteryx/providers/Microsoft.Authorization/roleAssignments/da261d55-46d1-4379-4592-59b8db83d966" -> (known after apply)
+2025-10-15T17:58:11.0093912Z       [33m~[0m[0m name                                   = "da261d55-46d1-4379-4592-59b8db83d966" -> (known after apply)
+2025-10-15T17:58:11.0094560Z       [33m~[0m[0m principal_id                           = "9bcf1bd1-59a7-4b70-a5a2-52931d9238d8" [33m->[0m[0m "a275c283-41dc-482e-9aa7-366964c4a92e" [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0095078Z       [33m~[0m[0m principal_type                         = "ServicePrincipal" -> (known after apply)
+2025-10-15T17:58:11.0095742Z       [33m~[0m[0m role_definition_id                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleDefinitions/00482a5a-887f-4fb3-b363-3b7fe8e74483" -> (known after apply)
+2025-10-15T17:58:11.0096270Z       [32m+[0m[0m skip_service_principal_aad_check       = (known after apply)
+2025-10-15T17:58:11.0096632Z         [90m# (6 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0096843Z     }
+2025-10-15T17:58:11.0096908Z 
+2025-10-15T17:58:11.0097377Z [1m  # module.Key_Vaults["kv-tax-uks-alteryx"].azurerm_role_assignment.role_assignment_spn_key_vault_secrets_officer[0m must be [1m[31mreplaced[0m
+2025-10-15T17:58:11.0098094Z [0m[31m-[0m/[32m+[0m[0m resource "azurerm_role_assignment" "role_assignment_spn_key_vault_secrets_officer" {
+2025-10-15T17:58:11.0099010Z       [33m~[0m[0m id                                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-alteryx/providers/Microsoft.Authorization/roleAssignments/5bf53994-096e-fe51-a520-8330f1e0ee4c" -> (known after apply)
+2025-10-15T17:58:11.0099718Z       [33m~[0m[0m name                                   = "5bf53994-096e-fe51-a520-8330f1e0ee4c" -> (known after apply)
+2025-10-15T17:58:11.0100347Z       [33m~[0m[0m principal_id                           = "9bcf1bd1-59a7-4b70-a5a2-52931d9238d8" [33m->[0m[0m "a275c283-41dc-482e-9aa7-366964c4a92e" [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0100910Z       [33m~[0m[0m principal_type                         = "ServicePrincipal" -> (known after apply)
+2025-10-15T17:58:11.0101632Z       [33m~[0m[0m role_definition_id                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleDefinitions/b86a8fe4-44ce-4948-aee5-eccb2c155cd7" -> (known after apply)
+2025-10-15T17:58:11.0102200Z       [32m+[0m[0m skip_service_principal_aad_check       = (known after apply)
+2025-10-15T17:58:11.0102588Z         [90m# (6 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0102797Z     }
+2025-10-15T17:58:11.0102861Z 
+2025-10-15T17:58:11.0103240Z [1m  # module.Key_Vaults["kvtaxukspagero"].azurerm_key_vault.keyvault[0m will be updated in-place
+2025-10-15T17:58:11.0103699Z [0m  [33m~[0m[0m resource "azurerm_key_vault" "keyvault" {
+2025-10-15T17:58:11.0104371Z         id                              = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.KeyVault/vaults/d3-kvtaxukspagero"
+2025-10-15T17:58:11.0104906Z         name                            = "d3-kvtaxukspagero"
+2025-10-15T17:58:11.0105247Z       [33m~[0m[0m tags                            = {
+2025-10-15T17:58:11.0105571Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0105914Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0106312Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0106681Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0106894Z         }
+2025-10-15T17:58:11.0107203Z         [90m# (13 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0107315Z 
+2025-10-15T17:58:11.0107613Z         [90m# (1 unchanged block hidden)[0m[0m
+2025-10-15T17:58:11.0107820Z     }
+2025-10-15T17:58:11.0107898Z 
+2025-10-15T17:58:11.0108328Z [1m  # module.Key_Vaults["kvtaxukspagero"].azurerm_private_endpoint.private_endpoint[0][0m must be [1m[31mreplaced[0m
+2025-10-15T17:58:11.0108822Z [0m[31m-[0m/[32m+[0m[0m resource "azurerm_private_endpoint" "private_endpoint" {
+2025-10-15T17:58:11.0109259Z       [33m~[0m[0m custom_dns_configs            = [] -> (known after apply)
+2025-10-15T17:58:11.0109950Z       [33m~[0m[0m id                            = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Network/privateEndpoints/dev-priv-nic-tax-uksouth-0001" -> (known after apply)
+2025-10-15T17:58:11.0110655Z       [33m~[0m[0m name                          = "dev-priv-nic-tax-uksouth-0001" [33m->[0m[0m "d3-priv-nic-kv-pagero-uksouth-0001" [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0111101Z       [33m~[0m[0m network_interface             = [
+2025-10-15T17:58:11.0111390Z           [31m-[0m[0m {
+2025-10-15T17:58:11.0112073Z               [31m-[0m[0m id   = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Network/networkInterfaces/dev-priv-nic-tax-uksouth-0001.nic.ae9eacca-9be8-4c83-b644-f2f3b1eb8627"
+2025-10-15T17:58:11.0112904Z               [31m-[0m[0m name = "dev-priv-nic-tax-uksouth-0001.nic.ae9eacca-9be8-4c83-b644-f2f3b1eb8627"
+2025-10-15T17:58:11.0113191Z             },
+2025-10-15T17:58:11.0113374Z         ] -> (known after apply)
+2025-10-15T17:58:11.0113650Z       [33m~[0m[0m private_dns_zone_configs      = [
+2025-10-15T17:58:11.0113925Z           [31m-[0m[0m {
+2025-10-15T17:58:11.0114681Z               [31m-[0m[0m id                  = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Network/privateEndpoints/dev-priv-nic-tax-uksouth-0001/privateDnsZoneGroups/key-vault-dns-zone-group/privateDnsZoneConfigs/privatelink.vaultcore.azure.net"
+2025-10-15T17:58:11.0115396Z               [31m-[0m[0m name                = "privatelink.vaultcore.azure.net"
+2025-10-15T17:58:11.0116116Z               [31m-[0m[0m private_dns_zone_id = "/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
+2025-10-15T17:58:11.0116684Z               [31m-[0m[0m record_sets         = [
+2025-10-15T17:58:11.0116979Z                   [31m-[0m[0m {
+2025-10-15T17:58:11.0117371Z                       [31m-[0m[0m fqdn         = "d3-kvtaxukspagero.privatelink.vaultcore.azure.net"
+2025-10-15T17:58:11.0117737Z                       [31m-[0m[0m ip_addresses = [
+2025-10-15T17:58:11.0118040Z                           [31m-[0m[0m "10.0.64.21",
+2025-10-15T17:58:11.0118231Z                         ]
+2025-10-15T17:58:11.0118529Z                       [31m-[0m[0m name         = "d3-kvtaxukspagero"
+2025-10-15T17:58:11.0118845Z                       [31m-[0m[0m ttl          = 10
+2025-10-15T17:58:11.0119114Z                       [31m-[0m[0m type         = "A"
+2025-10-15T17:58:11.0119307Z                     },
+2025-10-15T17:58:11.0119643Z                 ]
+2025-10-15T17:58:11.0119835Z             },
+2025-10-15T17:58:11.0120052Z         ] -> (known after apply)
+2025-10-15T17:58:11.0120383Z       [33m~[0m[0m tags                          = {
+2025-10-15T17:58:11.0120596Z             "Application"    = "Tax"
+2025-10-15T17:58:11.0120827Z             "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0121210Z           [31m-[0m[0m "Environment"    = "Development" [90m-> null[0m[0m
+2025-10-15T17:58:11.0121509Z             "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0121757Z             "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0121949Z         }
+2025-10-15T17:58:11.0122254Z         [90m# (4 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0122367Z 
+2025-10-15T17:58:11.0122649Z       [33m~[0m[0m private_dns_zone_group {
+2025-10-15T17:58:11.0123386Z           [33m~[0m[0m id                   = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Network/privateEndpoints/dev-priv-nic-tax-uksouth-0001/privateDnsZoneGroups/key-vault-dns-zone-group" -> (known after apply)
+2025-10-15T17:58:11.0123894Z             name                 = "key-vault-dns-zone-group"
+2025-10-15T17:58:11.0124554Z             [90m# (1 unchanged attribute hidden)[0m[0m
+2025-10-15T17:58:11.0124795Z         }
+2025-10-15T17:58:11.0124869Z 
+2025-10-15T17:58:11.0125189Z       [33m~[0m[0m private_service_connection {
+2025-10-15T17:58:11.0125777Z           [33m~[0m[0m name                              = "dev-priv-nic-tax-uksouth-0001-svc-connection" [33m->[0m[0m "d3-priv-nic-kv-pagero-uksouth-0001-svc" [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0126283Z           [33m~[0m[0m private_ip_address                = "10.0.64.21" -> (known after apply)
+2025-10-15T17:58:11.0126648Z             [90m# (5 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0126862Z         }
+2025-10-15T17:58:11.0127044Z     }
+2025-10-15T17:58:11.0127122Z 
+2025-10-15T17:58:11.0127590Z [1m  # module.Key_Vaults["kvtaxukspagero"].azurerm_role_assignment.role_assignment_spn_key_vault_administrator[0m must be [1m[31mreplaced[0m
+2025-10-15T17:58:11.0128287Z [0m[31m-[0m/[32m+[0m[0m resource "azurerm_role_assignment" "role_assignment_spn_key_vault_administrator" {
+2025-10-15T17:58:11.0129165Z       [33m~[0m[0m id                                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.KeyVault/vaults/d3-kvtaxukspagero/providers/Microsoft.Authorization/roleAssignments/fb12b147-e34a-b0ee-e749-bfee630998af" -> (known after apply)
+2025-10-15T17:58:11.0129842Z       [33m~[0m[0m name                                   = "fb12b147-e34a-b0ee-e749-bfee630998af" -> (known after apply)
+2025-10-15T17:58:11.0130452Z       [33m~[0m[0m principal_id                           = "9bcf1bd1-59a7-4b70-a5a2-52931d9238d8" [33m->[0m[0m "a275c283-41dc-482e-9aa7-366964c4a92e" [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0130971Z       [33m~[0m[0m principal_type                         = "ServicePrincipal" -> (known after apply)
+2025-10-15T17:58:11.0131650Z       [33m~[0m[0m role_definition_id                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleDefinitions/00482a5a-887f-4fb3-b363-3b7fe8e74483" -> (known after apply)
+2025-10-15T17:58:11.0132193Z       [32m+[0m[0m skip_service_principal_aad_check       = (known after apply)
+2025-10-15T17:58:11.0132557Z         [90m# (6 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0132779Z     }
+2025-10-15T17:58:11.0132846Z 
+2025-10-15T17:58:11.0133323Z [1m  # module.Key_Vaults["kvtaxukspagero"].azurerm_role_assignment.role_assignment_spn_key_vault_secrets_officer[0m must be [1m[31mreplaced[0m
+2025-10-15T17:58:11.0133861Z [0m[31m-[0m/[32m+[0m[0m resource "azurerm_role_assignment" "role_assignment_spn_key_vault_secrets_officer" {
+2025-10-15T17:58:11.0134780Z       [33m~[0m[0m id                                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.KeyVault/vaults/d3-kvtaxukspagero/providers/Microsoft.Authorization/roleAssignments/9efec8ea-0222-5a96-cd70-08e5d04af97a" -> (known after apply)
+2025-10-15T17:58:11.0135456Z       [33m~[0m[0m name                                   = "9efec8ea-0222-5a96-cd70-08e5d04af97a" -> (known after apply)
+2025-10-15T17:58:11.0136020Z       [33m~[0m[0m principal_id                           = "9bcf1bd1-59a7-4b70-a5a2-52931d9238d8" [33m->[0m[0m "a275c283-41dc-482e-9aa7-366964c4a92e" [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0136508Z       [33m~[0m[0m principal_type                         = "ServicePrincipal" -> (known after apply)
+2025-10-15T17:58:11.0137048Z       [33m~[0m[0m role_definition_id                     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/providers/Microsoft.Authorization/roleDefinitions/b86a8fe4-44ce-4948-aee5-eccb2c155cd7" -> (known after apply)
+2025-10-15T17:58:11.0137495Z       [32m+[0m[0m skip_service_principal_aad_check       = (known after apply)
+2025-10-15T17:58:11.0137786Z         [90m# (6 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0137965Z     }
+2025-10-15T17:58:11.0138020Z 
+2025-10-15T17:58:11.0138377Z [1m  # module.app_services["amexpagero"].azurerm_app_service_virtual_network_swift_connection.vnet_integration[0][0m will be created
+2025-10-15T17:58:11.0138801Z [0m  [32m+[0m[0m resource "azurerm_app_service_virtual_network_swift_connection" "vnet_integration" {
+2025-10-15T17:58:11.0139125Z       [32m+[0m[0m app_service_id = (known after apply)
+2025-10-15T17:58:11.0139394Z       [32m+[0m[0m id             = (known after apply)
+2025-10-15T17:58:11.0139678Z       [32m+[0m[0m subnet_id      = (known after apply)
+2025-10-15T17:58:11.0139895Z     }
+2025-10-15T17:58:11.0139971Z 
+2025-10-15T17:58:11.0140359Z [1m  # module.app_services["amexpagero"].azurerm_linux_web_app.app_service[0m will be created
+2025-10-15T17:58:11.0140886Z [0m  [32m+[0m[0m resource "azurerm_linux_web_app" "app_service" {
+2025-10-15T17:58:11.0141271Z       [32m+[0m[0m app_settings                                   = (known after apply)
+2025-10-15T17:58:11.0141643Z       [32m+[0m[0m client_affinity_enabled                        = false
+2025-10-15T17:58:11.0141989Z       [32m+[0m[0m client_certificate_enabled                     = false
+2025-10-15T17:58:11.0142323Z       [32m+[0m[0m client_certificate_mode                        = "Required"
+2025-10-15T17:58:11.0142681Z       [32m+[0m[0m custom_domain_verification_id                  = (sensitive value)
+2025-10-15T17:58:11.0143087Z       [32m+[0m[0m default_hostname                               = (known after apply)
+2025-10-15T17:58:11.0143428Z       [32m+[0m[0m enabled                                        = true
+2025-10-15T17:58:11.0143789Z       [32m+[0m[0m ftp_publish_basic_authentication_enabled       = true
+2025-10-15T17:58:11.0144466Z       [32m+[0m[0m hosting_environment_id                         = (known after apply)
+2025-10-15T17:58:11.0144843Z       [32m+[0m[0m https_only                                     = true
+2025-10-15T17:58:11.0145201Z       [32m+[0m[0m id                                             = (known after apply)
+2025-10-15T17:58:11.0145573Z       [32m+[0m[0m key_vault_reference_identity_id                = (known after apply)
+2025-10-15T17:58:11.0145940Z       [32m+[0m[0m kind                                           = (known after apply)
+2025-10-15T17:58:11.0146332Z       [32m+[0m[0m location                                       = "uksouth"
+2025-10-15T17:58:11.0146711Z       [32m+[0m[0m name                                           = "d3-app-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0147115Z       [32m+[0m[0m outbound_ip_address_list                       = (known after apply)
+2025-10-15T17:58:11.0148075Z       [32m+[0m[0m outbound_ip_addresses                          = (known after apply)
+2025-10-15T17:58:11.0148499Z       [32m+[0m[0m possible_outbound_ip_address_list              = (known after apply)
+2025-10-15T17:58:11.0148943Z       [32m+[0m[0m possible_outbound_ip_addresses                 = (known after apply)
+2025-10-15T17:58:11.0149430Z       [32m+[0m[0m public_network_access_enabled                  = true
+2025-10-15T17:58:11.0149880Z       [32m+[0m[0m resource_group_name                            = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0150273Z       [32m+[0m[0m service_plan_id                                = (known after apply)
+2025-10-15T17:58:11.0150652Z       [32m+[0m[0m site_credential                                = (sensitive value)
+2025-10-15T17:58:11.0151025Z       [32m+[0m[0m tags                                           = {
+2025-10-15T17:58:11.0151347Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0151710Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0152130Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0152534Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0152751Z         }
+2025-10-15T17:58:11.0153106Z       [32m+[0m[0m webdeploy_publish_basic_authentication_enabled = true
+2025-10-15T17:58:11.0153521Z       [32m+[0m[0m zip_deploy_file                                = (known after apply)
+2025-10-15T17:58:11.0153659Z 
+2025-10-15T17:58:11.0153945Z       [32m+[0m[0m identity {
+2025-10-15T17:58:11.0154291Z           [32m+[0m[0m principal_id = (known after apply)
+2025-10-15T17:58:11.0154667Z           [32m+[0m[0m tenant_id    = (known after apply)
+2025-10-15T17:58:11.0155034Z           [32m+[0m[0m type         = "SystemAssigned"
+2025-10-15T17:58:11.0155271Z         }
+2025-10-15T17:58:11.0155344Z 
+2025-10-15T17:58:11.0155631Z       [32m+[0m[0m site_config {
+2025-10-15T17:58:11.0155989Z           [32m+[0m[0m always_on                               = false
+2025-10-15T17:58:11.0156721Z           [32m+[0m[0m container_registry_use_managed_identity = false
+2025-10-15T17:58:11.0157108Z           [32m+[0m[0m default_documents                       = (known after apply)
+2025-10-15T17:58:11.0157511Z           [32m+[0m[0m detailed_error_logging_enabled          = (known after apply)
+2025-10-15T17:58:11.0157905Z           [32m+[0m[0m ftps_state                              = "FtpsOnly"
+2025-10-15T17:58:11.0158241Z           [32m+[0m[0m http2_enabled                           = true
+2025-10-15T17:58:11.0158601Z           [32m+[0m[0m ip_restriction_default_action           = "Allow"
+2025-10-15T17:58:11.0158985Z           [32m+[0m[0m linux_fx_version                        = (known after apply)
+2025-10-15T17:58:11.0159364Z           [32m+[0m[0m load_balancing_mode                     = "LeastRequests"
+2025-10-15T17:58:11.0159727Z           [32m+[0m[0m local_mysql_enabled                     = false
+2025-10-15T17:58:11.0160103Z           [32m+[0m[0m managed_pipeline_mode                   = "Integrated"
+2025-10-15T17:58:11.0160460Z           [32m+[0m[0m minimum_tls_version                     = "1.2"
+2025-10-15T17:58:11.0160823Z           [32m+[0m[0m remote_debugging_enabled                = false
+2025-10-15T17:58:11.0161221Z           [32m+[0m[0m remote_debugging_version                = (known after apply)
+2025-10-15T17:58:11.0161615Z           [32m+[0m[0m scm_ip_restriction_default_action       = "Allow"
+2025-10-15T17:58:11.0161982Z           [32m+[0m[0m scm_minimum_tls_version                 = "1.2"
+2025-10-15T17:58:11.0162368Z           [32m+[0m[0m scm_type                                = (known after apply)
+2025-10-15T17:58:11.0162738Z           [32m+[0m[0m scm_use_main_ip_restriction             = false
+2025-10-15T17:58:11.0163094Z           [32m+[0m[0m use_32_bit_worker                       = true
+2025-10-15T17:58:11.0163616Z           [32m+[0m[0m vnet_route_all_enabled                  = false
+2025-10-15T17:58:11.0163980Z           [32m+[0m[0m websockets_enabled                      = false
+2025-10-15T17:58:11.0164353Z           [32m+[0m[0m worker_count                            = (known after apply)
+2025-10-15T17:58:11.0164812Z 
+2025-10-15T17:58:11.0165113Z           [32m+[0m[0m application_stack {
+2025-10-15T17:58:11.0165444Z               [32m+[0m[0m python_version = "3.10"
+2025-10-15T17:58:11.0165664Z             }
+2025-10-15T17:58:11.0165856Z         }
+2025-10-15T17:58:11.0166047Z     }
+2025-10-15T17:58:11.0166118Z 
+2025-10-15T17:58:11.0166546Z [1m  # module.app_services["amexpagero"].azurerm_role_assignment.keyvault_secrets_user[0m will be created
+2025-10-15T17:58:11.0167003Z [0m  [32m+[0m[0m resource "azurerm_role_assignment" "keyvault_secrets_user" {
+2025-10-15T17:58:11.0167410Z       [32m+[0m[0m id                               = (known after apply)
+2025-10-15T17:58:11.0167793Z       [32m+[0m[0m name                             = (known after apply)
+2025-10-15T17:58:11.0168096Z       [32m+[0m[0m principal_id                     = (known after apply)
+2025-10-15T17:58:11.0168435Z       [32m+[0m[0m principal_type                   = (known after apply)
+2025-10-15T17:58:11.0168824Z       [32m+[0m[0m role_definition_id               = (known after apply)
+2025-10-15T17:58:11.0169289Z       [32m+[0m[0m role_definition_name             = "Key Vault Secrets User"
+2025-10-15T17:58:11.0169662Z       [32m+[0m[0m scope                            = (known after apply)
+2025-10-15T17:58:11.0170036Z       [32m+[0m[0m skip_service_principal_aad_check = (known after apply)
+2025-10-15T17:58:11.0170273Z     }
+2025-10-15T17:58:11.0170349Z 
+2025-10-15T17:58:11.0170734Z [1m  # module.app_services["amexpagero"].azurerm_service_plan.app_service_plan[0m will be created
+2025-10-15T17:58:11.0171159Z [0m  [32m+[0m[0m resource "azurerm_service_plan" "app_service_plan" {
+2025-10-15T17:58:11.0171525Z       [32m+[0m[0m id                           = (known after apply)
+2025-10-15T17:58:11.0172030Z       [32m+[0m[0m kind                         = (known after apply)
+2025-10-15T17:58:11.0172387Z       [32m+[0m[0m location                     = "uksouth"
+2025-10-15T17:58:11.0172759Z       [32m+[0m[0m maximum_elastic_worker_count = (known after apply)
+2025-10-15T17:58:11.0173167Z       [32m+[0m[0m name                         = "d3-plan-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0173524Z       [32m+[0m[0m os_type                      = "Linux"
+2025-10-15T17:58:11.0173878Z       [32m+[0m[0m per_site_scaling_enabled     = false
+2025-10-15T17:58:11.0174374Z       [32m+[0m[0m reserved                     = (known after apply)
+2025-10-15T17:58:11.0174789Z       [32m+[0m[0m resource_group_name          = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0175181Z       [32m+[0m[0m sku_name                     = "B1"
+2025-10-15T17:58:11.0175538Z       [32m+[0m[0m tags                         = {
+2025-10-15T17:58:11.0175865Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0176207Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0176618Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0177018Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0177250Z         }
+2025-10-15T17:58:11.0177605Z       [32m+[0m[0m worker_count                 = (known after apply)
+2025-10-15T17:58:11.0177841Z     }
+2025-10-15T17:58:11.0177909Z 
+2025-10-15T17:58:11.0178317Z [1m  # module.app_services["amexpagero"].time_sleep.wait_for_identity[0m will be created
+2025-10-15T17:58:11.0178729Z [0m  [32m+[0m[0m resource "time_sleep" "wait_for_identity" {
+2025-10-15T17:58:11.0179094Z       [32m+[0m[0m create_duration = "30s"
+2025-10-15T17:58:11.0179451Z       [32m+[0m[0m id              = (known after apply)
+2025-10-15T17:58:11.0179821Z     }
+2025-10-15T17:58:11.0179895Z 
+2025-10-15T17:58:11.0180337Z [1m  # module.resource_groups["rg-tax-uksouth-alteryx"].azurerm_resource_group.resource_group[0m will be updated in-place
+2025-10-15T17:58:11.0180797Z [0m  [33m~[0m[0m resource "azurerm_resource_group" "resource_group" {
+2025-10-15T17:58:11.0181173Z         id         = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx"
+2025-10-15T17:58:11.0181497Z         name       = "d3-rg-tax-uksouth-alteryx"
+2025-10-15T17:58:11.0181813Z       [33m~[0m[0m tags       = {
+2025-10-15T17:58:11.0182031Z             "Application"    = "Tax"
+2025-10-15T17:58:11.0182278Z             "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0182678Z           [31m-[0m[0m "Environment"    = "Development" [90m-> null[0m[0m
+2025-10-15T17:58:11.0182972Z             "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0183242Z             "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0183457Z         }
+2025-10-15T17:58:11.0183797Z         [90m# (2 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0184033Z     }
+2025-10-15T17:58:11.0184106Z 
+2025-10-15T17:58:11.0184574Z [1m  # module.resource_groups["rg-tax-uksouth-network"].azurerm_resource_group.resource_group[0m will be updated in-place
+2025-10-15T17:58:11.0185498Z [0m  [33m~[0m[0m resource "azurerm_resource_group" "resource_group" {
+2025-10-15T17:58:11.0185858Z         id         = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network"
+2025-10-15T17:58:11.0186168Z         name       = "d3-rg-tax-uksouth-network"
+2025-10-15T17:58:11.0186459Z       [33m~[0m[0m tags       = {
+2025-10-15T17:58:11.0186666Z             "Application"    = "Tax"
+2025-10-15T17:58:11.0186908Z             "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0187259Z           [31m-[0m[0m "Environment"    = "Development" [90m-> null[0m[0m
+2025-10-15T17:58:11.0187540Z             "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0187905Z             "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0188105Z         }
+2025-10-15T17:58:11.0188407Z         [90m# (2 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0188613Z     }
+2025-10-15T17:58:11.0188679Z 
+2025-10-15T17:58:11.0189086Z [1m  # module.resource_groups["rg-tax-uksouth-pagero"].azurerm_resource_group.resource_group[0m will be updated in-place
+2025-10-15T17:58:11.0189499Z [0m  [33m~[0m[0m resource "azurerm_resource_group" "resource_group" {
+2025-10-15T17:58:11.0189838Z         id         = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero"
+2025-10-15T17:58:11.0190158Z         name       = "d3-rg-tax-uksouth-pagero"
+2025-10-15T17:58:11.0190481Z       [33m~[0m[0m tags       = {
+2025-10-15T17:58:11.0190710Z             "Application"    = "Tax"
+2025-10-15T17:58:11.0190968Z             "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0191382Z           [31m-[0m[0m "Environment"    = "Development" [90m-> null[0m[0m
+2025-10-15T17:58:11.0191675Z             "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0191941Z             "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0192157Z         }
+2025-10-15T17:58:11.0192478Z         [90m# (2 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0192688Z     }
+2025-10-15T17:58:11.0192751Z 
+2025-10-15T17:58:11.0193151Z [1m  # module.resource_groups["rg-tax-uksouth-pageroapi"].azurerm_resource_group.resource_group[0m will be created
+2025-10-15T17:58:11.0193605Z [0m  [32m+[0m[0m resource "azurerm_resource_group" "resource_group" {
+2025-10-15T17:58:11.0193961Z       [32m+[0m[0m id       = (known after apply)
+2025-10-15T17:58:11.0194311Z       [32m+[0m[0m location = "uksouth"
+2025-10-15T17:58:11.0194638Z       [32m+[0m[0m name     = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0195117Z       [32m+[0m[0m tags     = {
+2025-10-15T17:58:11.0195452Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0196306Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0196831Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0197248Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0197481Z         }
+2025-10-15T17:58:11.0197658Z     }
+2025-10-15T17:58:11.0197725Z 
+2025-10-15T17:58:11.0198172Z [1m  # module.resource_groups["rg-tax-ukwest-alteryx"].azurerm_resource_group.resource_group[0m will be updated in-place
+2025-10-15T17:58:11.0198639Z [0m  [33m~[0m[0m resource "azurerm_resource_group" "resource_group" {
+2025-10-15T17:58:11.0198981Z         id         = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-alteryx"
+2025-10-15T17:58:11.0199297Z         name       = "d3-rg-tax-ukwest-alteryx"
+2025-10-15T17:58:11.0199617Z       [33m~[0m[0m tags       = {
+2025-10-15T17:58:11.0199845Z             "Application"    = "Tax"
+2025-10-15T17:58:11.0200084Z             "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0200460Z           [31m-[0m[0m "Environment"    = "Development" [90m-> null[0m[0m
+2025-10-15T17:58:11.0200750Z             "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0201016Z             "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0201214Z         }
+2025-10-15T17:58:11.0201525Z         [90m# (2 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0201735Z     }
+2025-10-15T17:58:11.0201804Z 
+2025-10-15T17:58:11.0202255Z [1m  # module.resource_groups["rg-tax-ukwest-network"].azurerm_resource_group.resource_group[0m will be updated in-place
+2025-10-15T17:58:11.0202758Z [0m  [33m~[0m[0m resource "azurerm_resource_group" "resource_group" {
+2025-10-15T17:58:11.0203129Z         id         = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network"
+2025-10-15T17:58:11.0203480Z         name       = "d3-rg-tax-ukwest-network"
+2025-10-15T17:58:11.0203951Z       [33m~[0m[0m tags       = {
+2025-10-15T17:58:11.0204173Z             "Application"    = "Tax"
+2025-10-15T17:58:11.0204413Z             "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0204795Z           [31m-[0m[0m "Environment"    = "Development" [90m-> null[0m[0m
+2025-10-15T17:58:11.0205082Z             "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0205330Z             "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0205540Z         }
+2025-10-15T17:58:11.0205863Z         [90m# (2 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0206086Z     }
+2025-10-15T17:58:11.0206155Z 
+2025-10-15T17:58:11.0206591Z [1m  # module.resource_groups["rg-tax-ukwest-pagero"].azurerm_resource_group.resource_group[0m will be updated in-place
+2025-10-15T17:58:11.0207054Z [0m  [33m~[0m[0m resource "azurerm_resource_group" "resource_group" {
+2025-10-15T17:58:11.0207409Z         id         = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-pagero"
+2025-10-15T17:58:11.0207730Z         name       = "d3-rg-tax-ukwest-pagero"
+2025-10-15T17:58:11.0208050Z       [33m~[0m[0m tags       = {
+2025-10-15T17:58:11.0208262Z             "Application"    = "Tax"
+2025-10-15T17:58:11.0208502Z             "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0208908Z           [31m-[0m[0m "Environment"    = "Development" [90m-> null[0m[0m
+2025-10-15T17:58:11.0209199Z             "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0209473Z             "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0209666Z         }
+2025-10-15T17:58:11.0209986Z         [90m# (2 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0210208Z     }
+2025-10-15T17:58:11.0210283Z 
+2025-10-15T17:58:11.0210701Z [1m  # module.resource_groups["rg-tax-ukwest-pageroapi"].azurerm_resource_group.resource_group[0m will be created
+2025-10-15T17:58:11.0211325Z [0m  [32m+[0m[0m resource "azurerm_resource_group" "resource_group" {
+2025-10-15T17:58:11.0211687Z       [32m+[0m[0m id       = (known after apply)
+2025-10-15T17:58:11.0212008Z       [32m+[0m[0m location = "ukwest"
+2025-10-15T17:58:11.0212355Z       [32m+[0m[0m name     = "d3-rg-tax-ukwest-pageroapi"
+2025-10-15T17:58:11.0212650Z       [32m+[0m[0m tags     = {
+2025-10-15T17:58:11.0212978Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0213326Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0213727Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0214122Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0214335Z         }
+2025-10-15T17:58:11.0214542Z     }
+2025-10-15T17:58:11.0214601Z 
+2025-10-15T17:58:11.0215057Z [1m  # module.service_buses["amexpagero"].azurerm_key_vault_secret.service_bus_connection_string[0m will be created
+2025-10-15T17:58:11.0215895Z [0m  [32m+[0m[0m resource "azurerm_key_vault_secret" "service_bus_connection_string" {
+2025-10-15T17:58:11.0216324Z       [32m+[0m[0m id                      = (known after apply)
+2025-10-15T17:58:11.0217280Z       [32m+[0m[0m key_vault_id            = (known after apply)
+2025-10-15T17:58:11.0217722Z       [32m+[0m[0m name                    = "d3-sb-tax-pageroapi-uksouth-0001-connection-string"
+2025-10-15T17:58:11.0218101Z       [32m+[0m[0m resource_id             = (known after apply)
+2025-10-15T17:58:11.0218466Z       [32m+[0m[0m resource_versionless_id = (known after apply)
+2025-10-15T17:58:11.0218825Z       [32m+[0m[0m value                   = (sensitive value)
+2025-10-15T17:58:11.0219171Z       [32m+[0m[0m version                 = (known after apply)
+2025-10-15T17:58:11.0219552Z       [32m+[0m[0m versionless_id          = (known after apply)
+2025-10-15T17:58:11.0219789Z     }
+2025-10-15T17:58:11.0219861Z 
+2025-10-15T17:58:11.0220458Z [1m  # module.service_buses["amexpagero"].azurerm_servicebus_namespace.service_bus[0m will be created
+2025-10-15T17:58:11.0221267Z [0m  [32m+[0m[0m resource "azurerm_servicebus_namespace" "service_bus" {
+2025-10-15T17:58:11.0221581Z       [32m+[0m[0m capacity                            = 0
+2025-10-15T17:58:11.0221919Z       [32m+[0m[0m default_primary_connection_string   = (sensitive value)
+2025-10-15T17:58:11.0222335Z       [32m+[0m[0m default_primary_key                 = (sensitive value)
+2025-10-15T17:58:11.0223048Z       [32m+[0m[0m default_secondary_connection_string = (sensitive value)
+2025-10-15T17:58:11.0223456Z       [32m+[0m[0m default_secondary_key               = (sensitive value)
+2025-10-15T17:58:11.0223837Z       [32m+[0m[0m endpoint                            = (known after apply)
+2025-10-15T17:58:11.0224728Z       [32m+[0m[0m id                                  = (known after apply)
+2025-10-15T17:58:11.0225131Z       [32m+[0m[0m local_auth_enabled                  = true
+2025-10-15T17:58:11.0225671Z       [32m+[0m[0m location                            = "uksouth"
+2025-10-15T17:58:11.0226029Z       [32m+[0m[0m minimum_tls_version                 = "1.2"
+2025-10-15T17:58:11.0226424Z       [32m+[0m[0m name                                = "d3-sb-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0226791Z       [32m+[0m[0m premium_messaging_partitions        = 0
+2025-10-15T17:58:11.0227176Z       [32m+[0m[0m public_network_access_enabled       = true
+2025-10-15T17:58:11.0227584Z       [32m+[0m[0m resource_group_name                 = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0227947Z       [32m+[0m[0m sku                                 = "Standard"
+2025-10-15T17:58:11.0228265Z       [32m+[0m[0m tags                                = {
+2025-10-15T17:58:11.0228580Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0228942Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0230553Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0231212Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0231441Z         }
+2025-10-15T17:58:11.0231520Z 
+2025-10-15T17:58:11.0231825Z       [32m+[0m[0m network_rule_set (known after apply)
+2025-10-15T17:58:11.0232049Z     }
+2025-10-15T17:58:11.0232123Z 
+2025-10-15T17:58:11.0232532Z [1m  # module.service_buses["amexpagero"].azurerm_servicebus_queue.queues["invoice-queue"][0m will be created
+2025-10-15T17:58:11.0232950Z [0m  [32m+[0m[0m resource "azurerm_servicebus_queue" "queues" {
+2025-10-15T17:58:11.0233346Z       [32m+[0m[0m auto_delete_on_idle                     = (known after apply)
+2025-10-15T17:58:11.0233748Z       [32m+[0m[0m batched_operations_enabled              = true
+2025-10-15T17:58:11.0234720Z       [32m+[0m[0m dead_lettering_on_message_expiration    = false
+2025-10-15T17:58:11.0235115Z       [32m+[0m[0m default_message_ttl                     = "P14D"
+2025-10-15T17:58:11.0235499Z       [32m+[0m[0m duplicate_detection_history_time_window = "PT10M"
+2025-10-15T17:58:11.0235870Z       [32m+[0m[0m express_enabled                         = false
+2025-10-15T17:58:11.0236236Z       [32m+[0m[0m id                                      = (known after apply)
+2025-10-15T17:58:11.0236594Z       [32m+[0m[0m lock_duration                           = "PT1M"
+2025-10-15T17:58:11.0236941Z       [32m+[0m[0m max_delivery_count                      = 10
+2025-10-15T17:58:11.0237733Z       [32m+[0m[0m max_message_size_in_kilobytes           = (known after apply)
+2025-10-15T17:58:11.0238132Z       [32m+[0m[0m max_size_in_megabytes                   = 1024
+2025-10-15T17:58:11.0238503Z       [32m+[0m[0m name                                    = "invoice-processing"
+2025-10-15T17:58:11.0238872Z       [32m+[0m[0m namespace_id                            = (known after apply)
+2025-10-15T17:58:11.0239795Z       [32m+[0m[0m partitioning_enabled                    = false
+2025-10-15T17:58:11.0240533Z       [32m+[0m[0m requires_duplicate_detection            = false
+2025-10-15T17:58:11.0240895Z       [32m+[0m[0m requires_session                        = false
+2025-10-15T17:58:11.0241227Z       [32m+[0m[0m status                                  = "Active"
+2025-10-15T17:58:11.0241424Z     }
+2025-10-15T17:58:11.0241492Z 
+2025-10-15T17:58:11.0241918Z [1m  # module.service_buses["amexpagero"].azurerm_servicebus_subscription.subscriptions["invoice-sub"][0m will be created
+2025-10-15T17:58:11.0242376Z [0m  [32m+[0m[0m resource "azurerm_servicebus_subscription" "subscriptions" {
+2025-10-15T17:58:11.0242802Z       [32m+[0m[0m auto_delete_on_idle                       = "P10675199DT2H48M5.4775807S"
+2025-10-15T17:58:11.0243213Z       [32m+[0m[0m client_scoped_subscription_enabled        = false
+2025-10-15T17:58:11.0244084Z       [32m+[0m[0m dead_lettering_on_filter_evaluation_error = true
+2025-10-15T17:58:11.0244504Z       [32m+[0m[0m dead_lettering_on_message_expiration      = false
+2025-10-15T17:58:11.0244920Z       [32m+[0m[0m default_message_ttl                       = "P10675199DT2H48M5.4775807S"
+2025-10-15T17:58:11.0245621Z       [32m+[0m[0m id                                        = (known after apply)
+2025-10-15T17:58:11.0246017Z       [32m+[0m[0m lock_duration                             = "PT1M"
+2025-10-15T17:58:11.0246380Z       [32m+[0m[0m max_delivery_count                        = 10
+2025-10-15T17:58:11.0246749Z       [32m+[0m[0m name                                      = "invoice-subscription"
+2025-10-15T17:58:11.0247102Z       [32m+[0m[0m requires_session                          = false
+2025-10-15T17:58:11.0247452Z       [32m+[0m[0m status                                    = "Active"
+2025-10-15T17:58:11.0247810Z       [32m+[0m[0m topic_id                                  = (known after apply)
+2025-10-15T17:58:11.0248194Z     }
+2025-10-15T17:58:11.0248269Z 
+2025-10-15T17:58:11.0249138Z [1m  # module.service_buses["amexpagero"].azurerm_servicebus_topic.topics["events-topic"][0m will be created
+2025-10-15T17:58:11.0249676Z [0m  [32m+[0m[0m resource "azurerm_servicebus_topic" "topics" {
+2025-10-15T17:58:11.0250117Z       [32m+[0m[0m auto_delete_on_idle                     = "P10675199DT2H48M5.4775807S"
+2025-10-15T17:58:11.0250501Z       [32m+[0m[0m default_message_ttl                     = "P14D"
+2025-10-15T17:58:11.0250884Z       [32m+[0m[0m duplicate_detection_history_time_window = "PT10M"
+2025-10-15T17:58:11.0251260Z       [32m+[0m[0m id                                      = (known after apply)
+2025-10-15T17:58:11.0251660Z       [32m+[0m[0m max_message_size_in_kilobytes           = (known after apply)
+2025-10-15T17:58:11.0252039Z       [32m+[0m[0m max_size_in_megabytes                   = 1024
+2025-10-15T17:58:11.0252393Z       [32m+[0m[0m name                                    = "amexpagero-events"
+2025-10-15T17:58:11.0252776Z       [32m+[0m[0m namespace_id                            = (known after apply)
+2025-10-15T17:58:11.0253128Z       [32m+[0m[0m status                                  = "Active"
+2025-10-15T17:58:11.0253333Z     }
+2025-10-15T17:58:11.0253403Z 
+2025-10-15T17:58:11.0253835Z [1m  # module.sql_servers["amexpagero"].azurerm_key_vault_secret.sql_connection_strings["primary-db"][0m will be created
+2025-10-15T17:58:11.0254340Z [0m  [32m+[0m[0m resource "azurerm_key_vault_secret" "sql_connection_strings" {
+2025-10-15T17:58:11.0254724Z       [32m+[0m[0m id                      = (known after apply)
+2025-10-15T17:58:11.0255080Z       [32m+[0m[0m key_vault_id            = (known after apply)
+2025-10-15T17:58:11.0255461Z       [32m+[0m[0m name                    = "sql-connection-string-primary-db"
+2025-10-15T17:58:11.0255828Z       [32m+[0m[0m resource_id             = (known after apply)
+2025-10-15T17:58:11.0256231Z       [32m+[0m[0m resource_versionless_id = (known after apply)
+2025-10-15T17:58:11.0256775Z       [32m+[0m[0m value                   = (sensitive value)
+2025-10-15T17:58:11.0257118Z       [32m+[0m[0m version                 = (known after apply)
+2025-10-15T17:58:11.0257483Z       [32m+[0m[0m versionless_id          = (known after apply)
+2025-10-15T17:58:11.0257726Z     }
+2025-10-15T17:58:11.0257794Z 
+2025-10-15T17:58:11.0258234Z [1m  # module.sql_servers["amexpagero"].azurerm_key_vault_secret.sql_connection_strings["secondary-db"][0m will be created
+2025-10-15T17:58:11.0258725Z [0m  [32m+[0m[0m resource "azurerm_key_vault_secret" "sql_connection_strings" {
+2025-10-15T17:58:11.0259119Z       [32m+[0m[0m id                      = (known after apply)
+2025-10-15T17:58:11.0259468Z       [32m+[0m[0m key_vault_id            = (known after apply)
+2025-10-15T17:58:11.0259812Z       [32m+[0m[0m name                    = "sql-connection-string-secondary-db"
+2025-10-15T17:58:11.0260186Z       [32m+[0m[0m resource_id             = (known after apply)
+2025-10-15T17:58:11.0260555Z       [32m+[0m[0m resource_versionless_id = (known after apply)
+2025-10-15T17:58:11.0260919Z       [32m+[0m[0m value                   = (sensitive value)
+2025-10-15T17:58:11.0261272Z       [32m+[0m[0m version                 = (known after apply)
+2025-10-15T17:58:11.0261624Z       [32m+[0m[0m versionless_id          = (known after apply)
+2025-10-15T17:58:11.0261855Z     }
+2025-10-15T17:58:11.0261938Z 
+2025-10-15T17:58:11.0262355Z [1m  # module.sql_servers["amexpagero"].azurerm_key_vault_secret.sql_failover_listener[0][0m will be created
+2025-10-15T17:58:11.0262788Z [0m  [32m+[0m[0m resource "azurerm_key_vault_secret" "sql_failover_listener" {
+2025-10-15T17:58:11.0263183Z       [32m+[0m[0m id                      = (known after apply)
+2025-10-15T17:58:11.0263551Z       [32m+[0m[0m key_vault_id            = (known after apply)
+2025-10-15T17:58:11.0263918Z       [32m+[0m[0m name                    = "sql-failover-listener-endpoint"
+2025-10-15T17:58:11.0264450Z       [32m+[0m[0m resource_id             = (known after apply)
+2025-10-15T17:58:11.0264826Z       [32m+[0m[0m resource_versionless_id = (known after apply)
+2025-10-15T17:58:11.0265206Z       [32m+[0m[0m value                   = (sensitive value)
+2025-10-15T17:58:11.0265548Z       [32m+[0m[0m version                 = (known after apply)
+2025-10-15T17:58:11.0265903Z       [32m+[0m[0m versionless_id          = (known after apply)
+2025-10-15T17:58:11.0266120Z     }
+2025-10-15T17:58:11.0266195Z 
+2025-10-15T17:58:11.0266598Z [1m  # module.sql_servers["amexpagero"].azurerm_mssql_database.sql_databases["primary-db"][0m will be created
+2025-10-15T17:58:11.0267028Z [0m  [32m+[0m[0m resource "azurerm_mssql_database" "sql_databases" {
+2025-10-15T17:58:11.0267451Z       [32m+[0m[0m auto_pause_delay_in_minutes                                = (known after apply)
+2025-10-15T17:58:11.0267867Z       [32m+[0m[0m collation                                                  = (known after apply)
+2025-10-15T17:58:11.0268262Z       [32m+[0m[0m create_mode                                                = "Default"
+2025-10-15T17:58:11.0269788Z       [32m+[0m[0m creation_source_database_id                                = (known after apply)
+2025-10-15T17:58:11.0270218Z       [32m+[0m[0m enclave_type                                               = (known after apply)
+2025-10-15T17:58:11.0270587Z       [32m+[0m[0m geo_backup_enabled                                         = true
+2025-10-15T17:58:11.0270969Z       [32m+[0m[0m id                                                         = (known after apply)
+2025-10-15T17:58:11.0271343Z       [32m+[0m[0m ledger_enabled                                             = (known after apply)
+2025-10-15T17:58:11.0271728Z       [32m+[0m[0m license_type                                               = (known after apply)
+2025-10-15T17:58:11.0272142Z       [32m+[0m[0m maintenance_configuration_name                             = (known after apply)
+2025-10-15T17:58:11.0272675Z       [32m+[0m[0m max_size_gb                                                = 32
+2025-10-15T17:58:11.0273043Z       [32m+[0m[0m min_capacity                                               = (known after apply)
+2025-10-15T17:58:11.0273448Z       [32m+[0m[0m name                                                       = "sqldb-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0273851Z       [32m+[0m[0m read_replica_count                                         = (known after apply)
+2025-10-15T17:58:11.0274245Z       [32m+[0m[0m read_scale                                                 = (known after apply)
+2025-10-15T17:58:11.0274639Z       [32m+[0m[0m restore_point_in_time                                      = (known after apply)
+2025-10-15T17:58:11.0275034Z       [32m+[0m[0m sample_name                                                = (known after apply)
+2025-10-15T17:58:11.0275432Z       [32m+[0m[0m secondary_type                                             = (known after apply)
+2025-10-15T17:58:11.0275826Z       [32m+[0m[0m server_id                                                  = (known after apply)
+2025-10-15T17:58:11.0276188Z       [32m+[0m[0m sku_name                                                   = "GP_Gen5_2"
+2025-10-15T17:58:11.0276542Z       [32m+[0m[0m storage_account_type                                       = "Geo"
+2025-10-15T17:58:11.0276885Z       [32m+[0m[0m tags                                                       = {
+2025-10-15T17:58:11.0277189Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0277543Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0277943Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0278332Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0278643Z         }
+2025-10-15T17:58:11.0279004Z       [32m+[0m[0m transparent_data_encryption_enabled                        = true
+2025-10-15T17:58:11.0279454Z       [32m+[0m[0m transparent_data_encryption_key_automatic_rotation_enabled = false
+2025-10-15T17:58:11.0279857Z       [32m+[0m[0m zone_redundant                                             = false
+2025-10-15T17:58:11.0279960Z 
+2025-10-15T17:58:11.0280405Z       [32m+[0m[0m long_term_retention_policy (known after apply)
+2025-10-15T17:58:11.0280520Z 
+2025-10-15T17:58:11.0280802Z       [32m+[0m[0m short_term_retention_policy (known after apply)
+2025-10-15T17:58:11.0280919Z 
+2025-10-15T17:58:11.0281198Z       [32m+[0m[0m threat_detection_policy (known after apply)
+2025-10-15T17:58:11.0281424Z     }
+2025-10-15T17:58:11.0281500Z 
+2025-10-15T17:58:11.0281907Z [1m  # module.sql_servers["amexpagero"].azurerm_mssql_database.sql_databases["secondary-db"][0m will be created
+2025-10-15T17:58:11.0282335Z [0m  [32m+[0m[0m resource "azurerm_mssql_database" "sql_databases" {
+2025-10-15T17:58:11.0282759Z       [32m+[0m[0m auto_pause_delay_in_minutes                                = (known after apply)
+2025-10-15T17:58:11.0283167Z       [32m+[0m[0m collation                                                  = (known after apply)
+2025-10-15T17:58:11.0283574Z       [32m+[0m[0m create_mode                                                = "Default"
+2025-10-15T17:58:11.0283954Z       [32m+[0m[0m creation_source_database_id                                = (known after apply)
+2025-10-15T17:58:11.0284339Z       [32m+[0m[0m enclave_type                                               = (known after apply)
+2025-10-15T17:58:11.0284703Z       [32m+[0m[0m geo_backup_enabled                                         = true
+2025-10-15T17:58:11.0285076Z       [32m+[0m[0m id                                                         = (known after apply)
+2025-10-15T17:58:11.0285451Z       [32m+[0m[0m ledger_enabled                                             = (known after apply)
+2025-10-15T17:58:11.0285974Z       [32m+[0m[0m license_type                                               = (known after apply)
+2025-10-15T17:58:11.0286365Z       [32m+[0m[0m maintenance_configuration_name                             = (known after apply)
+2025-10-15T17:58:11.0286732Z       [32m+[0m[0m max_size_gb                                                = 50
+2025-10-15T17:58:11.0287100Z       [32m+[0m[0m min_capacity                                               = (known after apply)
+2025-10-15T17:58:11.0287537Z       [32m+[0m[0m name                                                       = "sqldb-tax-pageroapi-analytics-uksouth-0001"
+2025-10-15T17:58:11.0287965Z       [32m+[0m[0m read_replica_count                                         = (known after apply)
+2025-10-15T17:58:11.0288386Z       [32m+[0m[0m read_scale                                                 = (known after apply)
+2025-10-15T17:58:11.0288785Z       [32m+[0m[0m restore_point_in_time                                      = (known after apply)
+2025-10-15T17:58:11.0289594Z       [32m+[0m[0m sample_name                                                = (known after apply)
+2025-10-15T17:58:11.0290628Z       [32m+[0m[0m secondary_type                                             = (known after apply)
+2025-10-15T17:58:11.0291047Z       [32m+[0m[0m server_id                                                  = (known after apply)
+2025-10-15T17:58:11.0291424Z       [32m+[0m[0m sku_name                                                   = "GP_Gen5_2"
+2025-10-15T17:58:11.0291796Z       [32m+[0m[0m storage_account_type                                       = "Geo"
+2025-10-15T17:58:11.0292530Z       [32m+[0m[0m tags                                                       = {
+2025-10-15T17:58:11.0292844Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0293213Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0293762Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0294153Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0294365Z         }
+2025-10-15T17:58:11.0294732Z       [32m+[0m[0m transparent_data_encryption_enabled                        = true
+2025-10-15T17:58:11.0295617Z       [32m+[0m[0m transparent_data_encryption_key_automatic_rotation_enabled = false
+2025-10-15T17:58:11.0296053Z       [32m+[0m[0m zone_redundant                                             = false
+2025-10-15T17:58:11.0296157Z 
+2025-10-15T17:58:11.0296487Z       [32m+[0m[0m long_term_retention_policy (known after apply)
+2025-10-15T17:58:11.0296622Z 
+2025-10-15T17:58:11.0296940Z       [32m+[0m[0m short_term_retention_policy (known after apply)
+2025-10-15T17:58:11.0297065Z 
+2025-10-15T17:58:11.0297352Z       [32m+[0m[0m threat_detection_policy (known after apply)
+2025-10-15T17:58:11.0297566Z     }
+2025-10-15T17:58:11.0297646Z 
+2025-10-15T17:58:11.0298010Z [1m  # module.sql_servers["amexpagero"].azurerm_mssql_failover_group.failover_group[0][0m will be created
+2025-10-15T17:58:11.0298427Z [0m  [32m+[0m[0m resource "azurerm_mssql_failover_group" "failover_group" {
+2025-10-15T17:58:11.0298783Z       [32m+[0m[0m databases                                 = (known after apply)
+2025-10-15T17:58:11.0299100Z       [32m+[0m[0m id                                        = (known after apply)
+2025-10-15T17:58:11.0299442Z       [32m+[0m[0m name                                      = "d3-sqlfg-tax-pageroapi-0001"
+2025-10-15T17:58:11.0299793Z       [32m+[0m[0m readonly_endpoint_failover_policy_enabled = (known after apply)
+2025-10-15T17:58:11.0300148Z       [32m+[0m[0m server_id                                 = (known after apply)
+2025-10-15T17:58:11.0300435Z       [32m+[0m[0m tags                                      = {
+2025-10-15T17:58:11.0300716Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0301029Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0301511Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0301835Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0302025Z         }
+2025-10-15T17:58:11.0302097Z 
+2025-10-15T17:58:11.0302339Z       [32m+[0m[0m partner_server {
+2025-10-15T17:58:11.0302628Z           [32m+[0m[0m id       = (known after apply)
+2025-10-15T17:58:11.0302926Z           [32m+[0m[0m location = (known after apply)
+2025-10-15T17:58:11.0303233Z           [32m+[0m[0m role     = (known after apply)
+2025-10-15T17:58:11.0303424Z         }
+2025-10-15T17:58:11.0303495Z 
+2025-10-15T17:58:11.0303796Z       [32m+[0m[0m read_write_endpoint_failover_policy {
+2025-10-15T17:58:11.0304107Z           [32m+[0m[0m grace_minutes = 60
+2025-10-15T17:58:11.0304386Z           [32m+[0m[0m mode          = "Automatic"
+2025-10-15T17:58:11.0304574Z         }
+2025-10-15T17:58:11.0304733Z     }
+2025-10-15T17:58:11.0304805Z 
+2025-10-15T17:58:11.0305142Z [1m  # module.sql_servers["amexpagero"].azurerm_mssql_server.sql_server[0m will be created
+2025-10-15T17:58:11.0305516Z [0m  [32m+[0m[0m resource "azurerm_mssql_server" "sql_server" {
+2025-10-15T17:58:11.0305844Z       [32m+[0m[0m administrator_login                  = "sqladmin"
+2025-10-15T17:58:11.0306182Z       [32m+[0m[0m administrator_login_password         = (sensitive value)
+2025-10-15T17:58:11.0306527Z       [32m+[0m[0m connection_policy                    = "Default"
+2025-10-15T17:58:11.0306865Z       [32m+[0m[0m fully_qualified_domain_name          = (known after apply)
+2025-10-15T17:58:11.0307199Z       [32m+[0m[0m id                                   = (known after apply)
+2025-10-15T17:58:11.0307499Z       [32m+[0m[0m location                             = "uksouth"
+2025-10-15T17:58:11.0307805Z       [32m+[0m[0m minimum_tls_version                  = "1.2"
+2025-10-15T17:58:11.0308248Z       [32m+[0m[0m name                                 = "d3-sql-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0308591Z       [32m+[0m[0m outbound_network_restriction_enabled = false
+2025-10-15T17:58:11.0308949Z       [32m+[0m[0m primary_user_assigned_identity_id    = (known after apply)
+2025-10-15T17:58:11.0309291Z       [32m+[0m[0m public_network_access_enabled        = false
+2025-10-15T17:58:11.0309657Z       [32m+[0m[0m resource_group_name                  = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0310022Z       [32m+[0m[0m restorable_dropped_database_ids      = (known after apply)
+2025-10-15T17:58:11.0310334Z       [32m+[0m[0m tags                                 = {
+2025-10-15T17:58:11.0310610Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0310934Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0311292Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0311631Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0311833Z         }
+2025-10-15T17:58:11.0312109Z       [32m+[0m[0m version                              = "12.0"
+2025-10-15T17:58:11.0312206Z 
+2025-10-15T17:58:11.0312472Z       [32m+[0m[0m azuread_administrator {
+2025-10-15T17:58:11.0312788Z           [32m+[0m[0m azuread_authentication_only = false
+2025-10-15T17:58:11.0313127Z           [32m+[0m[0m login_username              = "G_NL_SQL_ADMIN"
+2025-10-15T17:58:11.0313497Z           [32m+[0m[0m object_id                   = "3ae61915-f566-42fa-af82-e63f8533310e"
+2025-10-15T17:58:11.0313844Z           [32m+[0m[0m tenant_id                   = (known after apply)
+2025-10-15T17:58:11.0314037Z         }
+2025-10-15T17:58:11.0314198Z     }
+2025-10-15T17:58:11.0314267Z 
+2025-10-15T17:58:11.0314635Z [1m  # module.sql_servers["amexpagero"].azurerm_mssql_server.sql_server_secondary[0][0m will be created
+2025-10-15T17:58:11.0315038Z [0m  [32m+[0m[0m resource "azurerm_mssql_server" "sql_server_secondary" {
+2025-10-15T17:58:11.0315717Z       [32m+[0m[0m administrator_login                  = "sqladmin"
+2025-10-15T17:58:11.0316060Z       [32m+[0m[0m administrator_login_password         = (sensitive value)
+2025-10-15T17:58:11.0316379Z       [32m+[0m[0m connection_policy                    = "Default"
+2025-10-15T17:58:11.0316706Z       [32m+[0m[0m fully_qualified_domain_name          = (known after apply)
+2025-10-15T17:58:11.0317033Z       [32m+[0m[0m id                                   = (known after apply)
+2025-10-15T17:58:11.0317323Z       [32m+[0m[0m location                             = "ukwest"
+2025-10-15T17:58:11.0317623Z       [32m+[0m[0m minimum_tls_version                  = "1.2"
+2025-10-15T17:58:11.0317955Z       [32m+[0m[0m name                                 = "d3-sql-tax-pagero-ukwest-0001"
+2025-10-15T17:58:11.0318281Z       [32m+[0m[0m outbound_network_restriction_enabled = false
+2025-10-15T17:58:11.0318641Z       [32m+[0m[0m primary_user_assigned_identity_id    = (known after apply)
+2025-10-15T17:58:11.0318993Z       [32m+[0m[0m public_network_access_enabled        = false
+2025-10-15T17:58:11.0319340Z       [32m+[0m[0m resource_group_name                  = "d3-rg-tax-ukwest-pageroapi"
+2025-10-15T17:58:11.0319701Z       [32m+[0m[0m restorable_dropped_database_ids      = (known after apply)
+2025-10-15T17:58:11.0320011Z       [32m+[0m[0m tags                                 = {
+2025-10-15T17:58:11.0320274Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0320590Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0320942Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0321270Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0321460Z         }
+2025-10-15T17:58:11.0321718Z       [32m+[0m[0m version                              = "12.0"
+2025-10-15T17:58:11.0321895Z 
+2025-10-15T17:58:11.0322153Z       [32m+[0m[0m azuread_administrator {
+2025-10-15T17:58:11.0322466Z           [32m+[0m[0m azuread_authentication_only = false
+2025-10-15T17:58:11.0322790Z           [32m+[0m[0m login_username              = "G_NL_SQL_ADMIN"
+2025-10-15T17:58:11.0323156Z           [32m+[0m[0m object_id                   = "3ae61915-f566-42fa-af82-e63f8533310e"
+2025-10-15T17:58:11.0323492Z           [32m+[0m[0m tenant_id                   = (known after apply)
+2025-10-15T17:58:11.0323702Z         }
+2025-10-15T17:58:11.0323871Z     }
+2025-10-15T17:58:11.0323944Z 
+2025-10-15T17:58:11.0324307Z [1m  # module.sql_servers["amexpagero"].azurerm_private_endpoint.sql_private_endpoint[0][0m will be created
+2025-10-15T17:58:11.0324718Z [0m  [32m+[0m[0m resource "azurerm_private_endpoint" "sql_private_endpoint" {
+2025-10-15T17:58:11.0325066Z       [32m+[0m[0m custom_dns_configs       = (known after apply)
+2025-10-15T17:58:11.0325399Z       [32m+[0m[0m id                       = (known after apply)
+2025-10-15T17:58:11.0325695Z       [32m+[0m[0m location                 = "uksouth"
+2025-10-15T17:58:11.0326042Z       [32m+[0m[0m name                     = "d3-priv-nic-sql-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0326384Z       [32m+[0m[0m network_interface        = (known after apply)
+2025-10-15T17:58:11.0326720Z       [32m+[0m[0m private_dns_zone_configs = (known after apply)
+2025-10-15T17:58:11.0327102Z       [32m+[0m[0m resource_group_name      = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0327443Z       [32m+[0m[0m subnet_id                = (known after apply)
+2025-10-15T17:58:11.0327748Z       [32m+[0m[0m tags                     = {
+2025-10-15T17:58:11.0328028Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0328353Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0328711Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0329089Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0329899Z         }
+2025-10-15T17:58:11.0329981Z 
+2025-10-15T17:58:11.0330330Z       [32m+[0m[0m private_dns_zone_group {
+2025-10-15T17:58:11.0330669Z           [32m+[0m[0m id                   = (known after apply)
+2025-10-15T17:58:11.0331041Z           [32m+[0m[0m name                 = "sql-private-dns-zone-group"
+2025-10-15T17:58:11.0331391Z           [32m+[0m[0m private_dns_zone_ids = [
+2025-10-15T17:58:11.0332038Z               [32m+[0m[0m "/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net",
+2025-10-15T17:58:11.0332413Z             ]
+2025-10-15T17:58:11.0332599Z         }
+2025-10-15T17:58:11.0332678Z 
+2025-10-15T17:58:11.0332992Z       [32m+[0m[0m private_service_connection {
+2025-10-15T17:58:11.0333342Z           [32m+[0m[0m is_manual_connection           = false
+2025-10-15T17:58:11.0333758Z           [32m+[0m[0m name                           = "d3-priv-nic-sql-tax-pageroapi-uksouth-0001-svc"
+2025-10-15T17:58:11.0334172Z           [32m+[0m[0m private_connection_resource_id = (known after apply)
+2025-10-15T17:58:11.0334569Z           [32m+[0m[0m private_ip_address             = (known after apply)
+2025-10-15T17:58:11.0334921Z           [32m+[0m[0m subresource_names              = [
+2025-10-15T17:58:11.0335255Z               [32m+[0m[0m "sqlServer",
+2025-10-15T17:58:11.0335812Z             ]
+2025-10-15T17:58:11.0336002Z         }
+2025-10-15T17:58:11.0336183Z     }
+2025-10-15T17:58:11.0336246Z 
+2025-10-15T17:58:11.0336707Z [1m  # module.sql_servers["amexpagero"].azurerm_private_endpoint.sql_private_endpoint_secondary[0][0m will be created
+2025-10-15T17:58:11.0337202Z [0m  [32m+[0m[0m resource "azurerm_private_endpoint" "sql_private_endpoint_secondary" {
+2025-10-15T17:58:11.0337648Z       [32m+[0m[0m custom_dns_configs       = (known after apply)
+2025-10-15T17:58:11.0338218Z       [32m+[0m[0m id                       = (known after apply)
+2025-10-15T17:58:11.0338564Z       [32m+[0m[0m location                 = "ukwest"
+2025-10-15T17:58:11.0338962Z       [32m+[0m[0m name                     = "d3-priv-nic-sql-tax-pagero-ukwest-0001"
+2025-10-15T17:58:11.0339372Z       [32m+[0m[0m network_interface        = (known after apply)
+2025-10-15T17:58:11.0339766Z       [32m+[0m[0m private_dns_zone_configs = (known after apply)
+2025-10-15T17:58:11.0340170Z       [32m+[0m[0m resource_group_name      = "d3-rg-tax-ukwest-pageroapi"
+2025-10-15T17:58:11.0340554Z       [32m+[0m[0m subnet_id                = (known after apply)
+2025-10-15T17:58:11.0340894Z       [32m+[0m[0m tags                     = {
+2025-10-15T17:58:11.0341212Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0341563Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0341967Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0342322Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0342526Z         }
+2025-10-15T17:58:11.0342606Z 
+2025-10-15T17:58:11.0342900Z       [32m+[0m[0m private_dns_zone_group {
+2025-10-15T17:58:11.0343239Z           [32m+[0m[0m id                   = (known after apply)
+2025-10-15T17:58:11.0343606Z           [32m+[0m[0m name                 = "sql-private-dns-zone-group-secondary"
+2025-10-15T17:58:11.0343965Z           [32m+[0m[0m private_dns_zone_ids = [
+2025-10-15T17:58:11.0344542Z               [32m+[0m[0m "/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.database.windows.net",
+2025-10-15T17:58:11.0345127Z             ]
+2025-10-15T17:58:11.0345288Z         }
+2025-10-15T17:58:11.0345355Z 
+2025-10-15T17:58:11.0345644Z       [32m+[0m[0m private_service_connection {
+2025-10-15T17:58:11.0345963Z           [32m+[0m[0m is_manual_connection           = false
+2025-10-15T17:58:11.0346471Z           [32m+[0m[0m name                           = "d3-priv-nic-sql-tax-pagero-ukwest-0001-svc"
+2025-10-15T17:58:11.0346842Z           [32m+[0m[0m private_connection_resource_id = (known after apply)
+2025-10-15T17:58:11.0347195Z           [32m+[0m[0m private_ip_address             = (known after apply)
+2025-10-15T17:58:11.0347515Z           [32m+[0m[0m subresource_names              = [
+2025-10-15T17:58:11.0348090Z               [32m+[0m[0m "sqlServer",
+2025-10-15T17:58:11.0348321Z             ]
+2025-10-15T17:58:11.0348499Z         }
+2025-10-15T17:58:11.0348677Z     }
+2025-10-15T17:58:11.0348745Z 
+2025-10-15T17:58:11.0349133Z [1m  # module.sql_servers["amexpagero"].random_password.sql_admin_password[0m will be created
+2025-10-15T17:58:11.0349651Z [0m  [32m+[0m[0m resource "random_password" "sql_admin_password" {
+2025-10-15T17:58:11.0350030Z       [32m+[0m[0m bcrypt_hash      = (sensitive value)
+2025-10-15T17:58:11.0350389Z       [32m+[0m[0m id               = (known after apply)
+2025-10-15T17:58:11.0351226Z       [32m+[0m[0m length           = 16
+2025-10-15T17:58:11.0351586Z       [32m+[0m[0m lower            = true
+2025-10-15T17:58:11.0351912Z       [32m+[0m[0m min_lower        = 0
+2025-10-15T17:58:11.0352220Z       [32m+[0m[0m min_numeric      = 0
+2025-10-15T17:58:11.0352523Z       [32m+[0m[0m min_special      = 0
+2025-10-15T17:58:11.0352827Z       [32m+[0m[0m min_upper        = 0
+2025-10-15T17:58:11.0353732Z       [32m+[0m[0m number           = true
+2025-10-15T17:58:11.0354148Z       [32m+[0m[0m numeric          = true
+2025-10-15T17:58:11.0354703Z       [32m+[0m[0m override_special = "!#$%&*()-_=+[]{}<>:?"
+2025-10-15T17:58:11.0355083Z       [32m+[0m[0m result           = (sensitive value)
+2025-10-15T17:58:11.0355641Z       [32m+[0m[0m special          = true
+2025-10-15T17:58:11.0356087Z       [32m+[0m[0m upper            = true
+2025-10-15T17:58:11.0356290Z     }
+2025-10-15T17:58:11.0356358Z 
+2025-10-15T17:58:11.0356809Z [1m  # module.storage_accounts["sttaxpageroapiuks"].azurerm_private_endpoint.private_endpoint[0][0m will be created
+2025-10-15T17:58:11.0357582Z [0m  [32m+[0m[0m resource "azurerm_private_endpoint" "private_endpoint" {
+2025-10-15T17:58:11.0358033Z       [32m+[0m[0m custom_dns_configs       = (known after apply)
+2025-10-15T17:58:11.0358391Z       [32m+[0m[0m id                       = (known after apply)
+2025-10-15T17:58:11.0358970Z       [32m+[0m[0m location                 = "uksouth"
+2025-10-15T17:58:11.0359380Z       [32m+[0m[0m name                     = "priv-nic-d3sttaxpageroapiuks"
+2025-10-15T17:58:11.0360013Z       [32m+[0m[0m network_interface        = (known after apply)
+2025-10-15T17:58:11.0360780Z       [32m+[0m[0m private_dns_zone_configs = (known after apply)
+2025-10-15T17:58:11.0361224Z       [32m+[0m[0m resource_group_name      = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0361968Z       [32m+[0m[0m subnet_id                = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001/subnets/d3-snet-tax-uksouth-storage"
+2025-10-15T17:58:11.0362277Z 
+2025-10-15T17:58:11.0362594Z       [32m+[0m[0m private_dns_zone_group {
+2025-10-15T17:58:11.0362951Z           [32m+[0m[0m id                   = (known after apply)
+2025-10-15T17:58:11.0363339Z           [32m+[0m[0m name                 = "storage-account-dns-zone-group"
+2025-10-15T17:58:11.0363696Z           [32m+[0m[0m private_dns_zone_ids = [
+2025-10-15T17:58:11.0364311Z               [32m+[0m[0m "/subscriptions/1753c763-47da-4014-991c-4b094cababda/resourceGroups/y3-rg-core-networking-uksouth-0001/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net",
+2025-10-15T17:58:11.0364679Z             ]
+2025-10-15T17:58:11.0365397Z         }
+2025-10-15T17:58:11.0365499Z 
+2025-10-15T17:58:11.0368242Z       [32m+[0m[0m private_service_connection {
+2025-10-15T17:58:11.0368597Z           [32m+[0m[0m is_manual_connection           = false
+2025-10-15T17:58:11.0368966Z           [32m+[0m[0m name                           = "psc-d3sttaxpageroapiuks"
+2025-10-15T17:58:11.0369385Z           [32m+[0m[0m private_connection_resource_id = (known after apply)
+2025-10-15T17:58:11.0370258Z           [32m+[0m[0m private_ip_address             = (known after apply)
+2025-10-15T17:58:11.0370612Z           [32m+[0m[0m subresource_names              = [
+2025-10-15T17:58:11.0371160Z               [32m+[0m[0m "blob",
+2025-10-15T17:58:11.0371388Z             ]
+2025-10-15T17:58:11.0371567Z         }
+2025-10-15T17:58:11.0372099Z     }
+2025-10-15T17:58:11.0372174Z 
+2025-10-15T17:58:11.0372637Z [1m  # module.storage_accounts["sttaxpageroapiuks"].azurerm_storage_account.storage_account[0m will be created
+2025-10-15T17:58:11.0373468Z [0m  [32m+[0m[0m resource "azurerm_storage_account" "storage_account" {
+2025-10-15T17:58:11.0373884Z       [32m+[0m[0m access_tier                        = (known after apply)
+2025-10-15T17:58:11.0374229Z       [32m+[0m[0m account_kind                       = "StorageV2"
+2025-10-15T17:58:11.0374589Z       [32m+[0m[0m account_replication_type           = "GRS"
+2025-10-15T17:58:11.0374962Z       [32m+[0m[0m account_tier                       = "Standard"
+2025-10-15T17:58:11.0375691Z       [32m+[0m[0m allow_nested_items_to_be_public    = true
+2025-10-15T17:58:11.0376079Z       [32m+[0m[0m cross_tenant_replication_enabled   = false
+2025-10-15T17:58:11.0376472Z       [32m+[0m[0m default_to_oauth_authentication    = false
+2025-10-15T17:58:11.0376859Z       [32m+[0m[0m dns_endpoint_type                  = "Standard"
+2025-10-15T17:58:11.0377237Z       [32m+[0m[0m https_traffic_only_enabled         = true
+2025-10-15T17:58:11.0377613Z       [32m+[0m[0m id                                 = (known after apply)
+2025-10-15T17:58:11.0378193Z       [32m+[0m[0m infrastructure_encryption_enabled  = false
+2025-10-15T17:58:11.0378583Z       [32m+[0m[0m is_hns_enabled                     = false
+2025-10-15T17:58:11.0378991Z       [32m+[0m[0m large_file_share_enabled           = (known after apply)
+2025-10-15T17:58:11.0379381Z       [32m+[0m[0m local_user_enabled                 = true
+2025-10-15T17:58:11.0379730Z       [32m+[0m[0m location                           = "uksouth"
+2025-10-15T17:58:11.0380081Z       [32m+[0m[0m min_tls_version                    = "TLS1_2"
+2025-10-15T17:58:11.0380459Z       [32m+[0m[0m name                               = "d3sttaxpageroapiuks"
+2025-10-15T17:58:11.0380819Z       [32m+[0m[0m nfsv3_enabled                      = false
+2025-10-15T17:58:11.0381196Z       [32m+[0m[0m primary_access_key                 = (sensitive value)
+2025-10-15T17:58:11.0381591Z       [32m+[0m[0m primary_blob_connection_string     = (sensitive value)
+2025-10-15T17:58:11.0382012Z       [32m+[0m[0m primary_blob_endpoint              = (known after apply)
+2025-10-15T17:58:11.0382414Z       [32m+[0m[0m primary_blob_host                  = (known after apply)
+2025-10-15T17:58:11.0382808Z       [32m+[0m[0m primary_blob_internet_endpoint     = (known after apply)
+2025-10-15T17:58:11.0383213Z       [32m+[0m[0m primary_blob_internet_host         = (known after apply)
+2025-10-15T17:58:11.0383623Z       [32m+[0m[0m primary_blob_microsoft_endpoint    = (known after apply)
+2025-10-15T17:58:11.0384055Z       [32m+[0m[0m primary_blob_microsoft_host        = (known after apply)
+2025-10-15T17:58:11.0384476Z       [32m+[0m[0m primary_connection_string          = (sensitive value)
+2025-10-15T17:58:11.0385108Z       [32m+[0m[0m primary_dfs_endpoint               = (known after apply)
+2025-10-15T17:58:11.0385479Z       [32m+[0m[0m primary_dfs_host                   = (known after apply)
+2025-10-15T17:58:11.0385863Z       [32m+[0m[0m primary_dfs_internet_endpoint      = (known after apply)
+2025-10-15T17:58:11.0386415Z       [32m+[0m[0m primary_dfs_internet_host          = (known after apply)
+2025-10-15T17:58:11.0386810Z       [32m+[0m[0m primary_dfs_microsoft_endpoint     = (known after apply)
+2025-10-15T17:58:11.0387226Z       [32m+[0m[0m primary_dfs_microsoft_host         = (known after apply)
+2025-10-15T17:58:11.0387836Z       [32m+[0m[0m primary_file_endpoint              = (known after apply)
+2025-10-15T17:58:11.0388489Z       [32m+[0m[0m primary_file_host                  = (known after apply)
+2025-10-15T17:58:11.0389079Z       [32m+[0m[0m primary_file_internet_endpoint     = (known after apply)
+2025-10-15T17:58:11.0389984Z       [32m+[0m[0m primary_file_internet_host         = (known after apply)
+2025-10-15T17:58:11.0390459Z       [32m+[0m[0m primary_file_microsoft_endpoint    = (known after apply)
+2025-10-15T17:58:11.0390883Z       [32m+[0m[0m primary_file_microsoft_host        = (known after apply)
+2025-10-15T17:58:11.0391299Z       [32m+[0m[0m primary_location                   = (known after apply)
+2025-10-15T17:58:11.0391958Z       [32m+[0m[0m primary_queue_endpoint             = (known after apply)
+2025-10-15T17:58:11.0392342Z       [32m+[0m[0m primary_queue_host                 = (known after apply)
+2025-10-15T17:58:11.0393148Z       [32m+[0m[0m primary_queue_microsoft_endpoint   = (known after apply)
+2025-10-15T17:58:11.0393663Z       [32m+[0m[0m primary_queue_microsoft_host       = (known after apply)
+2025-10-15T17:58:11.0394071Z       [32m+[0m[0m primary_table_endpoint             = (known after apply)
+2025-10-15T17:58:11.0394456Z       [32m+[0m[0m primary_table_host                 = (known after apply)
+2025-10-15T17:58:11.0395067Z       [32m+[0m[0m primary_table_microsoft_endpoint   = (known after apply)
+2025-10-15T17:58:11.0395500Z       [32m+[0m[0m primary_table_microsoft_host       = (known after apply)
+2025-10-15T17:58:11.0395900Z       [32m+[0m[0m primary_web_endpoint               = (known after apply)
+2025-10-15T17:58:11.0396106Z       [32m+[0m[0m primary_web_host                   = (known after apply)
+2025-10-15T17:58:11.0396348Z       [32m+[0m[0m primary_web_internet_endpoint      = (known after apply)
+2025-10-15T17:58:11.0396577Z       [32m+[0m[0m primary_web_internet_host          = (known after apply)
+2025-10-15T17:58:11.0396787Z       [32m+[0m[0m primary_web_microsoft_endpoint     = (known after apply)
+2025-10-15T17:58:11.0397010Z       [32m+[0m[0m primary_web_microsoft_host         = (known after apply)
+2025-10-15T17:58:11.0397212Z       [32m+[0m[0m public_network_access_enabled      = false
+2025-10-15T17:58:11.0397415Z       [32m+[0m[0m queue_encryption_key_type          = "Service"
+2025-10-15T17:58:11.0397632Z       [32m+[0m[0m resource_group_name                = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0397854Z       [32m+[0m[0m secondary_access_key               = (sensitive value)
+2025-10-15T17:58:11.0398065Z       [32m+[0m[0m secondary_blob_connection_string   = (sensitive value)
+2025-10-15T17:58:11.0398276Z       [32m+[0m[0m secondary_blob_endpoint            = (known after apply)
+2025-10-15T17:58:11.0398484Z       [32m+[0m[0m secondary_blob_host                = (known after apply)
+2025-10-15T17:58:11.0398692Z       [32m+[0m[0m secondary_blob_internet_endpoint   = (known after apply)
+2025-10-15T17:58:11.0398915Z       [32m+[0m[0m secondary_blob_internet_host       = (known after apply)
+2025-10-15T17:58:11.0399128Z       [32m+[0m[0m secondary_blob_microsoft_endpoint  = (known after apply)
+2025-10-15T17:58:11.0399346Z       [32m+[0m[0m secondary_blob_microsoft_host      = (known after apply)
+2025-10-15T17:58:11.0399558Z       [32m+[0m[0m secondary_connection_string        = (sensitive value)
+2025-10-15T17:58:11.0399777Z       [32m+[0m[0m secondary_dfs_endpoint             = (known after apply)
+2025-10-15T17:58:11.0399987Z       [32m+[0m[0m secondary_dfs_host                 = (known after apply)
+2025-10-15T17:58:11.0400259Z       [32m+[0m[0m secondary_dfs_internet_endpoint    = (known after apply)
+2025-10-15T17:58:11.0400470Z       [32m+[0m[0m secondary_dfs_internet_host        = (known after apply)
+2025-10-15T17:58:11.0400683Z       [32m+[0m[0m secondary_dfs_microsoft_endpoint   = (known after apply)
+2025-10-15T17:58:11.0400905Z       [32m+[0m[0m secondary_dfs_microsoft_host       = (known after apply)
+2025-10-15T17:58:11.0401113Z       [32m+[0m[0m secondary_file_endpoint            = (known after apply)
+2025-10-15T17:58:11.0401317Z       [32m+[0m[0m secondary_file_host                = (known after apply)
+2025-10-15T17:58:11.0401523Z       [32m+[0m[0m secondary_file_internet_endpoint   = (known after apply)
+2025-10-15T17:58:11.0401745Z       [32m+[0m[0m secondary_file_internet_host       = (known after apply)
+2025-10-15T17:58:11.0401956Z       [32m+[0m[0m secondary_file_microsoft_endpoint  = (known after apply)
+2025-10-15T17:58:11.0402173Z       [32m+[0m[0m secondary_file_microsoft_host      = (known after apply)
+2025-10-15T17:58:11.0402382Z       [32m+[0m[0m secondary_location                 = (known after apply)
+2025-10-15T17:58:11.0402588Z       [32m+[0m[0m secondary_queue_endpoint           = (known after apply)
+2025-10-15T17:58:11.0402802Z       [32m+[0m[0m secondary_queue_host               = (known after apply)
+2025-10-15T17:58:11.0403013Z       [32m+[0m[0m secondary_queue_microsoft_endpoint = (known after apply)
+2025-10-15T17:58:11.0403231Z       [32m+[0m[0m secondary_queue_microsoft_host     = (known after apply)
+2025-10-15T17:58:11.0403439Z       [32m+[0m[0m secondary_table_endpoint           = (known after apply)
+2025-10-15T17:58:11.0403650Z       [32m+[0m[0m secondary_table_host               = (known after apply)
+2025-10-15T17:58:11.0403860Z       [32m+[0m[0m secondary_table_microsoft_endpoint = (known after apply)
+2025-10-15T17:58:11.0404451Z       [32m+[0m[0m secondary_table_microsoft_host     = (known after apply)
+2025-10-15T17:58:11.0404664Z       [32m+[0m[0m secondary_web_endpoint             = (known after apply)
+2025-10-15T17:58:11.0404863Z       [32m+[0m[0m secondary_web_host                 = (known after apply)
+2025-10-15T17:58:11.0405077Z       [32m+[0m[0m secondary_web_internet_endpoint    = (known after apply)
+2025-10-15T17:58:11.0405285Z       [32m+[0m[0m secondary_web_internet_host        = (known after apply)
+2025-10-15T17:58:11.0405498Z       [32m+[0m[0m secondary_web_microsoft_endpoint   = (known after apply)
+2025-10-15T17:58:11.0405712Z       [32m+[0m[0m secondary_web_microsoft_host       = (known after apply)
+2025-10-15T17:58:11.0405915Z       [32m+[0m[0m sftp_enabled                       = false
+2025-10-15T17:58:11.0406104Z       [32m+[0m[0m shared_access_key_enabled          = true
+2025-10-15T17:58:11.0406297Z       [32m+[0m[0m table_encryption_key_type          = "Service"
+2025-10-15T17:58:11.0406480Z       [32m+[0m[0m tags                               = {
+2025-10-15T17:58:11.0406655Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0406853Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0407070Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0407292Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0407412Z         }
+2025-10-15T17:58:11.0407459Z 
+2025-10-15T17:58:11.0407629Z       [32m+[0m[0m blob_properties (known after apply)
+2025-10-15T17:58:11.0407691Z 
+2025-10-15T17:58:11.0407867Z       [32m+[0m[0m network_rules (known after apply)
+2025-10-15T17:58:11.0407927Z 
+2025-10-15T17:58:11.0408092Z       [32m+[0m[0m queue_properties (known after apply)
+2025-10-15T17:58:11.0408412Z 
+2025-10-15T17:58:11.0408584Z       [32m+[0m[0m routing (known after apply)
+2025-10-15T17:58:11.0408643Z 
+2025-10-15T17:58:11.0408815Z       [32m+[0m[0m share_properties (known after apply)
+2025-10-15T17:58:11.0409020Z     }
+2025-10-15T17:58:11.0409058Z 
+2025-10-15T17:58:11.0409370Z [1m  # module.storage_accounts["sttaxukspagero"].azurerm_private_endpoint.private_endpoint[0m has moved to [1mmodule.storage_accounts["sttaxukspagero"].azurerm_private_endpoint.private_endpoint[0][0m
+2025-10-15T17:58:11.0409651Z [0m    resource "azurerm_private_endpoint" "private_endpoint" {
+2025-10-15T17:58:11.0409869Z         id                            = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Network/privateEndpoints/priv-nic-d3sttaxukspagero"
+2025-10-15T17:58:11.0410073Z         name                          = "priv-nic-d3sttaxukspagero"
+2025-10-15T17:58:11.0410199Z         tags                          = {}
+2025-10-15T17:58:11.0410372Z         [90m# (7 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0410442Z 
+2025-10-15T17:58:11.0410601Z         [90m# (2 unchanged blocks hidden)[0m[0m
+2025-10-15T17:58:11.0410720Z     }
+2025-10-15T17:58:11.0410767Z 
+2025-10-15T17:58:11.0410997Z [1m  # module.storage_accounts["sttaxukspagero"].azurerm_storage_account.storage_account[0m will be updated in-place
+2025-10-15T17:58:11.0411240Z [0m  [33m~[0m[0m resource "azurerm_storage_account" "storage_account" {
+2025-10-15T17:58:11.0411459Z         id                                 = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Storage/storageAccounts/d3sttaxukspagero"
+2025-10-15T17:58:11.0411663Z         name                               = "d3sttaxukspagero"
+2025-10-15T17:58:11.0411867Z       [33m~[0m[0m public_network_access_enabled      = true [33m->[0m[0m false
+2025-10-15T17:58:11.0412054Z       [33m~[0m[0m tags                               = {
+2025-10-15T17:58:11.0412223Z           [32m+[0m[0m "Application"    = "Tax"
+2025-10-15T17:58:11.0412418Z           [32m+[0m[0m "Classification" = "Company Confidential"
+2025-10-15T17:58:11.0412679Z           [32m+[0m[0m "LastUpdated"    = "2025-02-20T14:39:27Z"
+2025-10-15T17:58:11.0412878Z           [32m+[0m[0m "Owner"          = "ServiceLine - Tax"
+2025-10-15T17:58:11.0412993Z         }
+2025-10-15T17:58:11.0413782Z         [90m# (95 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0413921Z 
+2025-10-15T17:58:11.0414386Z         [90m# (3 unchanged blocks hidden)[0m[0m
+2025-10-15T17:58:11.0414601Z     }
+2025-10-15T17:58:11.0414682Z 
+2025-10-15T17:58:11.0415191Z [1m  # module.storage_accounts["sttaxukspagero"].azurerm_storage_account_local_user.storage_account_local_user["accountone"][0m will be updated in-place
+2025-10-15T17:58:11.0415722Z [0m  [33m~[0m[0m resource "azurerm_storage_account_local_user" "storage_account_local_user" {
+2025-10-15T17:58:11.0416180Z         id                   = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.Storage/storageAccounts/d3sttaxukspagero/localUsers/d3accountone"
+2025-10-15T17:58:11.0416580Z         name                 = "d3accountone"
+2025-10-15T17:58:11.0416903Z         [90m# (6 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0417012Z 
+2025-10-15T17:58:11.0417280Z       [33m~[0m[0m permission_scope {
+2025-10-15T17:58:11.0417621Z             [90m# (2 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0417731Z 
+2025-10-15T17:58:11.0417990Z           [33m~[0m[0m permissions {
+2025-10-15T17:58:11.0418319Z               [33m~[0m[0m create = false [33m->[0m[0m true
+2025-10-15T17:58:11.0418671Z                 [90m# (4 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0418886Z             }
+2025-10-15T17:58:11.0419060Z         }
+2025-10-15T17:58:11.0419235Z     }
+2025-10-15T17:58:11.0419311Z 
+2025-10-15T17:58:11.0419756Z [1m  # module.virtual_networks["vnet-tax-uksouth-0001"].azurerm_subnet.subnet["snet-tax-uksouth-appservice"][0m will be created
+2025-10-15T17:58:11.0420184Z [0m  [32m+[0m[0m resource "azurerm_subnet" "subnet" {
+2025-10-15T17:58:11.0420657Z       [32m+[0m[0m address_prefixes                              = [
+2025-10-15T17:58:11.0420971Z           [32m+[0m[0m "10.0.64.32/28",
+2025-10-15T17:58:11.0421171Z         ]
+2025-10-15T17:58:11.0421493Z       [32m+[0m[0m default_outbound_access_enabled               = true
+2025-10-15T17:58:11.0421864Z       [32m+[0m[0m id                                            = (known after apply)
+2025-10-15T17:58:11.0422246Z       [32m+[0m[0m name                                          = "d3-snet-tax-uksouth-appservice"
+2025-10-15T17:58:11.0422650Z       [32m+[0m[0m private_endpoint_network_policies             = "Disabled"
+2025-10-15T17:58:11.0423060Z       [32m+[0m[0m private_link_service_network_policies_enabled = true
+2025-10-15T17:58:11.0423472Z       [32m+[0m[0m resource_group_name                           = "d3-rg-tax-uksouth-network"
+2025-10-15T17:58:11.0423896Z       [32m+[0m[0m virtual_network_name                          = "d3-vnet-tax-uksouth-0001"
+2025-10-15T17:58:11.0424054Z 
+2025-10-15T17:58:11.0424315Z       [32m+[0m[0m delegation {
+2025-10-15T17:58:11.0424660Z           [32m+[0m[0m name = "delegation-Microsoft.Web/serverFarms"
+2025-10-15T17:58:11.0424789Z 
+2025-10-15T17:58:11.0425038Z           [32m+[0m[0m service_delegation {
+2025-10-15T17:58:11.0425296Z               [32m+[0m[0m actions = [
+2025-10-15T17:58:11.0425625Z                   [32m+[0m[0m "Microsoft.Network/virtualNetworks/subnets/join/action",
+2025-10-15T17:58:11.0426052Z                   [32m+[0m[0m "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+2025-10-15T17:58:11.0426326Z                 ]
+2025-10-15T17:58:11.0426642Z               [32m+[0m[0m name    = "Microsoft.Web/serverFarms"
+2025-10-15T17:58:11.0426855Z             }
+2025-10-15T17:58:11.0427026Z         }
+2025-10-15T17:58:11.0427196Z     }
+2025-10-15T17:58:11.0427273Z 
+2025-10-15T17:58:11.0427846Z [1m  # module.virtual_networks["vnet-tax-uksouth-0001"].azurerm_subnet.subnet["snet-tax-uksouth-sqlsrv"][0m will be created
+2025-10-15T17:58:11.0428263Z [0m  [32m+[0m[0m resource "azurerm_subnet" "subnet" {
+2025-10-15T17:58:11.0428936Z       [32m+[0m[0m address_prefixes                              = [
+2025-10-15T17:58:11.0429246Z           [32m+[0m[0m "10.0.64.48/28",
+2025-10-15T17:58:11.0429441Z         ]
+2025-10-15T17:58:11.0429759Z       [32m+[0m[0m default_outbound_access_enabled               = true
+2025-10-15T17:58:11.0430132Z       [32m+[0m[0m id                                            = (known after apply)
+2025-10-15T17:58:11.0430542Z       [32m+[0m[0m name                                          = "d3-snet-tax-uksouth-sqlsrv"
+2025-10-15T17:58:11.0430918Z       [32m+[0m[0m private_endpoint_network_policies             = "Disabled"
+2025-10-15T17:58:11.0431291Z       [32m+[0m[0m private_link_service_network_policies_enabled = true
+2025-10-15T17:58:11.0431719Z       [32m+[0m[0m resource_group_name                           = "d3-rg-tax-uksouth-network"
+2025-10-15T17:58:11.0432153Z       [32m+[0m[0m virtual_network_name                          = "d3-vnet-tax-uksouth-0001"
+2025-10-15T17:58:11.0432402Z     }
+2025-10-15T17:58:11.0432469Z 
+2025-10-15T17:58:11.0433041Z [1m  # module.virtual_networks["vnet-tax-uksouth-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-uksouth-appservice"][0m will be created
+2025-10-15T17:58:11.0433627Z [0m  [32m+[0m[0m resource "azurerm_subnet_route_table_association" "subnet_route_table_association" {
+2025-10-15T17:58:11.0434307Z       [32m+[0m[0m id             = (known after apply)
+2025-10-15T17:58:11.0435420Z       [32m+[0m[0m route_table_id = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/routeTables/d3-route-tax-uksouth-0001"
+2025-10-15T17:58:11.0435705Z       [32m+[0m[0m subnet_id      = (known after apply)
+2025-10-15T17:58:11.0435844Z     }
+2025-10-15T17:58:11.0436015Z 
+2025-10-15T17:58:11.0436555Z [1m  # module.virtual_networks["vnet-tax-uksouth-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-uksouth-sqlsrv"][0m will be created
+2025-10-15T17:58:11.0436876Z [0m  [32m+[0m[0m resource "azurerm_subnet_route_table_association" "subnet_route_table_association" {
+2025-10-15T17:58:11.0437097Z       [32m+[0m[0m id             = (known after apply)
+2025-10-15T17:58:11.0437422Z       [32m+[0m[0m route_table_id = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/routeTables/d3-route-tax-uksouth-0001"
+2025-10-15T17:58:11.0437680Z       [32m+[0m[0m subnet_id      = (known after apply)
+2025-10-15T17:58:11.0437797Z     }
+2025-10-15T17:58:11.0437841Z 
+2025-10-15T17:58:11.0438076Z [1m  # module.virtual_networks["vnet-tax-uksouth-0001"].azurerm_virtual_network.virtual_network[0m will be updated in-place
+2025-10-15T17:58:11.0438330Z [0m  [33m~[0m[0m resource "azurerm_virtual_network" "virtual_network" {
+2025-10-15T17:58:11.0438523Z       [33m~[0m[0m dns_servers             = [
+2025-10-15T17:58:11.0438696Z           [32m+[0m[0m "10.0.0.116",
+2025-10-15T17:58:11.0438863Z           [32m+[0m[0m "172.21.112.10",
+2025-10-15T17:58:11.0438975Z         ]
+2025-10-15T17:58:11.0439162Z         id                      = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-uksouth-0001"
+2025-10-15T17:58:11.0439375Z         name                    = "d3-vnet-tax-uksouth-0001"
+2025-10-15T17:58:11.0439496Z         tags                    = {}
+2025-10-15T17:58:11.0439667Z         [90m# (8 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0439783Z     }
+2025-10-15T17:58:11.0439829Z 
+2025-10-15T17:58:11.0440078Z [1m  # module.virtual_networks["vnet-tax-ukwest-0001"].azurerm_route_table.route_table["route-tax-uksouth"][0m will be [1m[31mdestroyed[0m
+2025-10-15T17:58:11.0440351Z   # (because key ["route-tax-uksouth"] is not in for_each map)
+2025-10-15T17:58:11.0440557Z [0m  [31m-[0m[0m resource "azurerm_route_table" "route_table" {
+2025-10-15T17:58:11.0440773Z       [31m-[0m[0m bgp_route_propagation_enabled = true [90m-> null[0m[0m
+2025-10-15T17:58:11.0441137Z       [31m-[0m[0m id                            = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/routeTables/d3-route-tax-ukwest-0001" [90m-> null[0m[0m
+2025-10-15T17:58:11.0441416Z       [31m-[0m[0m location                      = "ukwest" [90m-> null[0m[0m
+2025-10-15T17:58:11.0441635Z       [31m-[0m[0m name                          = "d3-route-tax-ukwest-0001" [90m-> null[0m[0m
+2025-10-15T17:58:11.0441862Z       [31m-[0m[0m resource_group_name           = "d3-rg-tax-ukwest-network" [90m-> null[0m[0m
+2025-10-15T17:58:11.0442062Z       [31m-[0m[0m route                         = [
+2025-10-15T17:58:11.0442211Z           [31m-[0m[0m {
+2025-10-15T17:58:11.0442385Z               [31m-[0m[0m address_prefix         = "0.0.0.0/0"
+2025-10-15T17:58:11.0442565Z               [31m-[0m[0m name                   = "default"
+2025-10-15T17:58:11.0442763Z               [31m-[0m[0m next_hop_in_ip_address = "10.0.0.4"
+2025-10-15T17:58:11.0442959Z               [31m-[0m[0m next_hop_type          = "VirtualAppliance"
+2025-10-15T17:58:11.0443083Z             },
+2025-10-15T17:58:11.0443228Z         ] [90m-> null[0m[0m
+2025-10-15T17:58:11.0443392Z       [31m-[0m[0m subnets                       = [
+2025-10-15T17:58:11.0443742Z           [31m-[0m[0m "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/subnets/d3-snet-tax-ukwest-keyvault",
+2025-10-15T17:58:11.0444167Z           [31m-[0m[0m "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/subnets/d3-snet-tax-ukwest-storage",
+2025-10-15T17:58:11.0444468Z         ] [90m-> null[0m[0m
+2025-10-15T17:58:11.0444645Z       [31m-[0m[0m tags                          = {} [90m-> null[0m[0m
+2025-10-15T17:58:11.0444767Z     }
+2025-10-15T17:58:11.0444805Z 
+2025-10-15T17:58:11.0445041Z [1m  # module.virtual_networks["vnet-tax-ukwest-0001"].azurerm_route_table.route_table["route-tax-ukwest"][0m will be created
+2025-10-15T17:58:11.0445276Z [0m  [32m+[0m[0m resource "azurerm_route_table" "route_table" {
+2025-10-15T17:58:11.0445480Z       [32m+[0m[0m bgp_route_propagation_enabled = true
+2025-10-15T17:58:11.0445677Z       [32m+[0m[0m id                            = (known after apply)
+2025-10-15T17:58:11.0445855Z       [32m+[0m[0m location                      = "ukwest"
+2025-10-15T17:58:11.0446047Z       [32m+[0m[0m name                          = "d3-route-tax-ukwest-0001"
+2025-10-15T17:58:11.0446262Z       [32m+[0m[0m resource_group_name           = "d3-rg-tax-ukwest-network"
+2025-10-15T17:58:11.0446443Z       [32m+[0m[0m route                         = [
+2025-10-15T17:58:11.0446585Z           [32m+[0m[0m {
+2025-10-15T17:58:11.0446755Z               [32m+[0m[0m address_prefix         = "0.0.0.0/0"
+2025-10-15T17:58:11.0446934Z               [32m+[0m[0m name                   = "default"
+2025-10-15T17:58:11.0447126Z               [32m+[0m[0m next_hop_in_ip_address = "10.0.0.4"
+2025-10-15T17:58:11.0447319Z               [32m+[0m[0m next_hop_type          = "VirtualAppliance"
+2025-10-15T17:58:11.0447442Z             },
+2025-10-15T17:58:11.0447543Z         ]
+2025-10-15T17:58:11.0447711Z       [32m+[0m[0m subnets                       = (known after apply)
+2025-10-15T17:58:11.0447833Z     }
+2025-10-15T17:58:11.0447869Z 
+2025-10-15T17:58:11.0448098Z [1m  # module.virtual_networks["vnet-tax-ukwest-0001"].azurerm_subnet.subnet["snet-tax-ukwest-sqlsrv"][0m will be created
+2025-10-15T17:58:11.0448373Z [0m  [32m+[0m[0m resource "azurerm_subnet" "subnet" {
+2025-10-15T17:58:11.0448570Z       [32m+[0m[0m address_prefixes                              = [
+2025-10-15T17:58:11.0448742Z           [32m+[0m[0m "10.2.64.32/28",
+2025-10-15T17:58:11.0448854Z         ]
+2025-10-15T17:58:11.0449031Z       [32m+[0m[0m default_outbound_access_enabled               = true
+2025-10-15T17:58:11.0449231Z       [32m+[0m[0m id                                            = (known after apply)
+2025-10-15T17:58:11.0449489Z       [32m+[0m[0m name                                          = "d3-snet-tax-ukwest-sqlsrv"
+2025-10-15T17:58:11.0449695Z       [32m+[0m[0m private_endpoint_network_policies             = "Disabled"
+2025-10-15T17:58:11.0449905Z       [32m+[0m[0m private_link_service_network_policies_enabled = true
+2025-10-15T17:58:11.0450130Z       [32m+[0m[0m resource_group_name                           = "d3-rg-tax-ukwest-network"
+2025-10-15T17:58:11.0450361Z       [32m+[0m[0m virtual_network_name                          = "d3-vnet-tax-ukwest-0001"
+2025-10-15T17:58:11.0450490Z     }
+2025-10-15T17:58:11.0450526Z 
+2025-10-15T17:58:11.0450816Z [1m  # module.virtual_networks["vnet-tax-ukwest-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-ukwest-keyvault"][0m must be [1m[31mreplaced[0m
+2025-10-15T17:58:11.0451134Z [0m[31m-[0m/[32m+[0m[0m resource "azurerm_subnet_route_table_association" "subnet_route_table_association" {
+2025-10-15T17:58:11.0451545Z       [33m~[0m[0m id             = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/subnets/d3-snet-tax-ukwest-keyvault" -> (known after apply)
+2025-10-15T17:58:11.0452016Z       [33m~[0m[0m route_table_id = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/routeTables/d3-route-tax-ukwest-0001" -> (known after apply) [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0452368Z         [90m# (1 unchanged attribute hidden)[0m[0m
+2025-10-15T17:58:11.0452485Z     }
+2025-10-15T17:58:11.0452521Z 
+2025-10-15T17:58:11.0452808Z [1m  # module.virtual_networks["vnet-tax-ukwest-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-ukwest-sqlsrv"][0m will be created
+2025-10-15T17:58:11.0453102Z [0m  [32m+[0m[0m resource "azurerm_subnet_route_table_association" "subnet_route_table_association" {
+2025-10-15T17:58:11.0453310Z       [32m+[0m[0m id             = (known after apply)
+2025-10-15T17:58:11.0453491Z       [32m+[0m[0m route_table_id = (known after apply)
+2025-10-15T17:58:11.0453674Z       [32m+[0m[0m subnet_id      = (known after apply)
+2025-10-15T17:58:11.0453795Z     }
+2025-10-15T17:58:11.0453831Z 
+2025-10-15T17:58:11.0454120Z [1m  # module.virtual_networks["vnet-tax-ukwest-0001"].azurerm_subnet_route_table_association.subnet_route_table_association["snet-tax-ukwest-storage"][0m must be [1m[31mreplaced[0m
+2025-10-15T17:58:11.0454437Z [0m[31m-[0m/[32m+[0m[0m resource "azurerm_subnet_route_table_association" "subnet_route_table_association" {
+2025-10-15T17:58:11.0455104Z       [33m~[0m[0m id             = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001/subnets/d3-snet-tax-ukwest-storage" -> (known after apply)
+2025-10-15T17:58:11.0455751Z       [33m~[0m[0m route_table_id = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/routeTables/d3-route-tax-ukwest-0001" -> (known after apply) [31m# forces replacement[0m[0m
+2025-10-15T17:58:11.0456043Z         [90m# (1 unchanged attribute hidden)[0m[0m
+2025-10-15T17:58:11.0456159Z     }
+2025-10-15T17:58:11.0456275Z 
+2025-10-15T17:58:11.0456512Z [1m  # module.virtual_networks["vnet-tax-ukwest-0001"].azurerm_virtual_network.virtual_network[0m will be updated in-place
+2025-10-15T17:58:11.0456770Z [0m  [33m~[0m[0m resource "azurerm_virtual_network" "virtual_network" {
+2025-10-15T17:58:11.0456959Z       [33m~[0m[0m dns_servers             = [
+2025-10-15T17:58:11.0457121Z           [32m+[0m[0m "10.0.0.116",
+2025-10-15T17:58:11.0457284Z           [32m+[0m[0m "172.21.112.10",
+2025-10-15T17:58:11.0457393Z         ]
+2025-10-15T17:58:11.0457590Z         id                      = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network/providers/Microsoft.Network/virtualNetworks/d3-vnet-tax-ukwest-0001"
+2025-10-15T17:58:11.0457791Z         name                    = "d3-vnet-tax-ukwest-0001"
+2025-10-15T17:58:11.0457910Z         tags                    = {}
+2025-10-15T17:58:11.0458082Z         [90m# (8 unchanged attributes hidden)[0m[0m
+2025-10-15T17:58:11.0458207Z     }
+2025-10-15T17:58:11.0458244Z 
+2025-10-15T17:58:11.0458417Z [1mPlan:[0m 50 to add, 12 to change, 13 to destroy.
+2025-10-15T17:58:11.0458560Z [0m
+2025-10-15T17:58:11.0458669Z Changes to Outputs:
+2025-10-15T17:58:11.0458835Z   [32m+[0m[0m app_services    = {
+2025-10-15T17:58:11.0458997Z       [32m+[0m[0m amexpagero = {
+2025-10-15T17:58:11.0459173Z           [32m+[0m[0m hostname = (known after apply)
+2025-10-15T17:58:11.0459375Z           [32m+[0m[0m name     = "d3-app-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0459499Z         }
+2025-10-15T17:58:11.0459601Z     }
+2025-10-15T17:58:11.0459744Z   [32m+[0m[0m key_vaults      = {
+2025-10-15T17:58:11.0459911Z       [32m+[0m[0m kv-tax-pageroapi-uks = {
+2025-10-15T17:58:11.0460088Z           [32m+[0m[0m id  = (known after apply)
+2025-10-15T17:58:11.0460262Z           [32m+[0m[0m uri = (known after apply)
+2025-10-15T17:58:11.0460383Z         }
+2025-10-15T17:58:11.0460537Z       [32m+[0m[0m kv-tax-uks-alteryx   = {
+2025-10-15T17:58:11.0460841Z           [32m+[0m[0m id  = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-alteryx"
+2025-10-15T17:58:11.0461166Z           [32m+[0m[0m uri = "https://d3-kv-tax-uks-alteryx.vault.azure.net/"
+2025-10-15T17:58:11.0461303Z         }
+2025-10-15T17:58:11.0461452Z       [32m+[0m[0m kvtaxukspagero       = {
+2025-10-15T17:58:11.0461749Z           [32m+[0m[0m id  = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero/providers/Microsoft.KeyVault/vaults/d3-kvtaxukspagero"
+2025-10-15T17:58:11.0462010Z           [32m+[0m[0m uri = "https://d3-kvtaxukspagero.vault.azure.net/"
+2025-10-15T17:58:11.0462138Z         }
+2025-10-15T17:58:11.0462240Z     }
+2025-10-15T17:58:11.0462384Z   [32m+[0m[0m resource_groups = {
+2025-10-15T17:58:11.0462557Z       [32m+[0m[0m rg-tax-uksouth-alteryx   = {
+2025-10-15T17:58:11.0462810Z           [32m+[0m[0m id       = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-alteryx"
+2025-10-15T17:58:11.0463019Z           [32m+[0m[0m location = "uksouth"
+2025-10-15T17:58:11.0463209Z           [32m+[0m[0m name     = "d3-rg-tax-uksouth-alteryx"
+2025-10-15T17:58:11.0463328Z         }
+2025-10-15T17:58:11.0463485Z       [32m+[0m[0m rg-tax-uksouth-network   = {
+2025-10-15T17:58:11.0463732Z           [32m+[0m[0m id       = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-network"
+2025-10-15T17:58:11.0543757Z           [32m+[0m[0m location = "uksouth"
+2025-10-15T17:58:11.0544354Z           [32m+[0m[0m name     = "d3-rg-tax-uksouth-network"
+2025-10-15T17:58:11.0544552Z         }
+2025-10-15T17:58:11.0544843Z       [32m+[0m[0m rg-tax-uksouth-pagero    = {
+2025-10-15T17:58:11.0545285Z           [32m+[0m[0m id       = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-pagero"
+2025-10-15T17:58:11.0546024Z           [32m+[0m[0m location = "uksouth"
+2025-10-15T17:58:11.0546382Z           [32m+[0m[0m name     = "d3-rg-tax-uksouth-pagero"
+2025-10-15T17:58:11.0546601Z         }
+2025-10-15T17:58:11.0546905Z       [32m+[0m[0m rg-tax-uksouth-pageroapi = {
+2025-10-15T17:58:11.0547243Z           [32m+[0m[0m id       = (known after apply)
+2025-10-15T17:58:11.0547563Z           [32m+[0m[0m location = "uksouth"
+2025-10-15T17:58:11.0547911Z           [32m+[0m[0m name     = "d3-rg-tax-uksouth-pageroapi"
+2025-10-15T17:58:11.0548119Z         }
+2025-10-15T17:58:11.0548404Z       [32m+[0m[0m rg-tax-ukwest-alteryx    = {
+2025-10-15T17:58:11.0548864Z           [32m+[0m[0m id       = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-alteryx"
+2025-10-15T17:58:11.0549251Z           [32m+[0m[0m location = "ukwest"
+2025-10-15T17:58:11.0549659Z           [32m+[0m[0m name     = "d3-rg-tax-ukwest-alteryx"
+2025-10-15T17:58:11.0549887Z         }
+2025-10-15T17:58:11.0550607Z       [32m+[0m[0m rg-tax-ukwest-network    = {
+2025-10-15T17:58:11.0551104Z           [32m+[0m[0m id       = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-network"
+2025-10-15T17:58:11.0551506Z           [32m+[0m[0m location = "ukwest"
+2025-10-15T17:58:11.0551854Z           [32m+[0m[0m name     = "d3-rg-tax-ukwest-network"
+2025-10-15T17:58:11.0552083Z         }
+2025-10-15T17:58:11.0552743Z       [32m+[0m[0m rg-tax-ukwest-pagero     = {
+2025-10-15T17:58:11.0553426Z           [32m+[0m[0m id       = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-ukwest-pagero"
+2025-10-15T17:58:11.0553876Z           [32m+[0m[0m location = "ukwest"
+2025-10-15T17:58:11.0554222Z           [32m+[0m[0m name     = "d3-rg-tax-ukwest-pagero"
+2025-10-15T17:58:11.0554447Z         }
+2025-10-15T17:58:11.0554757Z       [32m+[0m[0m rg-tax-ukwest-pageroapi  = {
+2025-10-15T17:58:11.0555478Z           [32m+[0m[0m id       = (known after apply)
+2025-10-15T17:58:11.0556042Z           [32m+[0m[0m location = "ukwest"
+2025-10-15T17:58:11.0556391Z           [32m+[0m[0m name     = "d3-rg-tax-ukwest-pageroapi"
+2025-10-15T17:58:11.0556587Z         }
+2025-10-15T17:58:11.0556733Z     }
+2025-10-15T17:58:11.0556962Z   [32m+[0m[0m service_buses   = {
+2025-10-15T17:58:11.0557251Z       [32m+[0m[0m amexpagero = {
+2025-10-15T17:58:11.0557589Z           [32m+[0m[0m endpoint = (known after apply)
+2025-10-15T17:58:11.0558350Z           [32m+[0m[0m name     = "d3-sb-tax-pageroapi-uksouth-0001"
+2025-10-15T17:58:11.0558614Z         }
+2025-10-15T17:58:11.0558793Z     }
+2025-10-15T17:58:11.0559080Z   [32m+[0m[0m sql_servers     = {
+2025-10-15T17:58:11.0559358Z       [32m+[0m[0m amexpagero = {
+2025-10-15T17:58:11.0560436Z           [32m+[0m[0m failover_listener = "d3-sqlfg-tax-pageroapi-0001.database.windows.net"
+2025-10-15T17:58:11.0560978Z           [32m+[0m[0m failover_readonly = "d3-sqlfg-tax-pageroapi-0001.secondary.database.windows.net"
+2025-10-15T17:58:11.0561397Z           [32m+[0m[0m fqdn              = (known after apply)
+2025-10-15T17:58:11.0561615Z         }
+2025-10-15T17:58:11.0561793Z     }
+2025-10-15T17:58:11.0562047Z [90m
+2025-10-15T17:58:11.0562827Z ─────────────────────────────────────────────────────────────────────────────[0m
+2025-10-15T17:58:11.0562949Z 
+2025-10-15T17:58:11.0563185Z Saved the plan to: D:\a\1\a/development-app-tax.tfplan
+2025-10-15T17:58:11.0563642Z 
+2025-10-15T17:58:11.0563917Z To perform exactly these actions, run the following command to apply:
+2025-10-15T17:58:11.0564204Z     terraform apply "D:\\a\\1\\a/development-app-tax.tfplan"
+2025-10-15T17:58:11.0763956Z 
+2025-10-15T17:58:11.1000664Z ##[section]Finishing: Terraform plan: azure-app-tax
