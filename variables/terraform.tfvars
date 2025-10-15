@@ -1,7 +1,7 @@
 #---------------- ENVIRONMENT ------------------#
 tenant_id                       = "fb973a23-5188-45ab-b4fb-277919443584"
 infrastructure_client_id        = "12a25e77-8484-41ff-98c1-e58557bdf161"
-infra_client_ent_app__object_id = "9bcf1bd1-59a7-4b70-a5a2-52931d9238d8"
+infra_client_ent_app__object_id = "a275c283-41dc-482e-9aa7-366964c4a92e"
 
 core_networking_tenant_id       = "fb973a23-5188-45ab-b4fb-277919443584"
 core_networking_subscription_id = "1753c763-47da-4014-991c-4b094cababda"
@@ -37,13 +37,56 @@ resource_groups_map = {
     name     = "rg-tax-ukwest-network"
     location = "UK West"
   }
-  "rg-tax-uksouth-amexpagero" = {
-    name     = "rg-tax-uksouth-amexpagero"
+  "rg-tax-uksouth-pageroapi" = {
+    name     = "rg-tax-uksouth-pageroapi"
     location = "UK South"
   }
-  "rg-tax-ukwest-amexpagero" = {
-    name     = "rg-tax-ukwest-amexpagero"
+  " rg-tax-ukwest-pageroapi" = {
+    name     = "rg-tax-ukwest-pageroapi"
     location = "UK West"
+  }
+}
+#---------------- ENTRA ID GROUPS ------------------# TO DO:  APP ID need to be confirmed
+EntraID_Groups = {
+  "Tax_Pagero_StorageReader" = {
+    group_name       = "Tax_Pagero_StorageReader"
+    security_enabled = true
+    role_assignments = {
+      "storage-reader" = {
+        scope     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320"
+        role_name = "Storage Blob Data Reader"
+      }
+    }
+  }
+  "Tax_Pagero_Keyvault_Secrets_Officer" = {
+    group_name       = "Tax_Pagero_Keyvault_Secrets_Officer"
+    security_enabled = true
+    role_assignments = {
+      "keyvault-secrets" = {
+        scope     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320"
+        role_name = "Key Vault Secrets Officer"
+      }
+    }
+  }
+  "Tax_AMEXPagero_KeyVault_Access" = {
+    group_name       = "Tax_AMEXPagero_KeyVault_Access"
+    security_enabled = true
+    role_assignments = {
+      "amexpagero-kv-secrets" = {
+        scope     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-amexpagero/providers/Microsoft.KeyVault/vaults/d3-kv-tax-uks-amexpagero"
+        role_name = "Key Vault Secrets User"
+      }
+    }
+  }
+  "Tax_AMEXPagero_Storage_Access" = {
+    group_name       = "Tax_AMEXPagero_Storage_Access"
+    security_enabled = true
+    role_assignments = {
+      "amexpagero-storage-reader" = {
+        scope     = "/subscriptions/91bb7688-5561-4ddf-b353-96ce02e64320/resourceGroups/d3-rg-tax-uksouth-amexpagero/providers/Microsoft.Storage/storageAccounts/d3sttaxuksamexpagero"
+        role_name = "Storage Blob Data Reader"
+      }
+    }
   }
 }
 #---------------- KEY VAULTS ------------------#
@@ -90,8 +133,8 @@ keyvault_map = {
     }
   }
 
-  "kv-tax-uks-amexpagero" = {
-    keyvault_name       = "kv-tax-uks-amexpagero"
+  "kv-tax-pageroapi-uks" = {
+    keyvault_name       = "kv-tax-pageroapi-uks"
     resource_group_name = "rg-tax-uksouth-amexpagero"
     location            = "UK South"
     
@@ -103,10 +146,10 @@ keyvault_map = {
     ]
     
     private_endpoint = {
-      name                            = "priv-nic-kv-amexpagero-uksouth-0001"
+      name                            = "priv-nic-kv-tax-pageroapi-uksouth-0001"
       subnet_name                     = "snet-tax-uksouth-privateendpoints"
       virtual_network_key             = "vnet-tax-uksouth-0001"
-      private_service_connection_name = "priv-nic-kv-amexpagero-uksouth-0001-svc"
+      private_service_connection_name = "priv-nic-kv-tax-pageroapi-uksouth-0001-svc"
       static_ip                       = null
     }
   }
@@ -142,8 +185,8 @@ storage_accounts = {
     }
   }
 
-  "sttaxuksamexpagero" = {
-    name                          = "sttaxuksamexpagero"
+  "sttaxpageroapiuks" = {
+    name                          = "sttaxpageroapiuks"
     resource_group_key            = "rg-tax-uksouth-amexpagero"
     location                      = "UK South"
     account_kind                  = "StorageV2"
